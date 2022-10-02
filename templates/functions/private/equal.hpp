@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   equal.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/25 18:47:25 by asimon            #+#    #+#             */
-/*   Updated: 2022/09/25 18:57:41 by asimon           ###   ########.fr       */
+/*   Created: 2022/10/01 18:29:14 by asimon            #+#    #+#             */
+/*   Updated: 2022/10/01 18:56:34 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#ifndef __MY_ITERATOR_HPP__
-# define __MY_ITERATOR_HPP__
-
+#ifndef __EQUAL_HPP__
+# define __EQUAL_HPP__
 # include "../../../private/header.hpp"
 
-namespace ft
-{
-	template <typename T>
-	class random_iterator
+namespace ft{
+
+	template <typename It1, typename It2>
+	bool	equal(It1 first1, It1 end1, It2 first2)
 	{
-		private:
-			T		*pointer;
-		public:
-			iterator(void);
-			~iterator();
+		while (first1 != end1)
+		{
+			if (!(*first1 != *first2))
+				return false;
+			first1++; first2++;
+		}
+		return true;
 	}
 }
 
