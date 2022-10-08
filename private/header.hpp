@@ -6,11 +6,12 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2022/09/24 13:48:47 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/09 00:04:40 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __HEADER_CONTAINER_HPP__
 # define __HEADER_CONTAINER_HPP__
 # include <memory>
+# include <cmath>
 #endif

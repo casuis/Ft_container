@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   enable_if.hpp                                      :+:      :+:    :+:   */
+/*   iterator_traits.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/01 15:33:35 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/01 18:19:32 by asimon           ###   ########.fr       */
+/*   Created: 2022/10/02 15:54:10 by asimon            #+#    #+#             */
+/*   Updated: 2022/10/06 18:13:04 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __ENABLE_IF__
-# define __ENABLE_IF__
-# include "../../../private/header.hpp"
+#ifndef __ITERATOR_TRAITS_HPP__
+# define __ITERATOR_TRAITS_HPP__
 
 namespace ft{
-	
-/* default */
-template <bool B, class T = void>
-struct enable_if {};
 
-/* right */
-template <class C>
-struct enable_if<true, C> {typedef C type;};
+template <typename T>
+struct iterator_traits{
+	typedef	typename T::difference_type 	difference_type; 	 
+	typedef typename T::value_type			value_type;
+	typedef typename T::pointer				pointer;			
+	typedef typename T::reference			reference;
+	typedef T						iterator_category;
+};
 
 }
 
