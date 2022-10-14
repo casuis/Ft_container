@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:47:25 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/08 21:48:13 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/15 00:18:51 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,74 +20,71 @@
 namespace ft{
 
 	template <typename T = void>
-	class random_access_iterator;
+	class RandomIterator;
 
 	template <typename T>
-	class random_access_iterator
+	class RandomIterator
 	{
 		private:
 			T			*_pointer;
 		public:
 		/* Member Type */
 
-			typedef ptrdiff_t		difference_type; 	 
+			typedef std::ptrdiff_t		difference_type; 	 
 			typedef T				value_type;
 			typedef T*				pointer;			
 			typedef const T*		const_pointer;
 			typedef T&				reference;
 			typedef const T&		const_reference;
-			typedef random_access_iterator	iterator_category;
+			typedef RandomIterator<T>	iterator_category;
 
 
 		////////////////////////////////////////////////////////////////////////////////
 		/* Lifecycle */
 		
 			/* Default constructor */
-			random_access_iterator(void): _pointer(nullptr) {}
+			RandomIterator(void): _pointer(0x0) {}
 
 			/* Param constructor */
-			random_access_iterator(T *param): _pointer(param) {}
+			RandomIterator(T *param): _pointer(param) {}
 			
-			/* Const Param constructor */
-			random_access_iterator(T const *param): _pointer(param) {}
-
 			/* Copy constructor */
-			random_access_iterator(const random_access_iterator& old): _pointer(old._pointer){}
+			RandomIterator( const RandomIterator& old): _pointer(old._pointer){}
 			
-			~random_access_iterator() {};
+			~RandomIterator() {};
 
 		////////////////////////////////////////////////////////////////////////////////
 		/* Operators' overload */
 		
 			/* random_access_ite operator =  */
-			random_access_iterator<T>&	operator=(const random_access_iterator &rgt) {
+			RandomIterator<T>&	operator=(const RandomIterator &rgt) {
 				this->_pointer = rgt._pointer;
 				return (*this);
 			}
 
 			/* random_access_ite ++ post */
-			random_access_iterator<T>&	operator++(){
+			RandomIterator<T>&	operator++(){
 				this->_pointer = (this->_pointer) + 1;
 				return (*this);
 			}
 
 			/* random_access_ite ++ past */
-			random_access_iterator<T>	operator++(int){
-				random_access_iterator<T>	tmp(*this);
+			RandomIterator<T>	operator++(int){
+				RandomIterator<T>	tmp(*this);
 				
 				this->_pointer = (this->_pointer) + 1;
 				return (tmp);
 			}
 
 			/* random_access_ite --post */
-			random_access_iterator<T>& operator--(){
+			RandomIterator<T>& operator--(){
 				this->_pointer -= 1;
 				return (*this);
 			}
 
 			/* random_access_ite --past */
-			random_access_iterator<T> operator--(int){
-				random_access_iterator<T>	tmp(*this);
+			RandomIterator<T> operator--(int){
+				RandomIterator<T>	tmp(*this);
 
 				this->_pointer -= 1;
 				return (tmp);
@@ -98,33 +95,33 @@ namespace ft{
 				return (*(this->_pointer));
 			}
 
-			/* random_access_iterator ope != */
-			bool		operator!=(const random_access_iterator& rght){
+			/* RandomIterator ope != */
+			bool		operator!=(const RandomIterator& rght) const {
 				return (this->_pointer != rght._pointer);
 			}
 
-			/* random_access_iterator ope == */
-			bool		operator==(const random_access_iterator& rght){
+			/* RandomIterator ope == */
+			bool		operator==(const RandomIterator& rght) const {
 				return (this->_pointer == rght->_pointer);
 			}
 
-			/* random_access_iterator ope > */
-			bool		operator>(const random_access_iterator& rght){
+			/* RandomIterator ope > */
+			bool		operator>(const RandomIterator& rght) const {
 				return (this->_pointer > rght->_pointer);
 			}
 
-			/* random_access_iterator ope >= */
-			bool		operator>=(const random_access_iterator& rght){
+			/* RandomIterator ope >= */
+			bool		operator>=(const RandomIterator& rght) const {
 				return (this->_pointer >= rght->_pointer);
 			}
 
-			/* random_access_iterator ope < */
-			bool		operator<(const random_access_iterator& rght){
+			/* RandomIterator ope < */
+			bool		operator<(const RandomIterator& rght) const {
 				return (this->_pointer < rght->_pointer);
 			}
 			
-			/* random_access_iterator ope <= */
-			bool		operator<=(const random_access_iterator& rght){
+			/* RandomIterator ope <= */
+			bool		operator<=(const RandomIterator& rght) const {
 				return (this->_pointer <= rght->_pointer);
 			}
 	};

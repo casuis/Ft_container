@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.hpp                                         :+:      :+:    :+:   */
+/*   ftnspace.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/13 23:28:06 by asimon           ###   ########.fr       */
+/*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
+/*   Updated: 2022/10/15 00:35:53 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __HEADER_CONTAINER_HPP__
-# define __HEADER_CONTAINER_HPP__
-# include <memory>
-# include <cmath>
-# include <stdexcept>
+#ifndef __FT_NAMESPACE__
+# define __FT_NAMESPACE__
+
+# include "../templates/functions/is_integral.hpp"
+# include "../templates/functions/enable_if.hpp"
+# include "../templates/iterator/iterator_traits.hpp"
+# include "../templates/iterator/iterator.hpp"
+# include "../templates/iterator/reverse_iterator.hpp"
+# include "../templates/vector/vector.hpp"
+
 #endif

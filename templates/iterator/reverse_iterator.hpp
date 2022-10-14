@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 19:24:35 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/08 21:48:20 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/14 06:07:52 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ namespace ft{
 		public:
 
 		/* Member types */
-			typedef	typename ptrdiff_t		difference_type; 	 
-			typedef typename T				value_type;
-			typedef typename T*				pointer;		
-			typedef const T*				const_pointer;
-			typedef typename T&				reference;
-			typedef const T&				const_reference;
-			typedef reverse_iterator		iterator_category;
+			typedef	std::ptrdiff_t			difference_type; 	 
+			typedef T					value_type;
+			typedef T*					pointer;		
+			typedef const T*			const_pointer;
+			typedef T&					reference;
+			typedef const T&			const_reference;
+			typedef reverse_iterator<T>	iterator_category;
 
 		////////////////////////////////////////////////////////////////////////////////
 		/* Liffecycle */
 
 			/* Default constructor */
-			reverse_iterator(void) {}
+			reverse_iterator(void): _pointer(0x0) {}
 
 			/* Const Param constructor */
 			reverse_iterator(T const * param): _pointer(&param) {}
