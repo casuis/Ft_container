@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reverse_iterator.hpp                               :+:      :+:    :+:   */
+/*   ReverseIterator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -18,7 +18,7 @@
 namespace ft{
 
 	template <typename T>
-	class reverse_iterator {
+	class ReverseIterator {
 		public:
 
 		/* Member types */
@@ -28,58 +28,57 @@ namespace ft{
 			typedef const T*			const_pointer;
 			typedef T&					reference;
 			typedef const T&			const_reference;
-			typedef reverse_iterator<T>	iterator_category;
 
 		////////////////////////////////////////////////////////////////////////////////
 		/* Liffecycle */
 
 			/* Default constructor */
-			reverse_iterator(void): _pointer(0x0) {}
+			ReverseIterator(void): _pointer(0x0) {}
 
 			/* Const Param constructor */
-			reverse_iterator(T const * param): _pointer(&param) {}
+			ReverseIterator(T const * param): _pointer(&param) {}
 			
 			/* Param constructor */
-			reverse_iterator(T * param): _pointer(&param) {}
+			ReverseIterator(T * param): _pointer(&param) {}
 
 			/* Copy constructor */
-			reverse_iterator(const reverse_iterator<T> &old) : _pointer(old._pointer) {}
+			ReverseIterator(const ReverseIterator<T> &old) : _pointer(old._pointer) {}
 
 			/* Destructor */
-			~reverse_iterator() {}
+			~ReverseIterator() {}
 
 		////////////////////////////////////////////////////////////////////////////////
 		/* operators' overload */
 
 			/* operator = */
-			reverse_iterator<T>&	operator=(reverse_iterator<T> const &old){
+			ReverseIterator<T>&	operator=(ReverseIterator<T> const &old){
 				this->_pointer = old._pointer;
 				return (*this);
 			}
 
 			/* operator ++ post */
-			reverse_iterator<T>&	operator++(){
+			ReverseIterator<T>&	operator++(){
 				this->_pointer += 1;
 				return (*this);
 			}
 
 			/* operator ++ past */
-			reverse_iterator<T>&		operator++(int){
-				reverse_iterator<T>		tmp(*this);
+			ReverseIterator<T>&		operator++(int){
+				ReverseIterator<T>		tmp(*this);
 
 				this->_pointer += 1;
 				return (tmp);
 			}
 
 			/* operator -- post */
-			reverse_iterator<T>&		operator--(){
+			ReverseIterator<T>&		operator--(){
 				this->_pointer -= 1;
 				return (*this);
 			}
 
 			/* operator -- past */
-			reverse_iterator<T>&		operator--(int){
-				reverse_iterator<T>		tmp(*this);
+			ReverseIterator<T>&		operator--(int){
+				ReverseIterator<T>		tmp(*this);
 
 				this->_pointer -= 1;
 				return (tmp);

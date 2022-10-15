@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/15 00:31:45 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/15 06:34:45 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer				const_pointer;
 			typedef	typename ft::RandomIterator< value_type >			iterator; 
 			typedef	typename ft::RandomIterator< const value_type >		const_iterator; 
+			typedef typename ft::ReverseIterator< value_type >			r_iterator;
+			typedef typename ft::ReverseIterator< const value_type >	const_r_iterator;
 
 		////////////////////////////////////////////////////////////////////////////////
 		/*                            MEMBER FUNCTIONS                                */
@@ -43,33 +45,53 @@ namespace ft
 		/* Lifecycle */
 		
 			/* Default constructor */
-			vector(void):_array(0x0), _size(0), _capacity(0) {}
+			vector (const allocator_type& alloc = allocator_type())
+			: _alloc(alloc), _data(0x0), _size(0), _capacity(0) {}
 
-			/* Constructor with one elem */
-			vector(T elem): _size(1), _capacity(2) {
-				Allocator		alloc;
-				this->_array = alloc.allocate(this->_capacity);
-				this->_array[0] = elem;
-				this->_array[1] = 0x0;
+			/* Fill Constructor */
+			vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+			: _alloc(alloc), _size(n), _capacity(n){
+				this->_data = this->_alloc.allocate(n);
+				int		i = 0;
+				for (; i < n; i++){
+					this->_data[i] = 0x0;	
+				}
+				this->_data[i - 1] = 1;
 			}
 
+			/* Range Constructor */
+			template <typename InputIterator>
+			vector (InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type())
+			: _alloc(alloc){
+				size_t			size = 0;
+				InputIterator	tmp = first;
+				for (; tmp != last; tmp++){
+					size++;
+				}
+				this->_data = this->_alloc.allocate(size);
+				this->_capacity = size;
+				this->_size = size;
+				for (int i = 0; first != last; first++){
+					this->_data[i] = *first;
+					i++;
+				}
+			}
+			
 			/* Copy Constructor */
 			vector(const ft::vector<T> &old): _size(old._size), _capacity(old._capacity) {
 				Allocator		alloc;
 				int i = 0;
-				this->_array = alloc.allocate(this->_capacity);
-				for (; old._array[i]; i++)
-					this->_array[i] = old._array[i];
-				this->_array[i] = 0x0;
+				this->_data = alloc.allocate(this->_capacity);
+				for (; old._data[i]; i++){
+					this->_data[i] = old._data[i];
+				}
+				this->_data[i] = 0x0;
 			};
-			
-			/* Constructor by params */
-			// vector(size_type count, const T& value, const Allocator &alloc){
-			// 	return ;
-			// }
 
 			/* Destructor */
-			~vector(){};
+			~vector(){
+				this->_alloc.deallocate(this->_data, this->_capacity);
+			};
 
 			/* Operator= overload */
 			vector&		operator=(const ft::vector<T> &rght);
@@ -82,48 +104,52 @@ namespace ft
 		
 			/* begin return a iterator pointer to the first element of the container */
 			iterator		begin(){
-				ft::RandomIterator<T>		ret(this->_array);
+				iterator		ret(this->_data);
 				return (ret);
 			}
 
 			const_iterator	begin() const{
-				ft::RandomIterator<const T>		ret(this->_array);
+				const_iterator		ret(this->_data);
 				return (ret);
 			}
 
+			////////////////////////////////////////////////////////////////////////////////
+			
 			/* end return an iterator pointer to the end of the container */
 			iterator		end(){
-				T		*tmp = this->_array;
+				T		*tmp = this->_data;
 				int i = 0;
-				while (tmp[i])
+				while (i < this->_size)
 					i++;
-				ft::RandomIterator<T>	ret(&tmp[i]);
+				iterator	ret(&tmp[i]);
 				return (ret);
 			}
 
 			const_iterator	end() const{
-				T		*tmp = this->_array;
+				T		*tmp = this->_data;
 				int i = 0;
-				while (tmp[i])
+				while (i < this->_size)
 					i++;
-				ft::RandomIterator<const T>	ret(&tmp[i]);
+				const_iterator	ret(&tmp[i]);
 				return (ret);
 			}
 
+			////////////////////////////////////////////////////////////////////////////////
+			
 			/* rbegin return a reverse pointer to the begining of the container */
-			ft::reverse_iterator<T>			rbegin(){
+			ft::ReverseIterator<T>			rbegin(){
 				int		i = 0;
-				T		*tmp = this->_array;
-				while (tmp[i])
+				T		*tmp = this->_data;
+				while (i < this->_size)
 					i++;
-				ft::reverse_iterator<T>			ret(&tmp[i]);
+				ft::ReverseIterator<T>			ret(&tmp[i]);
 				return (ret);
 				
 			}
 			
 			/* rend return a reverse pointer to the end of the container */
-			ft::reverse_iterator<T>			rend(){
-				ft::reverse_iterator<T>		ret(static_cast<const T>(this->_array));
+			ft::ReverseIterator<T>			rend(){
+				ft::ReverseIterator<T>		ret(static_cast<const T>(this->_data));
 				return (ret);
 			}
 			
@@ -132,33 +158,35 @@ namespace ft
 		
 			/* cbegin return a const pointer to the begining of the container */
 			const_iterator	cbegin(){
-				const ft::RandomIterator<T> ret(static_cast<const T>(this->_array));		
+				const ft::RandomIterator<T> ret(static_cast<const T>(this->_data));		
 				return (ret);
 			}
 
 			/* cend retutn a const pointer to the end of the container */
 			const_iterator	cend(){
 				int		i = 0;
-				T*		tmp = this->_array;
+				T*		tmp = this->_data;
 				while (tmp[i])
 					i++;
 				const ft::RandomIterator<T>	ret(static_cast<const T>(&tmp[i]));
 				return (ret);
 			}
 			
+			////////////////////////////////////////////////////////////////////////////////
+			
 			/* crbegin return a const reverse pointer to the begining of the container */
-			const ft::reverse_iterator<T>			crbegin(){
+			const ft::ReverseIterator<T>			crbegin(){
 				int		i = 0;
-				T*		tmp = this->_array;
+				T*		tmp = this->_data;
 				while (tmp[i])
 					i++;
-				const ft::reverse_iterator<T>		ret(static_cast<const T>(&tmp[i]));
+				const ft::ReverseIterator<T>		ret(static_cast<const T>(&tmp[i]));
 				return (ret);
 			}
 
 			/* crend return a const reverse pointer to the end of the container */
-			const ft::reverse_iterator<T>			crend(){
-				const ft::reverse_iterator<T>		ret(static_cast<const T>(this->_array));
+			const ft::ReverseIterator<T>			crend(){
+				const ft::ReverseIterator<T>		ret(static_cast<const T>(this->_data));
 				return (ret);
 			}
 		
@@ -185,11 +213,11 @@ namespace ft
 					ft::vector<T> 		tmp(*this);
 					Allocator			alloc;
 					
-					delete this->_array;
-					this->_array = alloc.allocate(new_cap);
+					delete this->_data;
+					this->_data = alloc.allocate(new_cap);
 					this->_capacity = new_cap;
 					for (int i = 0; i < tmp._size; i++){
-						this->_array[i] = tmp._array[i];
+						this->_data[i] = tmp._data[i];
 					}
 				}
 			}
@@ -200,10 +228,10 @@ namespace ft
 					ft::vector<T>		tmp(*this);
 					Allocator			alloc;
 
-					delete this->_array;
-					this->_array = alloc.allocate(tmp._size);
+					delete this->_data;
+					this->_data = alloc.allocate(tmp._size);
 					for (int i = 0; i < tmp._size; i++){
-						this->_array[i] = tmp._array[i];
+						this->_data[i] = tmp._data[i];
 					}
 					this->_capacity = this->_size;
 				}
@@ -215,50 +243,54 @@ namespace ft
 		
 
 			reference		operator[](size_t n){
-				return (this->_array[n]);
+				return (this->_data[n]);
 			}
 			
 			const_reference	operator[](size_t n) const{
-				return (this->_array[n]);
+				return (this->_data[n]);
 			}
+			////////////////////////////////////////////////////////////////////////////////
 			
 			reference		at(size_t n){
 				if (n != 0 && (n >= this->_size || n < 0)){
 					throw (std::out_of_range("Error index out of range\n"));
 				}
 				else
-					return (this->_array[n]);
+					return (this->_data[n]);
 			}
 			
 			const_reference	at(size_t n) const{
 				if (n != 0 && (n >= this->_size || n < 0)){
 					throw (std::out_of_range("Error index out of range\n"));
 				}
-				return (this->_array[n]);
+				return (this->_data[n]);
 			}
+			////////////////////////////////////////////////////////////////////////////////
 			
 			reference		front(){
-				return (this->_array[0]);
+				return (this->_data[0]);
 			}
 
 			const_reference	front() const{
-				return (this->_array[0]);
+				return (this->_data[0]);
 			}
 
+			////////////////////////////////////////////////////////////////////////////////
 			reference		back(){
-				return (this->_array[this->_size - 1]);
+				return (this->_data[this->_size - 1]);
 			}
 
 			const_reference	back() const{
-				return (this->_array[this->_size - 1]);
+				return (this->_data[this->_size - 1]);
 			}
+			////////////////////////////////////////////////////////////////////////////////
 
 			value_type*			data(){
-				return (this->_array);
+				return (this->_data);
 			}
 
 			const value_type*	data() const{
-				return (this->_array);
+				return (this->_data);
 			}
 		
 		////////////////////////////////////////////////////////////////////////////////
@@ -274,9 +306,10 @@ namespace ft
 			// }
 		
 		private:
-			T*			_array;
-			size_type	_size;
-			size_type	_capacity;
+			T*				_data;
+			size_type		_size;
+			size_type		_capacity;
+			allocator_type	_alloc;
 
 	};
 }

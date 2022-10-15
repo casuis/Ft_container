@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/15 00:35:13 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/15 06:33:37 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@ class A{};
 
 int		main(int ac, char **av)
 {
-	ft::vector<int>			tab(10);
+	ft::vector<int>				tab(10);
+	ft::vector<int>::iterator	it = tab.begin();
+	ft::vector<int>::iterator	ite = tab.end();
+	ft::vector<int>				tab2(it, ite);
 
-	std::cout << tab.at(0) << std::endl;
+	for (; it != ite; it++){
+		std::cout << *it << std::endl;
+	}
 	return (0);
 }

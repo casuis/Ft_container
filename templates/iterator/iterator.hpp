@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:47:25 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/15 00:18:51 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/15 06:15:41 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,11 @@ namespace ft{
 		/* Member Type */
 
 			typedef std::ptrdiff_t		difference_type; 	 
-			typedef T				value_type;
-			typedef T*				pointer;			
-			typedef const T*		const_pointer;
-			typedef T&				reference;
-			typedef const T&		const_reference;
-			typedef RandomIterator<T>	iterator_category;
+			typedef T					value_type;
+			typedef T*					pointer;			
+			typedef const T*			const_pointer;
+			typedef T&					reference;
+			typedef const T&			const_reference;
 
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +45,7 @@ namespace ft{
 			RandomIterator(void): _pointer(0x0) {}
 
 			/* Param constructor */
-			RandomIterator(T *param): _pointer(param) {}
+			RandomIterator(pointer param): _pointer(param) {}
 			
 			/* Copy constructor */
 			RandomIterator( const RandomIterator& old): _pointer(old._pointer){}
