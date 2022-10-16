@@ -6,9 +6,13 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/15 06:34:45 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/16 06:02:29 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*  
+	https://cplusplus.com/reference/vector/vector/
+*/
 
 #ifndef __MY_VECTOR_HPP__
 # define __MY_VECTOR_HPP__
@@ -30,12 +34,12 @@ namespace ft
 			typedef Allocator											allocator_type;
 			typedef std::size_t											size_type;
 			typedef std::ptrdiff_t										difference_type;
-			typedef value_type&											reference;					
+			typedef value_type&											reference;
 			typedef const value_type&									const_reference;
 			typedef typename allocator_type::pointer					pointer;
-			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef	typename ft::RandomIterator< value_type >			iterator; 
-			typedef	typename ft::RandomIterator< const value_type >		const_iterator; 
+			typedef const T*											const_pointer;
+			typedef	typename ft::RandomIterator< value_type >			iterator;
+			typedef	typename ft::RandomIterator< const value_type >		const_iterator;
 			typedef typename ft::ReverseIterator< value_type >			r_iterator;
 			typedef typename ft::ReverseIterator< const value_type >	const_r_iterator;
 
@@ -103,15 +107,16 @@ namespace ft
 		////////////////////////////////////////////////////////////////////////////////
 		
 			/* begin return a iterator pointer to the first element of the container */
+			const_iterator	begin() const{
+				const_iterator		ret(this->_data);
+				return (ret);
+			}
+			
 			iterator		begin(){
 				iterator		ret(this->_data);
 				return (ret);
 			}
 
-			const_iterator	begin() const{
-				const_iterator		ret(this->_data);
-				return (ret);
-			}
 
 			////////////////////////////////////////////////////////////////////////////////
 			

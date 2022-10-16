@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:47:25 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/15 06:15:41 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/16 06:10:24 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 # include "../../private/header.hpp"
 # include "./iterator_traits.hpp"
+# include <iostream>
 
 namespace ft{
 
@@ -49,12 +50,17 @@ namespace ft{
 			
 			/* Copy constructor */
 			RandomIterator( const RandomIterator& old): _pointer(old._pointer){}
-			
+
 			~RandomIterator() {};
 
 		////////////////////////////////////////////////////////////////////////////////
 		/* Operators' overload */
 		
+			/* conv overload */
+			operator RandomIterator<const T>() const{
+				return (RandomIterator<const T>(this->_pointer));
+			}
+
 			/* random_access_ite operator =  */
 			RandomIterator<T>&	operator=(const RandomIterator &rgt) {
 				this->_pointer = rgt._pointer;
