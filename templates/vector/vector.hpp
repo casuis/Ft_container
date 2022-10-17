@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/17 03:40:23 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/17 12:23:49 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ namespace ft
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Member Type                                  */
 		////////////////////////////////////////////////////////////////////////////////
+		
 			typedef T													value_type;
 			typedef Allocator											allocator_type;
 			typedef std::size_t											size_type;
@@ -55,18 +56,18 @@ namespace ft
 
 			/* Fill Constructor */
 			vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
-			: _alloc(alloc), _size(n), _capacity(n){
-				this->_data = this->_alloc.allocate(n);
-				int		i = 0;
+			: _alloc(alloc), _size(n), _capacity(n + 1){
+				this->_data = this->_alloc.allocate(n + 1);
+				size_type		i = 0;
 				for (; i < n; i++){
-					this->_data[i] = 0x0;	
+					this->_data[i] = val;
 				}
-				this->_data[i - 1] = 1;
+				this->_data[i] = 0x0;
 			}
 
 			/* Range Constructor */
 			template <typename InputIterator>
-			vector (InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type())
+			vector (InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last, const allocator_type &alloc = allocator_type())
 			: _alloc(alloc){
 				size_t			size = 0;
 				InputIterator	tmp = first;
@@ -80,10 +81,12 @@ namespace ft
 					this->_data[i] = *first;
 					i++;
 				}
+				this->_data[this->_size] = 0x0;
 			}
 			
 			/* Copy Constructor */
-			vector(const ft::vector<T> &old): _size(old._size), _capacity(old._capacity) {
+			vector(const ft::vector<T> &old)
+			: _size(old._size), _capacity(old._capacity) {
 				Allocator		alloc;
 				int i = 0;
 				this->_data = alloc.allocate(this->_capacity);
@@ -119,7 +122,7 @@ namespace ft
 			/* end return an iterator pointer to the end of the container */
 			iterator		end(){
 				T		*tmp = this->_data;
-				int i = 0;
+				size_t i = 0;
 				while (i < this->_size)
 					i++;
 				iterator	ret(&tmp[i]);
@@ -128,10 +131,7 @@ namespace ft
 
 			const_iterator	end() const{
 				T		*tmp = this->_data;
-				int i = 0;
-				while (i < this->_size)
-					i++;
-				const_iterator	ret(&tmp[i]);
+				const_iterator	ret(&tmp[this->_size]);
 				return (ret);
 			}
 
@@ -212,17 +212,13 @@ namespace ft
 			
 			/* realloc the container to change his capacity to new_cap, the size don't change */
 			void			reserve(size_t new_cap) {
-				if (new_cap > this->_size){
-					ft::vector<T> 		tmp(*this);
-					Allocator			alloc;
-					
-					delete this->_data;
-					this->_data = alloc.allocate(new_cap);
-					this->_capacity = new_cap;
-					for (int i = 0; i < tmp._size; i++){
-						this->_data[i] = tmp._data[i];
-					}
+				pointer newVec = this->_alloc.allocate(new_cap);
+				for (size_t i = 0; i < new_cap && i < this->_size; i++){
+					newVec[i] = this->_data[i];
 				}
+				this->_alloc.deallocate(this->_data, this->_capacity);
+				this->_data = newVec;
+				this->_capacity = new_cap;
 			}
 
 			/* Requests the container to reduce its capacity to fit its size */
@@ -310,6 +306,7 @@ namespace ft
 				while (this->_size + 1 > this->_capacity)
 					this->reserve(this->_capacity * 2);
 				this->_data[this->_size] = val;
+				this->_data[0] = val;
 				this->_size += 1;
 			}
 			
@@ -326,13 +323,33 @@ namespace ft
 				this->_data[this->_size - 1] = 0x0;
 				this->_size -= 1;
 			}
+			
+			////////////////////////////////////////////////////////////////////////////////
 
+			iterator erase(iterator position){
+				iterator		ite = this->end();	
+				iterator		tmp = position;
+				iterator		swp;
+				if (tmp != ite)
+					++tmp;
+				for (; position != ite; position++){
+					swp = position;
+					position = tmp;
+					tmp = swp;
+				}
+				this->pop_back();
+			}
+			
+			// iterator erase (iterator first, iterator last){
+			
+			// }
+			
 			////////////////////////////////////////////////////////////////////////////////
 		
 			template <class InputIterator>
 			void assign (InputIterator first, InputIterator last){
 				this->clear();
-				for (int i = 0; first != last; first++){
+				for (; first != last; first++){
 					this->push_back(*first);
 				}
 			}
@@ -358,6 +375,7 @@ namespace ft
 					--tmp;
 				}
 				position = val;
+				this->_size += 1;
 			}
 			
 			template <class InputIterator>
@@ -365,18 +383,27 @@ namespace ft
 				size_t 		size = last - first;
 				while (this->_size + size > this->_capacity)
 					this->reserve(this->_capacity * 2);
-				iterator		ite = this->end();
-				
+				for (; first != last; first++){
+					this->insert(position, first);
+				}
+			}
+			
+			void insert (iterator position, size_type n, const value_type& val){
+				while (this->_size + n > this->_capacity)	
+					this->reserve(this->_capacity * 2);
+				for (int i = 0; i <= n; i++){
+					this->insert(position, val);
+				}
 			}
 			
 			////////////////////////////////////////////////////////////////////////////////
 		
 		
 		private:
+			allocator_type	_alloc;
 			T*				_data;
 			size_type		_size;
 			size_type		_capacity;
-			allocator_type	_alloc;
 
 	};
 }

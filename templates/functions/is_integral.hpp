@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 16:03:55 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/03 14:03:26 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/17 03:55:37 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,33 +46,6 @@ struct is_integral <char>
 {
 	typedef char value_type;
 	typedef ft::is_integral<char> type;
-
-	
-	public :
-		static const bool		value = true;
-};
-
-////////////////////////////////////////////////////////////////////////////////
-/* char_16 template */
-template <  >
-struct is_integral <char16_t>
-{
-	typedef char16_t value_type;
-	typedef ft::is_integral<char16_t> type;
-
-	
-	public :
-		static const bool		value = true;
-};
-
-
-////////////////////////////////////////////////////////////////////////////////
-/* char32_t template */
-template <  >
-struct is_integral<char32_t>
-{
-	typedef char32_t value_type;
-	typedef ft::is_integral<char32_t> type;
 
 	
 	public :

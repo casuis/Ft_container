@@ -6,19 +6,19 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/09/25 19:03:30 by asimon           ###   ########.fr        #
+#    Updated: 2022/10/17 12:23:02 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-Name		=	ft_container
+NAME		=	ft_container
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                              SHELL                              #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-CC			=	c++
+CXX			=	c++
 
-FLAGS_CPP	=	-Wall -Wextra -Werror -std=c++98
+CXXFLAGS	=	-Wall -Wextra -Werror -std=c++98 -g3
 
 MKDIR		=	/bin/mkdir -p
 
@@ -32,10 +32,38 @@ SRC_DIR		=	./src/
 
 SRC_CPP		=	main.cpp
 
+SRC			=	$(addprefix $(SRC_DIR), $(SRC_CPP))
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                              VECTOR                             #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-V_DIR			=	$(addprefix $(SRC_DIR), vector/)
+V_DIR		=	$(addprefix $(SRC_DIR), vector/)
 
-V_SRC_CPP		=	
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              OBJECT                             #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+OBJ			=	$(SRC:.cpp=.o)
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              RULES                              #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
+
+clean:
+	$(RM) $(NAME)
+
+fclean: clean
+	$(RM) $(OBJ)
+
+re: fclean all
+
+.PHONY: all re clean fclean
