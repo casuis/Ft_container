@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/16 06:02:29 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/17 03:38:25 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,25 @@ namespace ft
 	class vector
 	{
 		public:
+		
 		////////////////////////////////////////////////////////////////////////////////
-		/*                              MEMBER TYPE                                   */
+		/*                              Member Type                                  */
 		////////////////////////////////////////////////////////////////////////////////
-			typedef T													value_type;
-			typedef Allocator											allocator_type;
-			typedef std::size_t											size_type;
-			typedef std::ptrdiff_t										difference_type;
-			typedef value_type&											reference;
-			typedef const value_type&									const_reference;
-			typedef typename allocator_type::pointer					pointer;
-			typedef const T*											const_pointer;
-			typedef	typename ft::RandomIterator< value_type >			iterator;
+			typedef T		value_type;
+			typedef Allocator		allocator_type;
+			typedef std::size_t		size_type;
+			typedef std::ptrdiff_t		difference_type;
+			typedef value_type&		reference;
+			typedef const value_type&		const_reference;
+			typedef typename allocator_type::pointer		pointer;
+			typedef const T*		const_pointer;
+			typedef	typename ft::RandomIterator< value_type >		iterator;
 			typedef	typename ft::RandomIterator< const value_type >		const_iterator;
-			typedef typename ft::ReverseIterator< value_type >			r_iterator;
+			typedef typename ft::ReverseIterator< value_type >		r_iterator;
 			typedef typename ft::ReverseIterator< const value_type >	const_r_iterator;
 
 		////////////////////////////////////////////////////////////////////////////////
-		/*                            MEMBER FUNCTIONS                                */
+		/*                            Member Function                                 */
 		////////////////////////////////////////////////////////////////////////////////
 		/* Lifecycle */
 		
@@ -96,11 +97,6 @@ namespace ft
 			~vector(){
 				this->_alloc.deallocate(this->_data, this->_capacity);
 			};
-
-			/* Operator= overload */
-			vector&		operator=(const ft::vector<T> &rght);
-
-			void		assign(size_type count, const T& value );
 
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Iterators                                     */
@@ -212,6 +208,8 @@ namespace ft
 			/* return the max sixe of the type T container */
 			size_t			max_size() const  {return ((pow(2, (64 - sizeof(T))) - 1));}			
 
+			////////////////////////////////////////////////////////////////////////////////
+			
 			/* realloc the container to change his capacity to new_cap, the size don't change */
 			void			reserve(size_t new_cap) {
 				if (new_cap > this->_size){
@@ -270,6 +268,7 @@ namespace ft
 				}
 				return (this->_data[n]);
 			}
+			
 			////////////////////////////////////////////////////////////////////////////////
 			
 			reference		front(){
@@ -281,6 +280,7 @@ namespace ft
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
+			
 			reference		back(){
 				return (this->_data[this->_size - 1]);
 			}
@@ -288,6 +288,7 @@ namespace ft
 			const_reference	back() const{
 				return (this->_data[this->_size - 1]);
 			}
+			
 			////////////////////////////////////////////////////////////////////////////////
 
 			value_type*			data(){
@@ -299,16 +300,77 @@ namespace ft
 			}
 		
 		////////////////////////////////////////////////////////////////////////////////
-		/* Modifier */
-			// template <class InputIterator,
-			// ft::iterator_traits<InputIterator>::difference_type,
-			// ft::iterator_traits<InputIterator>::value_type,
-			// ft::iterator_traits<InputIterator>::pointer,
-			// ft::iterator_traits<InputIterator>::reference,
-			// ft::iterator_traits<InputIterator>::iterator_category>
-			// void		assign(InputIterator first, InputIterator last){
+		/*                              Modifier                                      */
+		////////////////////////////////////////////////////////////////////////////////
+		
+			
+			void push_back (const value_type& val){
+				if (this->_capacity == 0)
+					this->reserve(1);
+				while (this->_size + 1 > this->_capacity)
+					this->reserve(this->_capacity * 2);
+				this->_data[this->_size] = val;
+				this->_size += 1;
+			}
+			
+			void	clear(){
+				for (int i = 0; i < this->size; i++){
+					this->_data[i] = 0x0;
+				}
+				this->_size = 0;
+			}
+			
+			void	pop_back(){
+				if (this->_size == 0)
+					return ;
+				this->_data[this->_size - 1] = 0x0;
+				this->_size -= 1;
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+		
+			template <class InputIterator>
+			void assign (InputIterator first, InputIterator last){
+				this->clear();
+				for (int i = 0; first != last; first++){
+					this->push_back(*first);
+				}
+			}
+			
+			void assign (size_type n, const value_type& val){
+				this->clear();
+				for (int i = 0; i < n; i++){
+					this->push_back(val);
+				}
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			
+			iterator insert (iterator position, const value_type& val){
+				while (this->_size + 1 > this->_capacity)
+					this->reserve(this->_capacity * 2);
+				iterator	it = this->end();
+				iterator	tmp = it;
+				++it = 0x0;
+				--tmp;
+				for (; it != position; --it){
+					it = tmp;
+					--tmp;
+				}
+				position = val;
+			}
+			
+			template <class InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last){
+				size_t 		size = last - first;
+				while (this->_size + size > this->_capacity)
+					this->reserve(this->_capacity * 2);
+				iterator		ite = this->end();
 				
-			// }
+			}
+			
+			////////////////////////////////////////////////////////////////////////////////
+		
 		
 		private:
 			T*				_data;
