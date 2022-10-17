@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/17 03:38:25 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/17 03:40:23 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,17 @@ namespace ft
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Member Type                                  */
 		////////////////////////////////////////////////////////////////////////////////
-			typedef T		value_type;
-			typedef Allocator		allocator_type;
-			typedef std::size_t		size_type;
-			typedef std::ptrdiff_t		difference_type;
-			typedef value_type&		reference;
-			typedef const value_type&		const_reference;
-			typedef typename allocator_type::pointer		pointer;
-			typedef const T*		const_pointer;
-			typedef	typename ft::RandomIterator< value_type >		iterator;
+			typedef T													value_type;
+			typedef Allocator											allocator_type;
+			typedef std::size_t											size_type;
+			typedef std::ptrdiff_t										difference_type;
+			typedef value_type&											reference;
+			typedef const value_type&									const_reference;
+			typedef typename allocator_type::pointer					pointer;
+			typedef const T*											const_pointer;
+			typedef	typename ft::RandomIterator< value_type >			iterator;
 			typedef	typename ft::RandomIterator< const value_type >		const_iterator;
-			typedef typename ft::ReverseIterator< value_type >		r_iterator;
+			typedef typename ft::ReverseIterator< value_type >			r_iterator;
 			typedef typename ft::ReverseIterator< const value_type >	const_r_iterator;
 
 		////////////////////////////////////////////////////////////////////////////////
