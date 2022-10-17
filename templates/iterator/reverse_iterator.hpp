@@ -21,7 +21,10 @@ namespace ft{
 	class ReverseIterator {
 		public:
 
-		/* Member types */
+		////////////////////////////////////////////////////////////////////////////////
+		/*                              Member Type                                   */
+		////////////////////////////////////////////////////////////////////////////////
+		
 			typedef	std::ptrdiff_t			difference_type; 	 
 			typedef T					value_type;
 			typedef T*					pointer;		
@@ -29,6 +32,8 @@ namespace ft{
 			typedef T&					reference;
 			typedef const T&			const_reference;
 
+		////////////////////////////////////////////////////////////////////////////////
+		/*                              Member Function                               */
 		////////////////////////////////////////////////////////////////////////////////
 		/* Liffecycle */
 
@@ -50,6 +55,11 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		/* operators' overload */
 
+			/* operator convertion */
+			operator ReverseIterator<const T>(){
+				return (ReverseIterator<const T>(this->_pointer));
+			}
+
 			/* operator = */
 			ReverseIterator<T>&	operator=(ReverseIterator<T> const &old){
 				this->_pointer = old._pointer;
@@ -58,7 +68,7 @@ namespace ft{
 
 			/* operator ++ post */
 			ReverseIterator<T>&	operator++(){
-				this->_pointer += 1;
+				this->_pointer -= 1;
 				return (*this);
 			}
 
@@ -66,13 +76,13 @@ namespace ft{
 			ReverseIterator<T>&		operator++(int){
 				ReverseIterator<T>		tmp(*this);
 
-				this->_pointer += 1;
+				this->_pointer -= 1;
 				return (tmp);
 			}
 
 			/* operator -- post */
 			ReverseIterator<T>&		operator--(){
-				this->_pointer -= 1;
+				this->_pointer += 1;
 				return (*this);
 			}
 
@@ -80,7 +90,7 @@ namespace ft{
 			ReverseIterator<T>&		operator--(int){
 				ReverseIterator<T>		tmp(*this);
 
-				this->_pointer -= 1;
+				this->_pointer += 1;
 				return (tmp);
 			}
 
