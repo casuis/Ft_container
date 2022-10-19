@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/17 12:23:49 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/19 13:41:45 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,12 +306,11 @@ namespace ft
 				while (this->_size + 1 > this->_capacity)
 					this->reserve(this->_capacity * 2);
 				this->_data[this->_size] = val;
-				this->_data[0] = val;
 				this->_size += 1;
 			}
 			
 			void	clear(){
-				for (int i = 0; i < this->size; i++){
+				for (size_t i = 0; i < this->_size; i++){
 					this->_data[i] = 0x0;
 				}
 				this->_size = 0;
@@ -330,6 +329,7 @@ namespace ft
 				iterator		ite = this->end();	
 				iterator		tmp = position;
 				iterator		swp;
+				std::cout << "test: " << *position << std::endl;
 				if (tmp != ite)
 					++tmp;
 				for (; position != ite; position++){
@@ -338,6 +338,7 @@ namespace ft
 					tmp = swp;
 				}
 				this->pop_back();
+				return (position);
 			}
 			
 			// iterator erase (iterator first, iterator last){
@@ -345,15 +346,19 @@ namespace ft
 			// }
 			
 			////////////////////////////////////////////////////////////////////////////////
-		
+
+			/* Change the size and the content of the vector to the new range */
 			template <class InputIterator>
 			void assign (InputIterator first, InputIterator last){
 				this->clear();
-				for (; first != last; first++){
-					this->push_back(*first);
+				InputIterator		tmp_it = first;
+				InputIterator		tmp_ite = last;
+				for (; tmp_it != tmp_ite; tmp_it++){
+					this->push_back(*tmp_it);
 				}
 			}
 			
+			/* Destroy old content and size and a create a new one of size n of value */
 			void assign (size_type n, const value_type& val){
 				this->clear();
 				for (int i = 0; i < n; i++){
@@ -364,22 +369,32 @@ namespace ft
 			////////////////////////////////////////////////////////////////////////////////
 			
 			iterator insert (iterator position, const value_type& val){
+				if (position > this->end() || position < this->begin())
+					return (this->begin());
 				while (this->_size + 1 > this->_capacity)
 					this->reserve(this->_capacity * 2);
-				iterator	it = this->end();
-				iterator	tmp = it;
-				++it = 0x0;
-				--tmp;
-				for (; it != position; --it){
-					it = tmp;
-					--tmp;
+				if (position == this->end()){
+					this->push_back(val);
+					return (position);
 				}
-				position = val;
-				this->_size += 1;
+				vector<int>			tab(*this);
+				this->clear();
+				iterator			cmp = this->begin();
+				for (iterator start = tab.begin(), end = tab.end(); start != end; start++){
+					if (cmp == position)
+						this->push_back(val);
+					this->push_back(*start);
+					cmp++;
+				}
+				++cmp;
+				*cmp = 0x0;
+				return (position);
 			}
 			
 			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last){
+			void insert (iterator position, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last){
+				if (position > this->end() || position < this->begin())
+					return (this->begin());
 				size_t 		size = last - first;
 				while (this->_size + size > this->_capacity)
 					this->reserve(this->_capacity * 2);
@@ -389,6 +404,8 @@ namespace ft
 			}
 			
 			void insert (iterator position, size_type n, const value_type& val){
+				if (position > this->end() || position < this->begin())
+					return (this->begin());
 				while (this->_size + n > this->_capacity)	
 					this->reserve(this->_capacity * 2);
 				for (int i = 0; i <= n; i++){

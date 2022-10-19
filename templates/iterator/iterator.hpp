@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:47:25 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/17 04:04:09 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/19 13:34:00 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ namespace ft{
 
 			/* random_access_ite --post */
 			RandomIterator<T>& operator--(){
-				this->_pointer -= 1;
+				this->_pointer = (this->_pointer) - 1;
 				return (*this);
 			}
 
@@ -92,7 +92,7 @@ namespace ft{
 			RandomIterator<T> operator--(int){
 				RandomIterator<T>	tmp(*this);
 
-				this->_pointer -= 1;
+				this->_pointer = (this->_pointer) - 1;
 				return (tmp);
 			}
 
@@ -130,27 +130,27 @@ namespace ft{
 
 			/* RandomIterator ope == */
 			bool		operator==(const RandomIterator& rght) const {
-				return (this->_pointer == rght->_pointer);
+				return (this->_pointer == rght._pointer);
 			}
 
 			/* RandomIterator ope > */
 			bool		operator>(const RandomIterator& rght) const {
-				return (this->_pointer > rght->_pointer);
+				return (this->_pointer > rght._pointer);
 			}
 
 			/* RandomIterator ope >= */
 			bool		operator>=(const RandomIterator& rght) const {
-				return (this->_pointer >= rght->_pointer);
+				return (this->_pointer >= rght._pointer);
 			}
 
 			/* RandomIterator ope < */
 			bool		operator<(const RandomIterator& rght) const {
-				return (this->_pointer < rght->_pointer);
+				return (this->_pointer < rght._pointer);
 			}
 			
 			/* RandomIterator ope <= */
 			bool		operator<=(const RandomIterator& rght) const {
-				return (this->_pointer <= rght->_pointer);
+				return (this->_pointer <= rght._pointer);
 			}
 	};
 }
