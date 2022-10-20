@@ -6,16 +6,15 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:47:25 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/19 13:34:00 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/20 15:39:36 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MY_ITERATOR_HPP__
 # define __MY_ITERATOR_HPP__
 
-# include "../../private/header.hpp"
-# include "./iterator_traits.hpp"
-# include <iostream>
+# include <header.hpp>
+# include <iterator_traits.hpp>
 
 namespace ft{
 
@@ -98,15 +97,16 @@ namespace ft{
 
 			////////////////////////////////////////////////////////////////////////////////
 			/* Arithmetic operators */
+			/* NEED TO DO MORE OPERATION (ite + n, n + it, it += n ...) */
 
 			/* operator - */
-			size_t		operator-(RandomIterator<T> const &old){
-				return (this->_pointer - old._pointer);
+			RandomIterator<T>		operator-(int n){
+				return (this->_pointer - n);
 			}
 
 			/* operator + */
-			size_t		operator+(RandomIterator<T> const &old){
-				return (this->_pointer + old._pointer);
+			RandomIterator<T>		operator+(int n){
+				return (this->_pointer + n);
 			}
 			
 			/* random_access_ite ope dereference */

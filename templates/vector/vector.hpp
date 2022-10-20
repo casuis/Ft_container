@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/19 13:41:45 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/20 14:03:31 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 #ifndef __MY_VECTOR_HPP__
 # define __MY_VECTOR_HPP__
 
-# include "../../private/header.hpp"
-# include "../iterator/iterator.hpp"
-# include "../iterator/reverse_iterator.hpp"
+# include <header.hpp>
+# include <iterator.hpp>
+# include <reverse_iterator.hpp>
+# include <enable_if.hpp>
+# include <is_integral.hpp>
 
 namespace ft
 {
@@ -326,30 +328,43 @@ namespace ft
 			////////////////////////////////////////////////////////////////////////////////
 
 			iterator erase(iterator position){
-				iterator		ite = this->end();	
-				iterator		tmp = position;
-				iterator		swp;
-				std::cout << "test: " << *position << std::endl;
-				if (tmp != ite)
-					++tmp;
-				for (; position != ite; position++){
-					swp = position;
-					position = tmp;
-					tmp = swp;
+				if (position >= this->end() || position < this->begin())
+					return (position);
+				else if (this->_size == 1){
+					this->pop_back();
+					return (this->begin());
 				}
-				this->pop_back();
+				iterator		it = position;
+				iterator		swp = it;
+				swp++;
+				for (iterator ite = this->end(); it != ite; it++){
+					*it = *swp;
+					swp++;
+				}
+				this->_size -= 1;
 				return (position);
 			}
 			
-			// iterator erase (iterator first, iterator last){
-			
-			// }
+			iterator erase (iterator first, iterator last){
+				if (first == last || last < first || first < this->begin() || last > this->end())
+					return (first);
+				iterator		it = first;
+				int				count = 0;
+				for (; first != last; first++){
+					count++;
+				}
+				while (count > 0){
+					it = this->erase(it);
+					count--;
+				}
+				return (first);
+			}
 			
 			////////////////////////////////////////////////////////////////////////////////
 
 			/* Change the size and the content of the vector to the new range */
 			template <class InputIterator>
-			void assign (InputIterator first, InputIterator last){
+			void assign (typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last){
 				this->clear();
 				InputIterator		tmp_it = first;
 				InputIterator		tmp_ite = last;
@@ -361,7 +376,7 @@ namespace ft
 			/* Destroy old content and size and a create a new one of size n of value */
 			void assign (size_type n, const value_type& val){
 				this->clear();
-				for (int i = 0; i < n; i++){
+				for (size_t i = 0; i < n; i++){
 					this->push_back(val);
 				}
 			}
@@ -415,7 +430,29 @@ namespace ft
 			
 			////////////////////////////////////////////////////////////////////////////////
 		
-		
+			void		swap(vector<T> x){
+				T*			tmp_data = this->_data;
+				size_t		tmp_cap = this->_capacity;
+				size_t		tmp_size = this->_size;
+				Allocator	tmp_alloc = this->_alloc;
+				
+				this->_data = x._data;
+				this->_size = x._size;
+				this->_capacity = x._capacity;
+				this->_alloc = x._alloc;
+				x._data = tmp_data;
+				x._capacity = tmp_cap;
+				x._size = tmp_size;
+				x._alloc = tmp_alloc;
+			}	
+			////////////////////////////////////////////////////////////////////////////////
+			/*                              Allocator                                     */
+			////////////////////////////////////////////////////////////////////////////////
+
+			allocator_type get_allocator() const{
+				return (this->_alloc);
+			}
+					
 		private:
 			allocator_type	_alloc;
 			T*				_data;

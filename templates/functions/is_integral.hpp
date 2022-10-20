@@ -6,14 +6,14 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 16:03:55 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/17 03:55:37 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/20 15:38:52 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __IS_INTEGRAL_HPP__
 # define __IS_INTEGRAL_HPP__
 
-# include "../../private/header.hpp"
+# include <header.hpp>
 
 namespace ft{
 

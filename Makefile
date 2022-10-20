@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/10/17 12:23:02 by asimon           ###   ########.fr        #
+#    Updated: 2022/10/20 14:14:55 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ NAME		=	ft_container
 CXX			=	c++
 
 CXXFLAGS	=	-Wall -Wextra -Werror -std=c++98 -g3
+
+INC			=	-I./private/ -I./templates/vector/ -I./templates/iterator/ -I./templates/functions/
 
 MKDIR		=	/bin/mkdir -p
 
@@ -51,7 +53,7 @@ OBJ			=	$(SRC:.cpp=.o)
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
 
 all: $(NAME)
 
