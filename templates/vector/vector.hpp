@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/20 14:03:31 by asimon           ###   ########.fr       */
+/*   Updated: 2022/10/28 16:17:56 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ namespace ft
 
 			/* Range Constructor */
 			template <typename InputIterator>
-			vector (InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last, const allocator_type &alloc = allocator_type())
+			vector (InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value_type, InputIterator>::type last, const allocator_type &alloc = allocator_type())
 			: _alloc(alloc){
 				size_t			size = 0;
 				InputIterator	tmp = first;
@@ -90,9 +90,9 @@ namespace ft
 			vector(const ft::vector<T> &old)
 			: _size(old._size), _capacity(old._capacity) {
 				Allocator		alloc;
-				int i = 0;
+				size_t i = 0;
 				this->_data = alloc.allocate(this->_capacity);
-				for (; old._data[i]; i++){
+				for (; i < old._size; i++){
 					this->_data[i] = old._data[i];
 				}
 				this->_data[i] = 0x0;
@@ -214,6 +214,8 @@ namespace ft
 			
 			/* realloc the container to change his capacity to new_cap, the size don't change */
 			void			reserve(size_t new_cap) {
+				if (this->_capacity > new_cap)
+					return ;
 				pointer newVec = this->_alloc.allocate(new_cap);
 				for (size_t i = 0; i < new_cap && i < this->_size; i++){
 					newVec[i] = this->_data[i];
@@ -231,10 +233,31 @@ namespace ft
 
 					delete this->_data;
 					this->_data = alloc.allocate(tmp._size);
-					for (int i = 0; i < tmp._size; i++){
+					for (size_t i = 0; i < tmp._size; i++){
 						this->_data[i] = tmp._data[i];
 					}
 					this->_capacity = this->_size;
+				}
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			
+			void		resize(size_type n, value_type val = value_type()){
+				if (this->_capacity == 0)
+					this->reserve(1);
+				while (n > this->_capacity)
+					this->reserve(this->_capacity * 2);
+				size_t i = this->_size;
+				if (n > this->_size){
+					for (iterator it = this->end(); i < n; i++){
+						this->insert(it, val);
+						it++;
+					}
+				}
+				if (n < this->_size){
+					for (; i > n; i--){
+						this->pop_back();
+					}
 				}
 			}
 		
@@ -253,7 +276,7 @@ namespace ft
 			////////////////////////////////////////////////////////////////////////////////
 			
 			reference		at(size_t n){
-				if (n != 0 && (n >= this->_size || n < 0)){
+				if (n != 0 && (n >= this->_size)){
 					throw (std::out_of_range("Error index out of range\n"));
 				}
 				else
@@ -383,55 +406,64 @@ namespace ft
 
 			////////////////////////////////////////////////////////////////////////////////
 			
-			iterator insert (iterator position, const value_type& val){
-				if (position > this->end() || position < this->begin())
-					return (this->begin());
+			iterator 		insert (iterator position, const value_type& val){
+				int		pos = 0;
+				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++){
+					pos++;
+					if ((it + 1 == ite) && (it != position) && (it + 1 != position))
+						return (position);
+				}
 				while (this->_size + 1 > this->_capacity)
 					this->reserve(this->_capacity * 2);
+				position = this->begin() + pos;
 				if (position == this->end()){
 					this->push_back(val);
 					return (position);
 				}
-				vector<int>			tab(*this);
+				vector<T>			tab(*this);
 				this->clear();
-				iterator			cmp = this->begin();
-				for (iterator start = tab.begin(), end = tab.end(); start != end; start++){
-					if (cmp == position)
-						this->push_back(val);
+				for (iterator start = tab.begin(), end = tab.end(), cmp = this->begin();
+					start != end;
+					start++){
+					if (cmp == position){
+						this->push_back(val);}
 					this->push_back(*start);
 					cmp++;
 				}
-				++cmp;
-				*cmp = 0x0;
 				return (position);
 			}
 			
 			template <class InputIterator>
-			void insert (iterator position, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last){
-				if (position > this->end() || position < this->begin())
-					return (this->begin());
-				size_t 		size = last - first;
+			void 			insert (iterator position, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last){
+				size_t 		size = 0;
+				size_t		pos = 0;
+				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++){
+					pos++;
+				}
+				for (InputIterator it = first, ite = last; it != ite; it++){
+					size++;
+				}
 				while (this->_size + size > this->_capacity)
 					this->reserve(this->_capacity * 2);
 				for (; first != last; first++){
-					this->insert(position, first);
+					position = this->insert(this->begin() + pos, *first);
 				}
 			}
 			
-			void insert (iterator position, size_type n, const value_type& val){
+			void 			insert (iterator position, size_type n, const value_type& val){
 				if (position > this->end() || position < this->begin())
-					return (this->begin());
+					return ;
 				while (this->_size + n > this->_capacity)	
 					this->reserve(this->_capacity * 2);
-				for (int i = 0; i <= n; i++){
-					this->insert(position, val);
+				for (size_t i = 0; i <= n; i++){
+					position = this->insert(position, val);
 				}
 			}
 			
 			////////////////////////////////////////////////////////////////////////////////
 		
-			void		swap(vector<T> x){
-				T*			tmp_data = this->_data;
+			void			swap(vector<T>& x){
+				pointer		tmp_data = this->_data;
 				size_t		tmp_cap = this->_capacity;
 				size_t		tmp_size = this->_size;
 				Allocator	tmp_alloc = this->_alloc;
@@ -444,15 +476,83 @@ namespace ft
 				x._capacity = tmp_cap;
 				x._size = tmp_size;
 				x._alloc = tmp_alloc;
-			}	
+			}
+			
 			////////////////////////////////////////////////////////////////////////////////
 			/*                              Allocator                                     */
 			////////////////////////////////////////////////////////////////////////////////
 
-			allocator_type get_allocator() const{
+			allocator_type 	get_allocator() const{
 				return (this->_alloc);
 			}
-					
+			
+			////////////////////////////////////////////////////////////////////////////////
+			/*                              Operators                                     */
+			////////////////////////////////////////////////////////////////////////////////
+
+
+			vector<T>&		operator=(const vector<T>& old){
+				if (old._data == this->_data)
+					return (*this);
+				if (this->_data != 0x0)
+					this->_alloc.deallocate(this->_data, this->_capacity);
+				this->_capacity = old._capacity;
+				this->_data = this->_alloc.allocate(this->_capacity);
+				for (size_t i = 0; i < old._size; i++){
+					this->_data[i] = old._data[i];
+				}
+				this->_size = old._size;
+				return (*this);
+			}
+			
+			bool			operator==(const vector<T>& old){
+				for (size_t i = 0; i < this->_size && i < old._size; i++){
+					if (this->_data[i] != old._data[i])
+						return (false);
+				}
+				return (true);
+			}
+
+			bool			operator<(const vector<T>& old){
+				for (size_t i = 0; i < this->_size && i < old._size; i++){
+					if (this->_data[i] >= old._data[i])
+						return (false);
+				}
+				return (true);
+			}		
+
+			bool			operator>(const vector<T>& old){
+				for (size_t i = 0; i < this->_size && i < old._size; i++){
+					if (this->_data[i] <= old._data[i])
+						return (false);
+				}
+				return true;
+			}
+
+			bool			operator<=(const vector<T>& old){
+				for (size_t i = 0; i < this->_size && i < old._size; i++){
+					if (this->_data[i] > old._data[i])
+						return (false);
+				}
+				return (true);
+			}
+			
+			bool			operator>=(const vector<T>& old){
+				for (size_t i = 0; i < this->_size && i < old._size; i++){
+					if (this->_data[i] <= old._data[i])
+						return (false);
+				}
+				return (true);
+			}
+
+			bool			operator!=(const vector<T>& old){
+				for (size_t i = 0; i < this->_size && i < old._size; i++){
+					if (this->_data[i] == old._data[i])
+						return (false);
+				}
+				return (true);
+			}
+			
 		private:
 			allocator_type	_alloc;
 			T*				_data;

@@ -6,11 +6,13 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/10/20 14:14:55 by asimon           ###   ########.fr        #
+#    Updated: 2022/10/21 17:24:39 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	ft_container
+
+NAME_STD	=	std_container
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                              SHELL                              #
@@ -30,11 +32,17 @@ RM			=	/bin/rm -rf
 #                              SRC                                #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-SRC_DIR		=	./src/
+SRC_DIR		:=	./src/
 
-SRC_CPP		=	main.cpp
+SRC_CPP		:=	main.cpp
 
-SRC			=	$(addprefix $(SRC_DIR), $(SRC_CPP))
+SRC			:=	$(addprefix $(SRC_DIR), $(SRC_CPP))
+
+FT_OUT		:= ft_output
+
+STD_OUT		:= std_putput
+
+RES			:= final_grade
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                              VECTOR                             #
@@ -42,29 +50,64 @@ SRC			=	$(addprefix $(SRC_DIR), $(SRC_CPP))
 
 V_DIR		=	$(addprefix $(SRC_DIR), vector/)
 
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                              OBJECT                             #
+#                              COLORS                             #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-OBJ			=	$(SRC:.cpp=.o)
+YELLOW 		= \033[1;33m
+GREEN		= \033[1;32m
+RED			= \033[1;31m
+BLACK		= \033[1;30m
+CYAN		= \033[1;36m
+RESET		= \033[0m
+VALIDATE	= ✅
+UNVALIDATE	= ❌
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                              RULES                              #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
+all: test
 
-all: $(NAME)
+$(NAME):
+	@echo "$(YELLOW)Creation de l'executable FT ..$(RESET)"
+	$(CXX) $(CXXFLAGS) -o $(NAME) $(INC) $(SRC) 
+	@if [ -f $@ ]; then \
+		echo "$(GREEN)Executable $@ created! $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED) Failed to create Executable $(UNVALIDATE)$(RESET)"; \
+	fi
+	
+$(NAME_STD): 
+	@echo "$(YELLOW)Creation de l'executable STD ..$(RESET)"
+	$(CXX) $(CXXFLAGS) -o $@ -D STD=1 $(INC) $(SRC)
+	@if [ -f $@ ]; then \
+		echo "$(GREEN)Executable $@ created! $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED) Failed to create Executable $(UNVALIDATE)$(RESET)"; \
+	fi
 
-$(NAME): $(OBJ)
-	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
+test:
+	@$(MAKE) $(NAME)
+	@$(MAKE) $(NAME_STD)
+	@mkdir -p res
+	@mv $(NAME) $(NAME_STD) res/
+	@./res/$(NAME) > ./res/$(FT_OUT)
+	@./res/$(NAME_STD) > ./res/$(STD_OUT)
+	@echo "$(YELLOW)Comparing the two outputs...$(RESET) "
+	@diff -y ./res/$(FT_OUT) ./res/$(STD_OUT) > ./res/$(RES); [ $$? -eq 1 ]
+	@echo "$(GREEN)ENDED$(RESET)"
+	@echo "$(CYAN)pls look in the res/ directory, if final_grade is empty no diff has been found$(RESET)"
+
+go: re
+	./$(NAME)
 
 clean:
-	$(RM) $(NAME)
+	$(RM) ./res/$(NAME) ./res/$(NAME_STD)
 
 fclean: clean
-	$(RM) $(OBJ)
+	$(RM) ./res/
 
 re: fclean all
 
