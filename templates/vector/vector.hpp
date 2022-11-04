@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/28 16:17:56 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/04 18:49:10 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,54 +53,59 @@ namespace ft
 		/* Lifecycle */
 		
 			/* Default constructor */
-			vector (const allocator_type& alloc = allocator_type())
-			: _alloc(alloc), _data(0x0), _size(0), _capacity(0) {}
+			vector(const allocator_type& alloc = allocator_type())
+			: _alloc(alloc), _data(0x0), _size(0), _capacity(0) {return ;}
 
 			/* Fill Constructor */
-			vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
-			: _alloc(alloc), _size(n), _capacity(n + 1){
-				this->_data = this->_alloc.allocate(n + 1);
-				size_type		i = 0;
-				for (; i < n; i++){
-					this->_data[i] = val;
-				}
-				this->_data[i] = 0x0;
+			vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+			: _alloc(alloc), _size(n), _capacity(n){
+				pointer			newVec;
+				
+				newVec = this->_alloc.allocate(n);
+				for (size_type i = 0; i < n; i++)
+					this->_alloc.construct(newVec + i, val);
+				this->_data = newVec;
+				return ;
 			}
 
 			/* Range Constructor */
 			template <typename InputIterator>
-			vector (InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value_type, InputIterator>::type last, const allocator_type &alloc = allocator_type())
+			vector(typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type &alloc = allocator_type())
 			: _alloc(alloc){
 				size_t			size = 0;
+				pointer			newVec;
 				InputIterator	tmp = first;
-				for (; tmp != last; tmp++){
+				
+				for (; tmp != last; tmp++)
 					size++;
-				}
-				this->_data = this->_alloc.allocate(size);
+				newVec = this->_alloc.allocate(size);
+				for (size_t i = 0; first != last; first++, i++)
+					this->_alloc.construct(newVec + i, *first);
+				this->_data = newVec;
 				this->_capacity = size;
 				this->_size = size;
-				for (int i = 0; first != last; first++){
-					this->_data[i] = *first;
-					i++;
-				}
-				this->_data[this->_size] = 0x0;
+				return ;
 			}
 			
 			/* Copy Constructor */
 			vector(const ft::vector<T> &old)
-			: _size(old._size), _capacity(old._capacity) {
-				Allocator		alloc;
+			: _alloc(old._alloc), _size(old._size), _capacity(old._capacity) {
 				size_t i = 0;
-				this->_data = alloc.allocate(this->_capacity);
-				for (; i < old._size; i++){
-					this->_data[i] = old._data[i];
-				}
-				this->_data[i] = 0x0;
+				pointer		newVec;
+				
+				newVec = this->_alloc.allocate(this->_capacity);
+				for (; i < old._size; i++)
+					this->_alloc.construct(newVec + i, old._data[i]);
+				this->_data = newVec;
+				return ;
 			};
 
 			/* Destructor */
 			~vector(){
-				this->_alloc.deallocate(this->_data, this->_capacity);
+				for (size_t del = 0; del != this->_size; del++)
+					this->_alloc.destroy(this->_data + del);
+				this->_alloc.deallocate(this->_data, this->_capacity + 1);
+				return ;
 			};
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -124,10 +129,7 @@ namespace ft
 			/* end return an iterator pointer to the end of the container */
 			iterator		end(){
 				T		*tmp = this->_data;
-				size_t i = 0;
-				while (i < this->_size)
-					i++;
-				iterator	ret(&tmp[i]);
+				iterator	ret(&tmp[this->_size]);
 				return (ret);
 			}
 
@@ -141,11 +143,8 @@ namespace ft
 			
 			/* rbegin return a reverse pointer to the begining of the container */
 			ft::ReverseIterator<T>			rbegin(){
-				int		i = 0;
 				T		*tmp = this->_data;
-				while (i < this->_size)
-					i++;
-				ft::ReverseIterator<T>			ret(&tmp[i]);
+				ft::ReverseIterator<T>			ret(&tmp[this->_size]);
 				return (ret);
 				
 			}
@@ -167,11 +166,8 @@ namespace ft
 
 			/* cend retutn a const pointer to the end of the container */
 			const_iterator	cend(){
-				int		i = 0;
 				T*		tmp = this->_data;
-				while (tmp[i])
-					i++;
-				const ft::RandomIterator<T>	ret(static_cast<const T>(&tmp[i]));
+				const ft::RandomIterator<T>	ret(static_cast<const T>(&tmp[this->_size]));
 				return (ret);
 			}
 			
@@ -179,7 +175,7 @@ namespace ft
 			
 			/* crbegin return a const reverse pointer to the begining of the container */
 			const ft::ReverseIterator<T>			crbegin(){
-				int		i = 0;
+				size_t		i = 0;
 				T*		tmp = this->_data;
 				while (tmp[i])
 					i++;
@@ -216,10 +212,24 @@ namespace ft
 			void			reserve(size_t new_cap) {
 				if (this->_capacity > new_cap)
 					return ;
-				pointer newVec = this->_alloc.allocate(new_cap);
-				for (size_t i = 0; i < new_cap && i < this->_size; i++){
-					newVec[i] = this->_data[i];
+				pointer 		newVec; 
+				
+				if (new_cap == 0)
+					new_cap = 1;
+				newVec = this->_alloc.allocate(new_cap);
+				size_t i = 0;
+				for (; i < new_cap && i < this->_size; i++){
+					try{
+						this->_alloc.construct(newVec + i, this->_data[i]);
+					}
+					catch (const std::exception& e){
+						for (size_t del = 0; del != i; del++)
+							this->_alloc.destroy(newVec + del);
+						std::exit(1);
+					}
 				}
+				for (size_t del = 0; del < i; del++)
+					this->_alloc.destroy(this->_data + del);
 				this->_alloc.deallocate(this->_data, this->_capacity);
 				this->_data = newVec;
 				this->_capacity = new_cap;
@@ -227,27 +237,29 @@ namespace ft
 
 			/* Requests the container to reduce its capacity to fit its size */
 			void			shrink_to_fit(){
-				if (this->_size != this->_capacity){
-					ft::vector<T>		tmp(*this);
-					Allocator			alloc;
+				if (this->_size == this->_capacity)
+					return ;
+				ft::vector<T>		tmp(*this);
+				Allocator			alloc;
+				T*					newVec;
 
-					delete this->_data;
-					this->_data = alloc.allocate(tmp._size);
-					for (size_t i = 0; i < tmp._size; i++){
-						this->_data[i] = tmp._data[i];
-					}
-					this->_capacity = this->_size;
-				}
+				newVec = alloc.allocate(tmp._size);
+				for (size_t i = 0; i < tmp._size; i++)
+					this->_alloc.construct(newVec + i, tmp._data[i]);
+				for (size_t del = 0; del != this->_size; del++)
+					this->_alloc.destroy(this->_data + del);
+				this->_alloc.deallocate(this->_data, this->_capacity);
+				this->_data = newVec;
+				this->_capacity = this->_size;
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
 			
 			void		resize(size_type n, value_type val = value_type()){
-				if (this->_capacity == 0)
-					this->reserve(1);
+				size_t	 i = this->_size;
+				
 				while (n > this->_capacity)
 					this->reserve(this->_capacity * 2);
-				size_t i = this->_size;
 				if (n > this->_size){
 					for (iterator it = this->end(); i < n; i++){
 						this->insert(it, val);
@@ -255,9 +267,8 @@ namespace ft
 					}
 				}
 				if (n < this->_size){
-					for (; i > n; i--){
+					for (; i > n; i--)
 						this->pop_back();
-					}
 				}
 			}
 		
@@ -276,17 +287,15 @@ namespace ft
 			////////////////////////////////////////////////////////////////////////////////
 			
 			reference		at(size_t n){
-				if (n != 0 && (n >= this->_size)){
+				if (n != 0 && (n >= this->_size))
 					throw (std::out_of_range("Error index out of range\n"));
-				}
 				else
 					return (this->_data[n]);
 			}
 			
 			const_reference	at(size_t n) const{
-				if (n != 0 && (n >= this->_size || n < 0)){
+				if (n != 0 && (n >= this->_size || n < 0))
 					throw (std::out_of_range("Error index out of range\n"));
-				}
 				return (this->_data[n]);
 			}
 			
@@ -326,29 +335,44 @@ namespace ft
 		
 			
 			void push_back (const value_type& val){
-				if (this->_capacity == 0)
-					this->reserve(1);
 				while (this->_size + 1 > this->_capacity)
 					this->reserve(this->_capacity * 2);
-				this->_data[this->_size] = val;
+				this->_alloc.construct(this->_data + this->_size, val);
 				this->_size += 1;
 			}
 			
 			void	clear(){
-				for (size_t i = 0; i < this->_size; i++){
-					this->_data[i] = 0x0;
-				}
+				for (size_t i = 0; i < this->_size; i++)
+					this->_alloc.destroy(this->_data + i);
 				this->_size = 0;
 			}
 			
 			void	pop_back(){
 				if (this->_size == 0)
 					return ;
-				this->_data[this->_size - 1] = 0x0;
+				this->_alloc.destroy(this->_data + (this->_size - 1));
 				this->_size -= 1;
+			}
+
+			void			swap(vector<T>& x){
+				pointer			tmp_data = this->_data;
+				size_t			tmp_cap = this->_capacity;
+				size_t			tmp_size = this->_size;
+				allocator_type	tmp_alloc = this->_alloc;
+				
+				this->_data = x._data;
+				this->_size = x._size;
+				this->_capacity = x._capacity;
+				this->_alloc = x._alloc;
+				
+				x._data = tmp_data;
+				x._capacity = tmp_cap;
+				x._size = tmp_size;
+				x._alloc = tmp_alloc;
 			}
 			
 			////////////////////////////////////////////////////////////////////////////////
+			/* ERASE */
 
 			iterator erase(iterator position){
 				if (position >= this->end() || position < this->begin())
@@ -373,9 +397,8 @@ namespace ft
 					return (first);
 				iterator		it = first;
 				int				count = 0;
-				for (; first != last; first++){
+				for (; first != last; first++)
 					count++;
-				}
 				while (count > 0){
 					it = this->erase(it);
 					count--;
@@ -384,30 +407,33 @@ namespace ft
 			}
 			
 			////////////////////////////////////////////////////////////////////////////////
-
+			/* ASSIGN */
+			
 			/* Change the size and the content of the vector to the new range */
 			template <class InputIterator>
 			void assign (typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last){
 				this->clear();
 				InputIterator		tmp_it = first;
 				InputIterator		tmp_ite = last;
-				for (; tmp_it != tmp_ite; tmp_it++){
+				for (int i = 10; tmp_it != tmp_ite; tmp_it++, i--)
 					this->push_back(*tmp_it);
-				}
 			}
 			
 			/* Destroy old content and size and a create a new one of size n of value */
 			void assign (size_type n, const value_type& val){
 				this->clear();
-				for (size_t i = 0; i < n; i++){
+				for (size_t i = 0; i < n; i++)
 					this->push_back(val);
-				}
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
-			
+			/* INSERT */
+
+			/* insert by pos */
 			iterator 		insert (iterator position, const value_type& val){
-				int		pos = 0;
+				vector<T>			tab(*this);
+				int					pos = 0;
+				
 				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++){
 					pos++;
 					if ((it + 1 == ite) && (it != position) && (it + 1 != position))
@@ -420,62 +446,44 @@ namespace ft
 					this->push_back(val);
 					return (position);
 				}
-				vector<T>			tab(*this);
 				this->clear();
-				for (iterator start = tab.begin(), end = tab.end(), cmp = this->begin();
-					start != end;
-					start++){
-					if (cmp == position){
-						this->push_back(val);}
+				for (iterator start = tab.begin(), end = tab.end(), cmp = this->begin(); start != end; start++){
+					if (cmp == position)
+						this->push_back(val);
 					this->push_back(*start);
 					cmp++;
 				}
 				return (position);
 			}
 			
+			/* insert by range */
 			template <class InputIterator>
 			void 			insert (iterator position, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last){
 				size_t 		size = 0;
 				size_t		pos = 0;
 				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++){
 					pos++;
+					if ((it + 1 == ite) && (it != position) && (it + 1 != position))
+						return ;
 				}
-				for (InputIterator it = first, ite = last; it != ite; it++){
+				for (InputIterator it = first, ite = last; it != ite; it++)
 					size++;
-				}
 				while (this->_size + size > this->_capacity)
 					this->reserve(this->_capacity * 2);
-				for (; first != last; first++){
-					position = this->insert(this->begin() + pos, *first);
-				}
+				position = this->begin() + pos;
+				for (; first != last; first++)
+					position = this->insert(position, *first);
 			}
 			
+			/* insert n elem by pos */
 			void 			insert (iterator position, size_type n, const value_type& val){
-				if (position > this->end() || position < this->begin())
-					return ;
+				size_t		pos = 0;
+				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++)
+					pos++;
 				while (this->_size + n > this->_capacity)	
 					this->reserve(this->_capacity * 2);
-				for (size_t i = 0; i <= n; i++){
-					position = this->insert(position, val);
-				}
-			}
-			
-			////////////////////////////////////////////////////////////////////////////////
-		
-			void			swap(vector<T>& x){
-				pointer		tmp_data = this->_data;
-				size_t		tmp_cap = this->_capacity;
-				size_t		tmp_size = this->_size;
-				Allocator	tmp_alloc = this->_alloc;
-				
-				this->_data = x._data;
-				this->_size = x._size;
-				this->_capacity = x._capacity;
-				this->_alloc = x._alloc;
-				x._data = tmp_data;
-				x._capacity = tmp_cap;
-				x._size = tmp_size;
-				x._alloc = tmp_alloc;
+				for (size_t i = 0; i < n; i++)
+					position = this->insert(this->begin() + pos, val);
 			}
 			
 			////////////////////////////////////////////////////////////////////////////////
@@ -494,13 +502,12 @@ namespace ft
 			vector<T>&		operator=(const vector<T>& old){
 				if (old._data == this->_data)
 					return (*this);
-				if (this->_data != 0x0)
+				if (this->_data)
 					this->_alloc.deallocate(this->_data, this->_capacity);
 				this->_capacity = old._capacity;
 				this->_data = this->_alloc.allocate(this->_capacity);
-				for (size_t i = 0; i < old._size; i++){
+				for (size_t i = 0; i < old._size; i++)
 					this->_data[i] = old._data[i];
-				}
 				this->_size = old._size;
 				return (*this);
 			}

@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/21 16:31:44 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/04 18:55:52 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,19 @@
 # include <iterator.hpp>
 # include <reverse_iterator.hpp> 
 # include <vector.hpp>
+
+namespace ft{
+	
+	void		print(NAMESPACE::vector< NAMESPACE::vector<int> > tab, std::string msg){
+		for (size_t i = 0; i < tab.size(); i++){
+			for (size_t j = 0; j < tab.at(i).size(); j++){
+				std:: cout << "\t| ";
+				std::cout << msg <<  tab.at(i).at(j) << std::endl;
+			}
+		}
+		std::cout << "--------------" << std::endl;
+	}
+	
+}
 
 #endif
