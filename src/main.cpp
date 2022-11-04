@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/04 19:07:41 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/04 20:20:47 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,77 +181,119 @@ int		main(void)
 	////////////////////////////////////////////////////////////////////////////////
 	{
 		std::cout << CYAN << "=========INCEPTION=========" << RESET << std::endl;
-		
+
 			NAMESPACE::vector<int>										tab_to_insert(1, 40);
 			NAMESPACE::vector<int>										tab_bis_to_insert(2, 10);
 			NAMESPACE::vector< NAMESPACE::vector<int> >					tab(4, tab_to_insert);
 			NAMESPACE::vector< NAMESPACE::vector<int> >					tab_bis(2, tab_bis_to_insert);
-			
+
 
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test Default Constructor " << std::endl;	
+			std::cout << "=> Test Default Constructor " << std::endl << std::endl;
 			NAMESPACE::vector< NAMESPACE::vector<int> >			test;
 
 			ft::print(test, "default: ");
 			std::cout << std::endl << "capacity: [" << test.capacity() << "]" << std::endl;
 			std::cout << std::endl << "size: [" << test.size() << "]" << std::endl;
-			
+
 			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test copy Constructor" << std::endl;
+			std::cout << "=> Test copy Constructor" << std::endl << std::endl;
 			NAMESPACE::vector< NAMESPACE::vector<int> >			copy(tab);
 
 			ft::print(tab, "original: ");
 			ft::print(copy, "copy: ");
 			std::cout << std::endl << "capacity: [" << copy.capacity() << "]" << std::endl;
 			std::cout << std::endl << "size: [" << copy.size() << "]" << std::endl;
-			
+
 			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test range constructor" << std::endl;	
+			std::cout << "=> Test range constructor" << std::endl << std::endl;
 
 			ft::print(tab, "tab utilise pour fill: ");
 			NAMESPACE::vector< NAMESPACE::vector<int> >		fill(tab.begin() + 1, tab.end());
 			ft::print(fill, "fill by range + 1: ");
 			std::cout << std::endl << "capacity: [" << fill.capacity() << "]"<< std::endl;
 			std::cout << std::endl << "size: [" << fill.size() << "]" << std::endl;
-			
+
 			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test capacity section:" << std::endl;
+			std::cout << "=> Test capacity section:" << std::endl << std::endl;
+
 			NAMESPACE::vector< NAMESPACE::vector<int> >			test;
-			
+
+			ft::print(tab, "tab: ");
+			std::cout << std::boolalpha << "test is empty? [" << test.empty() << "]" << std::endl; 
 			std::cout << std::boolalpha << "tab is empty? [" << tab.empty() << "]" << std::endl; 
 			std::cout << std::endl << "capacity: [" << tab.capacity() << "]"<< std::endl;
 			std::cout << std::endl << "size: [" << tab.size() << "]" << std::endl;
+			std::cout << std::endl << "max size: [" << tab.max_size() << "]" << std::endl;
+
 			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
+			std::cout << "=> Test reserve: " << std::endl << std::endl;
+
+			NAMESPACE::vector< NAMESPACE::vector<int> >			test(tab);
+
+
+			std::cout << std::endl << "test capacity: [" << test.capacity() << "]"<< std::endl;
+			std::cout << "resize for 10" << std::endl; 
+			test.reserve(10);
+			std::cout << std::endl << "test capacity: [" << test.capacity() << "]"<< std::endl;
+
+			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test insert:" << std::endl;
+			std::cout << "=> Test resize:" << std::endl << std::endl;
+			
+			NAMESPACE::vector< NAMESPACE::vector<int> >			test(tab);
+			
+			std::cout << std::endl << " test capacity before: [" << test.capacity() << "]"<< std::endl;
+			std::cout << "resize to 42" << std::endl;
+			test.resize(42);
+			std::cout << std::endl << " test capacity after: [" << test.capacity() << "]"<< std::endl;
+
+			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << "=> Test operator:" << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+
+			for (int i = 0; i < 10; i++)
+				test.push_back(i);
+			ft::print(test, "test: ");
+			std::cout << "value tab[0]" << test[0] << std::endl;			
+			
+			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << "=> Test insert:" << std::endl << std::endl;
+
 			NAMESPACE::vector< NAMESPACE::vector<int> >::iterator		it = tab_bis.begin();
 			NAMESPACE::vector< NAMESPACE::vector<int> >::iterator		ite = tab_bis.end();
-			
+
 			std::cout << std::endl;
 			ft::print(tab, "tab avant insert: ");
 			tab.insert(tab.begin(), it, ite);
 			ft::print(tab, "tab apres insert: ");
-			
+
 			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test swap:" << std::endl;
+			std::cout << "=> Test swap:" << std::endl << std::endl;
 			/* tab_to_insert | tab_bis_to_insert | tab | tab_bis */
 			
 			ft::print(tab, "tab: ");
@@ -260,6 +302,7 @@ int		main(void)
 			tab.swap(tab_bis);
 			ft::print(tab, "tab 2eme call: ");
 			ft::print(tab, "tab_bis 2eme call: ");
+
 			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
 		}	
 		////////////////////////////////////////////////////////////////////////////////

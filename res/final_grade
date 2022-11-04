@@ -107,74 +107,156 @@ false								false
 20								20
 20								20
 [1;36m=========INCEPTION=========[0m				[1;36m=========INCEPTION=========[0m
+=> Test Default Constructor 					=> Test Default Constructor 
+
+------------------------------------------			------------------------------------------
+
+capacity: [0]							capacity: [0]
+
+size: [0]							size: [0]
+
+*****fin de test*****						*****fin de test*****
+
 => Test copy Constructor					=> Test copy Constructor
-| original: 40							| original: 40
-| original: 40							| original: 40
-| original: 40							| original: 40
-| original: 40							| original: 40
---------------							--------------
-| copy: 40							| copy: 40
-| copy: 40							| copy: 40
-| copy: 40							| copy: 40
-| copy: 40							| copy: 40
---------------							--------------
+
+	| original: 40							| original: 40
+	| original: 40							| original: 40
+	| original: 40							| original: 40
+	| original: 40							| original: 40
+------------------------------------------			------------------------------------------
+	| copy: 40							| copy: 40
+	| copy: 40							| copy: 40
+	| copy: 40							| copy: 40
+	| copy: 40							| copy: 40
+------------------------------------------			------------------------------------------
+
+capacity: [4]							capacity: [4]
+
+size: [4]							size: [4]
 
 *****fin de test*****						*****fin de test*****
 
 => Test range constructor					=> Test range constructor
-| tab utilise pour fill: 40					| tab utilise pour fill: 40
-| tab utilise pour fill: 40					| tab utilise pour fill: 40
-| tab utilise pour fill: 40					| tab utilise pour fill: 40
-| tab utilise pour fill: 40					| tab utilise pour fill: 40
---------------							--------------
-| fill by range + 1: 40						| fill by range + 1: 40
-| fill by range + 1: 40						| fill by range + 1: 40
-| fill by range + 1: 40						| fill by range + 1: 40
---------------							--------------
-=> Test insert:							=> Test insert:
 
-| tab avant insert: 40						| tab avant insert: 40
-| tab avant insert: 40						| tab avant insert: 40
-| tab avant insert: 40						| tab avant insert: 40
-| tab avant insert: 40						| tab avant insert: 40
---------------							--------------
-| tab apres insert: 10						| tab apres insert: 10
-| tab apres insert: 10						| tab apres insert: 10
-| tab apres insert: 10						| tab apres insert: 10
-| tab apres insert: 10						| tab apres insert: 10
-| tab apres insert: 40						| tab apres insert: 40
-| tab apres insert: 40						| tab apres insert: 40
-| tab apres insert: 40						| tab apres insert: 40
-| tab apres insert: 40						| tab apres insert: 40
---------------							--------------
+	| tab utilise pour fill: 40					| tab utilise pour fill: 40
+	| tab utilise pour fill: 40					| tab utilise pour fill: 40
+	| tab utilise pour fill: 40					| tab utilise pour fill: 40
+	| tab utilise pour fill: 40					| tab utilise pour fill: 40
+------------------------------------------			------------------------------------------
+	| fill by range + 1: 40						| fill by range + 1: 40
+	| fill by range + 1: 40						| fill by range + 1: 40
+	| fill by range + 1: 40						| fill by range + 1: 40
+------------------------------------------			------------------------------------------
+
+capacity: [3]							capacity: [3]
+
+size: [3]							size: [3]
 
 *****fin de test*****						*****fin de test*****
 
-=> Test => Test swap:						=> Test => Test swap:
-| tab: 10							| tab: 10
-| tab: 10							| tab: 10
-| tab: 10							| tab: 10
-| tab: 10							| tab: 10
-| tab: 40							| tab: 40
-| tab: 40							| tab: 40
-| tab: 40							| tab: 40
-| tab: 40							| tab: 40
---------------							--------------
-| tab_bis: 10							| tab_bis: 10
-| tab_bis: 10							| tab_bis: 10
-| tab_bis: 10							| tab_bis: 10
-| tab_bis: 10							| tab_bis: 10
---------------							--------------
+=> Test capacity section:					=> Test capacity section:
 
-| tab 2eme call: 10						| tab 2eme call: 10
-| tab 2eme call: 10						| tab 2eme call: 10
-| tab 2eme call: 10						| tab 2eme call: 10
-| tab 2eme call: 10						| tab 2eme call: 10
---------------							--------------
-| tab_bis 2eme call: 10						| tab_bis 2eme call: 10
-| tab_bis 2eme call: 10						| tab_bis 2eme call: 10
-| tab_bis 2eme call: 10						| tab_bis 2eme call: 10
-| tab_bis 2eme call: 10						| tab_bis 2eme call: 10
---------------							--------------
+	| tab: 40							| tab: 40
+	| tab: 40							| tab: 40
+	| tab: 40							| tab: 40
+	| tab: 40							| tab: 40
+------------------------------------------			------------------------------------------
+test is empty? [true]						test is empty? [true]
+tab is empty? [false]						tab is empty? [false]
+
+capacity: [4]							capacity: [4]
+
+size: [4]							size: [4]
+
+max size: [4294967295]					      |	max size: [384307168202282325]
+
+*****fin de test*****						*****fin de test*****
+
+=> Test reserve: 						=> Test reserve: 
+
+
+test capacity: [4]						test capacity: [4]
+resize for 10							resize for 10
+
+test capacity: [10]						test capacity: [10]
+
+*****fin de test*****						*****fin de test*****
+
+=> Test resize:							=> Test resize:
+
+
+ test capacity before: [4]					 test capacity before: [4]
+resize to 42							resize to 42
+
+ test capacity after: [64]				      |	 test capacity after: [42]
+
+*****fin de test*****						*****fin de test*****
+
+=> Test operator:						=> Test operator:
+
+	| test: 0							| test: 0
+	| test: 1							| test: 1
+	| test: 2							| test: 2
+	| test: 3							| test: 3
+	| test: 4							| test: 4
+	| test: 5							| test: 5
+	| test: 6							| test: 6
+	| test: 7							| test: 7
+	| test: 8							| test: 8
+	| test: 9							| test: 9
+------------------------------------------			------------------------------------------
+value tab[0]0							value tab[0]0
+
+*****fin de test*****						*****fin de test*****
+
+=> Test insert:							=> Test insert:
+
+
+	| tab avant insert: 40						| tab avant insert: 40
+	| tab avant insert: 40						| tab avant insert: 40
+	| tab avant insert: 40						| tab avant insert: 40
+	| tab avant insert: 40						| tab avant insert: 40
+------------------------------------------			------------------------------------------
+	| tab apres insert: 10						| tab apres insert: 10
+	| tab apres insert: 10						| tab apres insert: 10
+	| tab apres insert: 10						| tab apres insert: 10
+	| tab apres insert: 10						| tab apres insert: 10
+	| tab apres insert: 40						| tab apres insert: 40
+	| tab apres insert: 40						| tab apres insert: 40
+	| tab apres insert: 40						| tab apres insert: 40
+	| tab apres insert: 40						| tab apres insert: 40
+------------------------------------------			------------------------------------------
+
+*****fin de test*****						*****fin de test*****
+
+=> Test swap:							=> Test swap:
+
+	| tab: 10							| tab: 10
+	| tab: 10							| tab: 10
+	| tab: 10							| tab: 10
+	| tab: 10							| tab: 10
+	| tab: 40							| tab: 40
+	| tab: 40							| tab: 40
+	| tab: 40							| tab: 40
+	| tab: 40							| tab: 40
+------------------------------------------			------------------------------------------
+	| tab_bis: 10							| tab_bis: 10
+	| tab_bis: 10							| tab_bis: 10
+	| tab_bis: 10							| tab_bis: 10
+	| tab_bis: 10							| tab_bis: 10
+------------------------------------------			------------------------------------------
+
+	| tab 2eme call: 10						| tab 2eme call: 10
+	| tab 2eme call: 10						| tab 2eme call: 10
+	| tab 2eme call: 10						| tab 2eme call: 10
+	| tab 2eme call: 10						| tab 2eme call: 10
+------------------------------------------			------------------------------------------
+	| tab_bis 2eme call: 10						| tab_bis 2eme call: 10
+	| tab_bis 2eme call: 10						| tab_bis 2eme call: 10
+	| tab_bis 2eme call: 10						| tab_bis 2eme call: 10
+	| tab_bis 2eme call: 10						| tab_bis 2eme call: 10
+------------------------------------------			------------------------------------------
+
+*****fin de test*****						*****fin de test*****
 
 [1;33m		END[0m						[1;33m		END[0m

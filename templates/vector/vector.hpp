@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/04 18:49:10 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/04 20:00:44 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,26 @@ namespace ft
 				const ft::ReverseIterator<T>		ret(static_cast<const T>(this->_data));
 				return (ret);
 			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			
+			/* Requests the container to reduce its capacity to fit its size */
+			void			shrink_to_fit(){
+				if (this->_size == this->_capacity)
+					return ;
+				ft::vector<T>		tmp(*this);
+				Allocator			alloc;
+				T*					newVec;
+
+				newVec = alloc.allocate(tmp._size);
+				for (size_t i = 0; i < tmp._size; i++)
+					this->_alloc.construct(newVec + i, tmp._data[i]);
+				for (size_t del = 0; del != this->_size; del++)
+					this->_alloc.destroy(this->_data + del);
+				this->_alloc.deallocate(this->_data, this->_capacity);
+				this->_data = newVec;
+				this->_capacity = this->_size;
+			}
 		
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Capacity                                      */
@@ -235,26 +255,9 @@ namespace ft
 				this->_capacity = new_cap;
 			}
 
-			/* Requests the container to reduce its capacity to fit its size */
-			void			shrink_to_fit(){
-				if (this->_size == this->_capacity)
-					return ;
-				ft::vector<T>		tmp(*this);
-				Allocator			alloc;
-				T*					newVec;
-
-				newVec = alloc.allocate(tmp._size);
-				for (size_t i = 0; i < tmp._size; i++)
-					this->_alloc.construct(newVec + i, tmp._data[i]);
-				for (size_t del = 0; del != this->_size; del++)
-					this->_alloc.destroy(this->_data + del);
-				this->_alloc.deallocate(this->_data, this->_capacity);
-				this->_data = newVec;
-				this->_capacity = this->_size;
-			}
-
 			////////////////////////////////////////////////////////////////////////////////
 			
+			/* Resizes the container so that it contains n elements */
 			void		resize(size_type n, value_type val = value_type()){
 				size_t	 i = this->_size;
 				
