@@ -6,17 +6,12 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/04 20:20:47 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/11 18:20:56 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include <ftnspace.hpp>
-# define YELLOW "\033[1;33m"
-# define GREEN	"\033[1;32m"
-# define RED	"\033[1;31m"
-# define BLACK	"\033[1;30m"
-# define CYAN	"\033[1;36m"
-# define RESET	"\033[0m"
+
 
 
 int		main(void)
@@ -32,131 +27,40 @@ int		main(void)
 	{	
 		std::cout << CYAN << "=========CONSTRUCTOR=========" << RESET << std::endl;
 		
+		NAMESPACE::vector<int>										tab(1, 40);
+		NAMESPACE::vector<int>										tab_bis(2, 10);
+		
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			NAMESPACE::vector<int>					tab;
+			std::cout << CYAN << "=> Test Default Constructor " << RESET << std::endl << std::endl;
+			NAMESPACE::vector< int >			test;
 
+			ft::print(test, "default: ");
 
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test copy Constructor" << RESET << std::endl << std::endl;
+			NAMESPACE::vector< int >			copy(tab);
 
-			tab.push_back(100);
-			tab.push_back(990);
-			NAMESPACE::vector<int>::iterator	it = tab.begin();
-			NAMESPACE::vector<int>::iterator	ite = tab.end();
-			++it;
-			std::cout <<  "it: " << *it << std::endl;
-			for (; it != ite; it++){
-				std::cout <<  "tab: " << *it << std::endl;
-			}	
+			ft::print(tab, "original: ");
+			ft::print(copy, "copy: ");
+
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test range constructor" << RESET << std::endl << std::endl;
+			
+			NAMESPACE::vector< int >		fill(tab.begin() + 1, tab.end());
+			
+			ft::print(tab, "tab utilise pour fill: ");
+			ft::print(fill, "fill by range + 1: ");
+
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
 	}	
-	////////////////////////////////////////////////////////////////////////////////
-	{	
-		std::cout << CYAN << "=========ASSIGN=========" << RESET << std::endl;;
-		
-		////////////////////////////////////////////////////////////////////////////////
-		{
-			NAMESPACE::vector<int>						tab(20);
-			NAMESPACE::vector<int>::iterator	it = tab.begin();
-			NAMESPACE::vector<int>::iterator	ite = tab.end();
-			
-			it = tab.begin();
-			ite = tab.end(); 
-			tab.assign(it, ite);
-			
-			NAMESPACE::vector<int>::iterator	it2 = tab.begin();
-			NAMESPACE::vector<int>::iterator	ite2 = tab.end();
-			for (; it2 != ite2; it2++){
-				std::cout <<  "tab: " << *it2 << std::endl;
-			}
-		}
-		////////////////////////////////////////////////////////////////////////////////
-		
-	}
-	////////////////////////////////////////////////////////////////////////////////
-	{
-		std::cout << CYAN << "=========INSERT=========" << RESET << std::endl;
-		
-		////////////////////////////////////////////////////////////////////////////////
-		/* insert pos */
-		{
-			std::cout << "=>Insert by position and val:" << std::endl;
-			
-			NAMESPACE::vector<int>				tab(10, 42);
-
-			for (NAMESPACE::vector<int>::iterator it3 = tab.begin(), ite3 = tab.end(); it3 != ite3; it3++){
-				std::cout << "befor: " << *it3 << std::endl;
-			}
-			std::cout << "------------" << std::endl;
-			tab.insert(tab.begin() + 1, 20);	
-			for (NAMESPACE::vector<int>::iterator it3 = tab.begin(), ite3 = tab.end(); it3 != ite3; it3++){
-				std::cout << "after: " << *it3 << std::endl;
-			}
-			std::cout << std::endl;
-			}
-		////////////////////////////////////////////////////////////////////////////////
-		/* insert range */
-		{
-			std::cout << "=>Insert by range:" << std::endl;
-	
-			NAMESPACE::vector<int>				tab(5, 42);
-			NAMESPACE::vector<int>				tab_bis(2, 100);
-			
-			for (NAMESPACE::vector<int>::iterator it3 = tab.begin(), ite3 = tab.end(); it3 != ite3; it3++){
-				std::cout << "befor: " << *it3 << std::endl;
-			}
-			std::cout << "------------" << std::endl;
-			tab.insert(tab.begin() + 1, tab_bis.begin(), tab_bis.end());	
-			for (NAMESPACE::vector<int>::iterator it3 = tab.begin(), ite3 = tab.end(); it3 != ite3; it3++){
-				std::cout << "after: " << *it3 << std::endl;
-			}
-			std::cout << std::endl;
-		}
-		////////////////////////////////////////////////////////////////////////////////
-		/* insert errors | out of range pos */
-	// 	{
-	// 		std::cout << "=>Insert by range | errors : Out of range:" << std::endl;
-	
-	// 		NAMESPACE::vector<int>				tab(5, 42);
-	// 		NAMESPACE::vector<int>				tab_bis(2, 100);
-			
-	// 		for (NAMESPACE::vector<int>::iterator it3 = tab.begin(), ite3 = tab.end(); it3 != ite3; it3++){
-	// 			std::cout << "befor: " << *it3 << std::endl;
-	// 		}
-	// 		std::cout << "------------" << std::endl;
-	// 		tab.insert(tab_bis.begin() + 1, tab_bis.begin(), tab_bis.end());	
-	// 		for (NAMESPACE::vector<int>::iterator it3 = tab.begin(), ite3 = tab.end(); it3 != ite3; it3++){
-	// 			std::cout << "after: " << *it3 << std::endl;
-	// 		}
-	// 		std::cout << std::endl;
-	// 	}
-		////////////////////////////////////////////////////////////////////////////////
-	
-	}
-	////////////////////////////////////////////////////////////////////////////////
-	{
-		std::cout << CYAN << "=========SWAP=========" << RESET << std::endl;
-		
-			NAMESPACE::vector<int>				tab(10, 99);
-			NAMESPACE::vector<int>				tab2(5, 100);
-		////////////////////////////////////////////////////////////////////////////////
-		{
-			
-			std::cout << "=> test simple swap:" << std::endl; 
-			for (NAMESPACE::vector<int>::iterator it = tab.begin(), ite = tab.end(); it != ite; it++){
-				std::cout <<  "tab: " << *it << std::endl;
-			}
-			tab.swap(tab2);
-			std::cout << std::endl;
-			for (NAMESPACE::vector<int>::iterator it = tab.begin(), ite = tab.end(); it != ite; it++){
-				std::cout <<  "tab: " << *it << std::endl;
-			}
-			for (NAMESPACE::vector<int>::iterator it1 = tab2.begin(), ite1=tab2.end(); it1 != ite1; it1++){
-				std::cout <<  "tab1: " << *it1 << std::endl;
-			}
-			std::cout << std::endl;	
-		}
-		////////////////////////////////////////////////////////////////////////////////
-	}
 	////////////////////////////////////////////////////////////////////////////////
 	{
 		std::cout << CYAN << "=========OPERATOR=========" << RESET << std::endl;
@@ -190,96 +94,276 @@ int		main(void)
 
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test Default Constructor " << std::endl << std::endl;
+			std::cout << CYAN << "=> Test Default Constructor " << RESET << std::endl << std::endl;
 			NAMESPACE::vector< NAMESPACE::vector<int> >			test;
 
 			ft::print(test, "default: ");
-			std::cout << std::endl << "capacity: [" << test.capacity() << "]" << std::endl;
-			std::cout << std::endl << "size: [" << test.size() << "]" << std::endl;
 
-			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test copy Constructor" << std::endl << std::endl;
+			std::cout << CYAN << "=> Test copy Constructor" << RESET << std::endl << std::endl;
 			NAMESPACE::vector< NAMESPACE::vector<int> >			copy(tab);
 
 			ft::print(tab, "original: ");
 			ft::print(copy, "copy: ");
-			std::cout << std::endl << "capacity: [" << copy.capacity() << "]" << std::endl;
-			std::cout << std::endl << "size: [" << copy.size() << "]" << std::endl;
 
-			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test range constructor" << std::endl << std::endl;
-
-			ft::print(tab, "tab utilise pour fill: ");
+			std::cout << CYAN << "=> Test range constructor" << RESET << std::endl << std::endl;
+			
 			NAMESPACE::vector< NAMESPACE::vector<int> >		fill(tab.begin() + 1, tab.end());
+			
+			ft::print(tab, "tab utilise pour fill: ");
 			ft::print(fill, "fill by range + 1: ");
-			std::cout << std::endl << "capacity: [" << fill.capacity() << "]"<< std::endl;
-			std::cout << std::endl << "size: [" << fill.size() << "]" << std::endl;
 
-			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test capacity section:" << std::endl << std::endl;
+			std::cout << CYAN << "=> Test capacity section:" << RESET << std::endl << std::endl;
 
 			NAMESPACE::vector< NAMESPACE::vector<int> >			test;
 
 			ft::print(tab, "tab: ");
-			std::cout << std::boolalpha << "test is empty? [" << test.empty() << "]" << std::endl; 
-			std::cout << std::boolalpha << "tab is empty? [" << tab.empty() << "]" << std::endl; 
-			std::cout << std::endl << "capacity: [" << tab.capacity() << "]"<< std::endl;
-			std::cout << std::endl << "size: [" << tab.size() << "]" << std::endl;
-			std::cout << std::endl << "max size: [" << tab.max_size() << "]" << std::endl;
+			std::cout << std::boolalpha << "test is empty? [" << GREEN << test.empty() << RESET << "]" << std::endl; 
+			std::cout << std::boolalpha << "tab is empty? [" << GREEN << tab.empty() << RESET << "]" << std::endl; 
 
-			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test reserve: " << std::endl << std::endl;
+			std::cout << CYAN << "=> Test reserve: " << RESET << std::endl << std::endl;
 
 			NAMESPACE::vector< NAMESPACE::vector<int> >			test(tab);
 
-
-			std::cout << std::endl << "test capacity: [" << test.capacity() << "]"<< std::endl;
+			ft::print(test, "test: ");
+			
 			std::cout << "resize for 10" << std::endl; 
 			test.reserve(10);
-			std::cout << std::endl << "test capacity: [" << test.capacity() << "]"<< std::endl;
+			
+			ft::print(test, "test after: ");
 
-			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test resize:" << std::endl << std::endl;
+			std::cout << CYAN << "=> Test resize:" << RESET << std::endl << std::endl;
 			
 			NAMESPACE::vector< NAMESPACE::vector<int> >			test(tab);
 			
-			std::cout << std::endl << " test capacity before: [" << test.capacity() << "]"<< std::endl;
+			ft::print(test, "test: ");
+			
 			std::cout << "resize to 42" << std::endl;
 			test.resize(42);
-			std::cout << std::endl << " test capacity after: [" << test.capacity() << "]"<< std::endl;
 
-			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+			ft::print(test, "test after: ");			
+
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test operator:" << std::endl << std::endl;
+			std::cout << CYAN << "=> Test operator[]:" << RESET << std::endl << std::endl;
 			NAMESPACE::vector<int>			test;
 
 			for (int i = 0; i < 10; i++)
 				test.push_back(i);
+				
 			ft::print(test, "test: ");
-			std::cout << "value tab[0]" << test[0] << std::endl;			
 			
-			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+			std::cout << "value tab[0]: [" << GREEN << test[0] << RESET << "]" << std::endl;			
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test insert:" << std::endl << std::endl;
+			std::cout << CYAN << "=> Test at:" << RESET << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+
+			for (int i = 0; i < 10; i++)
+				test.push_back(i);
+
+			ft::print(test, "test: ");
+			
+			std::cout << "value tab[2]: [" << GREEN << test.at(2) << RESET << "]" << std::endl;			
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test front:" << RESET << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+
+			for (int i = 0; i < 10; i++)
+				test.push_back(i);
+				
+			ft::print(test, "test: ");
+			
+			std::cout << "value front: [" << GREEN << test.front() << RESET << "]" << std::endl;			
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test back:" << RESET << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+
+			for (int i = 0; i < 10; i++)
+				test.push_back(i);
+				
+			ft::print(test, "test: ");
+			
+			std::cout << "value back: [" << GREEN << test.back() << RESET << "]" << std::endl;			
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test data:" << RESET << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+			int								*ptr;
+
+			for (int i = 0; i < 10; i++)
+				test.push_back(i);
+				
+			ft::print(test, "test: ");
+			
+			ptr = test.data();
+			
+			std::cout << "value ptr[0]: [" << GREEN << ptr[0] << RESET << "]" << std::endl;			
+			std::cout << "value ptr[1]: [" << ptr[1] << "]" << std::endl;			
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test clear:" << RESET << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+
+			for (int i = 0; i < 10; i++)
+				test.push_back(i);
+				
+			ft::print(test, "test: ");
+			
+			test.clear();
+			
+			ft::print(test, "test: ");
+			
+			// std::cout << std::endl << "value test.at(1): [" << test.at(1) << "]" << std::endl; 
+			// std::cout << std::endl << "value test[1]: [" << test[1] << "]" << std::endl; 
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test pop_back:" << RESET << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+
+			for (int i = 0; i < 10; i++)
+				test.push_back(i);
+				
+			ft::print(test, "test: ");
+			
+			std::cout << std::endl << "back value: [" << test.back() << "]" << std::endl; 
+			test.pop_back();
+			std::cout << std::endl << "back value after pop_back: [" << test.back() << "]" << std::endl; 
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test swap:" << RESET << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+			NAMESPACE::vector<int>			test_bis;
+			NAMESPACE::vector<int>			test_tier;
+
+
+			for (int i = 0; i < 10; i++)
+				test.push_back(i);
+			for (int i = 10; i < 24; i++)
+				test_bis.push_back(i);
+			
+			ft::print(test, "test: ");
+			ft::print(test_bis, "test_bis: ");
+			
+			test.swap(test_bis);
+			
+			ft::print(test, "test after swap : ");
+			ft::print(test_bis, "test_bis after swap: ");
+
+			test.swap(test_tier);
+			ft::print(test, "test after swap : ");
+			ft::print(test_tier, "test_tiers after swap : ");
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test erase:" << RESET << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+
+
+			for (int i = 0; i < 10; i++)
+				test.push_back(i);
+			
+			ft::print(test, "test: ");
+			
+			test.erase(test.begin() + 4, test.end());
+			
+			ft::print(test, "test: ");
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test assign:" << RESET << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+			NAMESPACE::vector<int>			test_bis;
+			
+			for (int i = 0; i < 10; i++)
+				test.push_back(i);
+			for (int i = 10; i < 24; i++)
+				test_bis.push_back(i);
+			
+			ft::print(test, "test: ");
+			ft::print(test_bis, "test_bis: ");
+			
+			test.assign(test_bis.begin() + 1, test_bis.end());
+			ft::print(test, "test 1: ");
+			test.assign(8, 42);
+			ft::print(test, "test 2: ");
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test insert:" << RESET << std::endl << std::endl;
+			NAMESPACE::vector<int>			test;
+			NAMESPACE::vector<int>			test_bis;
+			
+			for (int i = 0; i < 10; i++)
+				test.push_back(0);
+			for (int i = 10; i < 24; i++)
+				test_bis.push_back(i);
+			
+			ft::print(test, "test: ");
+			ft::print(test_bis, "test_bis: ");
+			
+			test.insert(test.begin() + 1, test_bis.begin() + 2, test_bis.end());
+			
+			ft::print(test, "test 1: ");
+			test.insert(test.begin(), 3, 42);
+			ft::print(test, "test 2: ");
+
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << CYAN << "=> Test insert:" << RESET << std::endl << std::endl;
 
 			NAMESPACE::vector< NAMESPACE::vector<int> >::iterator		it = tab_bis.begin();
 			NAMESPACE::vector< NAMESPACE::vector<int> >::iterator		ite = tab_bis.end();
@@ -289,11 +373,11 @@ int		main(void)
 			tab.insert(tab.begin(), it, ite);
 			ft::print(tab, "tab apres insert: ");
 
-			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << "=> Test swap:" << std::endl << std::endl;
+			std::cout << CYAN << "=> Test swap:" << RESET << std::endl << std::endl;
 			/* tab_to_insert | tab_bis_to_insert | tab | tab_bis */
 			
 			ft::print(tab, "tab: ");
@@ -303,7 +387,7 @@ int		main(void)
 			ft::print(tab, "tab 2eme call: ");
 			ft::print(tab, "tab_bis 2eme call: ");
 
-			std::cout << std::endl << "*****fin de test*****" << std::endl << std::endl;
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}	
 		////////////////////////////////////////////////////////////////////////////////
 	}
