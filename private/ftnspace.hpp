@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/04 20:20:36 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/11 15:37:30 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,38 @@
 # include <reverse_iterator.hpp> 
 # include <vector.hpp>
 
+
+# define YELLOW "\033[1;33m"
+# define GREEN	"\033[1;32m"
+# define RED	"\033[1;31m"
+# define BLACK	"\033[1;30m"
+# define CYAN	"\033[1;36m"
+# define RESET	"\033[0m"
+
 namespace ft{
 	
 	void		print(NAMESPACE::vector<int> tab, std::string msg){
 		for (size_t i = 0; i < tab.size(); i++){
-			std:: cout << "\t| ";
-			std::cout << msg <<  tab[i] << std::endl;
+			std:: cout <<  GREEN << "| " << RESET;
+			std::cout << msg << "[" << GREEN << tab[i] << RESET << "]" << std::endl;
 		}
-		std::cout << std::string(42, '-') << std::endl;
+		std::cout << std::endl << "capacity: [" << GREEN << tab.capacity() << RESET << "]"<< std::endl;
+		std::cout << std::endl << "size: [" << GREEN << tab.size() << RESET << "]" << std::endl;
+		std::cout << std::endl << "max size: [" << GREEN << tab.max_size() << RESET << "]" << std::endl;
+		std::cout << GREEN << std::string(42, '-') << RESET << std::endl;
 	}
 	
 	void		print( NAMESPACE::vector< NAMESPACE::vector<int> > tab, std::string msg){
 		for (size_t i = 0; i < tab.size(); i++){
 			for (size_t j = 0; j < tab.at(i).size(); j++){
-				std:: cout << "\t| ";
-				std::cout << msg <<  tab.at(i).at(j) << std::endl;
+				std:: cout <<  GREEN << "| " << RESET;
+				std::cout << msg << "[" << GREEN << tab.at(i).at(j) << RESET << "]" << std::endl;
 			}
 		}
-		std::cout << std::string(42, '-') << std::endl;
+		std::cout << std::endl << "capacity: [" <<  GREEN << tab.capacity() << RESET << "]"<< std::endl;
+		std::cout << std::endl << "size: [" << GREEN << tab.size() << RESET << "]" << std::endl;
+		std::cout << std::endl << "max size: [" << GREEN << tab.max_size() << RESET << "]" << std::endl;
+		std::cout << GREEN << std::string(42, '-') << RESET << std::endl;
 	}
 	
 }
