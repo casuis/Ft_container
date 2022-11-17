@@ -6,14 +6,15 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 16:03:55 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/02 17:55:39 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/17 12:11:54 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __IS_INTEGRAL_HPP__
 # define __IS_INTEGRAL_HPP__
 
-# include <header.hpp>
+// # include <header.hpp>
+# include <../../private/header.hpp>
 namespace ft{
 
 /* Default template */
@@ -194,6 +195,16 @@ struct is_integral<unsigned long long int>
 		static const bool		value = true;
 };
 
+template <  >
+struct is_integral<void>
+{
+	typedef void value_type;
+	typedef ft::is_integral<void> type;
+
+	
+	public :
+		static const bool		value = true;
+};
 }
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/11 15:37:30 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/17 15:31:34 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,40 @@ namespace ft{
 		std::cout << GREEN << std::string(42, '-') << RESET << std::endl;
 	}
 	
+	template <class base_it>
+	class	input_iterator
+	{
+			base_it	it;
+			bool	valid;
+		public:
+			typedef typename std::iterator_traits<base_it>::value_type value_type;
+			typedef typename std::iterator_traits<base_it>::pointer pointer;
+			typedef typename std::iterator_traits<base_it>::reference reference;
+			typedef typename std::iterator_traits<base_it>::difference_type difference_type;
+			typedef typename std::input_iterator_tag iterator_category;
+	};
+
+	template <typename T>
+	void test_p(typename enable_if<!is_integral<typename ft::iterator_traits<T>::value_type> ::value, typename ft::iterator_traits<T>::value_type >::type last){
+		std::cout << "yes" << std::endl;
+		std::cout << last << std::endl;
+	}
+
+	void	test_p(size_t test){
+		std::cout << "no" << std::endl;
+		std::cout << test << std::endl;
+	}
+
+	class NullPtr
+	{
+		public:
+			template <class T>
+			operator T*() const { return (0); }
+			template <class C, class T>
+			operator T* C::*() const { return (0); }
+		private:
+			void operator&() const;
+	} NullPtr = {};
 }
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 15:54:10 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/15 06:07:53 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/17 10:37:52 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ struct iterator_traits{
 	typedef typename T::value_type			value_type;
 	typedef typename T::pointer				pointer;			
 	typedef typename T::reference			reference;
+	typedef typename T::iterator_category	iterator_category;
 };
 
 template < typename T >

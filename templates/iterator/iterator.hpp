@@ -6,16 +6,16 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:47:25 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/20 15:39:36 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/17 16:22:20 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MY_ITERATOR_HPP__
 # define __MY_ITERATOR_HPP__
 
-# include <header.hpp>
-# include <iterator_traits.hpp>
-
+// # include <header.hpp>
+# include "iterator_traits.hpp"
+# include <../../private/header.hpp>
 namespace ft{
 
 	template <typename T = void>
@@ -32,12 +32,14 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		
 
-			typedef std::ptrdiff_t		difference_type; 	 
-			typedef T					value_type;
-			typedef T*					pointer;			
-			typedef const T*			const_pointer;
-			typedef T&					reference;
-			typedef const T&			const_reference;
+			typedef std::ptrdiff_t						difference_type; 	 
+			typedef T									value_type;
+			typedef T*									pointer;			
+			typedef const T*							const_pointer;
+			typedef T&									reference;
+			typedef const T&							const_reference;
+			typedef	std::random_access_iterator_tag		iterator_category;
+
 
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Member Function                               */
@@ -54,6 +56,8 @@ namespace ft{
 			RandomIterator( const RandomIterator& old): _pointer(old._pointer){}
 
 			~RandomIterator() {};
+
+			pointer		base(){ return (this->_pointer);}
 
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Operators' overload                           */
@@ -101,58 +105,89 @@ namespace ft{
 
 			/* operator - */
 			RandomIterator<T>		operator-(int n){
-				return (this->_pointer - n);
+				return (RandomIterator<T>(this->_pointer - n));
 			}
 
+			int						operator-(RandomIterator<T> it) const {
+				return (this->_pointer - it._pointer);
+			}
+			
 			/* operator + */
 			RandomIterator<T>		operator+(int n){
-				return (this->_pointer + n);
+				return (RandomIterator<T>(this->_pointer + n));
+			}
+
+			RandomIterator<T>		operator+=(int n){
+				this->_pointer += n;
+				return (this->_pointer);
+			}
+			
+			RandomIterator<T>		operator-=(int n){
+				this->_pointer -= n;
+				return (this->_pointer);
 			}
 			
 			/* random_access_ite ope dereference */
-			T&			operator*(){
+			T&			operator*() const {
 				return (*(this->_pointer));
 			}
 
+			T&			operator[](int i){ return this->_pointer[i];}
+
 			/* random_access_ite operator =  */
-			RandomIterator<T>&	operator=(const RandomIterator &rgt) {
+			RandomIterator<T>&	operator=(const RandomIterator<T> &rgt) {
 				this->_pointer = rgt._pointer;
 				return (*this);
 			}
-			
-			////////////////////////////////////////////////////////////////////////////////
-			/* Comparison operators */
-			
-			/* RandomIterator ope != */
-			bool		operator!=(const RandomIterator& rght) const {
-				return (this->_pointer != rght._pointer);
-			}
 
-			/* RandomIterator ope == */
-			bool		operator==(const RandomIterator& rght) const {
-				return (this->_pointer == rght._pointer);
-			}
+			pointer	operator->(){return (this->_pointer);}
 
-			/* RandomIterator ope > */
-			bool		operator>(const RandomIterator& rght) const {
-				return (this->_pointer > rght._pointer);
-			}
-
-			/* RandomIterator ope >= */
-			bool		operator>=(const RandomIterator& rght) const {
-				return (this->_pointer >= rght._pointer);
-			}
-
-			/* RandomIterator ope < */
-			bool		operator<(const RandomIterator& rght) const {
-				return (this->_pointer < rght._pointer);
-			}
-			
-			/* RandomIterator ope <= */
-			bool		operator<=(const RandomIterator& rght) const {
-				return (this->_pointer <= rght._pointer);
-			}
 	};
+	
+	////////////////////////////////////////////////////////////////////////////////
+	
+	/* Comparison operators */
+	
+	/* RandomIterator ope != */
+	template <typename T1, typename Iter>
+	bool		operator!=(RandomIterator<T1> lft, Iter rght) {
+		return (&(*lft) != &(*rght));
+	}
+	
+	template <typename T1, typename Iter>
+	bool		operator==(RandomIterator<T1> lft, Iter rght) {
+		return (&(*lft) == &(*rght));
+	}
+	
+	template <typename T1, typename Iter>
+	bool		operator<=(RandomIterator<T1> lft, Iter rght) {
+		return (&(*lft) <= &(*rght));
+	}
+	
+	template <typename T1, typename Iter>
+	bool		operator>=(RandomIterator<T1> lft, Iter rght) {
+		return (&(*lft) >= &(*rght));
+	}
+	
+	template <typename T1, typename Iter>
+	bool		operator>(RandomIterator<T1> lft, Iter rght) {
+		return (&(*lft) > &(*rght));
+	}
+	
+	template <typename T1, typename Iter>
+	bool		operator<(RandomIterator<T1> lft, Iter rght) {
+		return (&(*lft) < &(*rght));
+	}
+
+	template<typename T1>
+	RandomIterator<T1> operator+(int i, RandomIterator<T1> it){
+		return (RandomIterator<T1>(it + i));
+	}
+	
+	template<typename T1>
+	RandomIterator<T1> operator-(int i, RandomIterator<T1> it){
+		return (RandomIterator<T1>(it - i));
+	}
 }
 
 #endif

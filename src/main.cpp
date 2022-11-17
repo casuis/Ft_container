@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/11 18:20:56 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/17 16:06:04 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -392,19 +392,20 @@ int		main(void)
 		////////////////////////////////////////////////////////////////////////////////
 	}
 	////////////////////////////////////////////////////////////////////////////////
-	// {
-	// 	std::cout << CYAN << "=========MORE TEST=========" << RESET << std::endl;
+	{
+		std::cout << CYAN << "=========MORE TEST=========" << RESET << std::endl;
 
-	// 	NAMESPACE::vector<int>		tab;
-	// 	////////////////////////////////////////////////////////////////////////////////
-	// 	{
-	// 		std::cout << "print size on a default vector: " << tab.size() << std::endl << std::endl;
-	// 		std::cout << "print capacity on a default vector: " << tab.capacity() << std::endl << std::endl;
-	// 		tab.push_back(10);
-	// 		std::cout << "print size on a vector 1: " << tab.size() << std::endl << std::endl;
-	// 		std::cout << "print capacity on a vector 1: " << tab.capacity() << std::endl << std::endl;
-	// 	}
-	// }
+		////////////////////////////////////////////////////////////////////////////////
+		std::cout << "=> test on reverse_iterator:" << std::endl;
+
+		ft::vector< typename std::basic_string<char> >			tab(4, std::basic_string<char>("salut"));
+		ft::vector< typename std::basic_string<char> >::iterator	it;
+		std::iterator_traits<typename ft::vector< typename std::basic_string<char> >::iterator >::value_type		tmp = std::basic_string<char>("salut");
+		ft::test_p(0);
+		
+		// std::vector<int>::reverse_iterator	ite = tab.rend();
+	}
+	
 	std::cout << YELLOW << "\t\tEND" << RESET << std::endl;	
 	return (0);
 }

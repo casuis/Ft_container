@@ -6,13 +6,14 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 18:29:14 by asimon            #+#    #+#             */
-/*   Updated: 2022/10/20 15:38:40 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/12 13:17:39 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __EQUAL_HPP__
 # define __EQUAL_HPP__
-# include <header.hpp>
+// # include <header.hpp>
+# include <../../private/header.hpp>
 
 namespace ft{
 
