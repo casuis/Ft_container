@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/19 15:41:19 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/29 22:34:35 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,64 +14,60 @@
 # include <iostream>
 #define TESTED_TYPE int
 
-static int i = 0;
+#define T_SIZE_TYPE typename NAMESPACE::vector<T>::size_type
 
-template <typename Ite_1, typename Ite_2>
-void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
+template <typename T>
+void	printSize(NAMESPACE::vector<T> const &vct, bool print_content = true)
 {
-	std::cout << "test: [" << i << "] | " << (first < second) << std::endl;
-	std::cout << "test: [" << i << "] | " << (first <= second) << std::endl;
-	std::cout << "test: [" << i << "] | " << (first > second) << std::endl;
-	std::cout << "test: [" << i << "] | " << (first >= second) << std::endl;
-	if (redo)
-			ft_eq_ope(second, first, 0);
-	if (!redo)
-			i++;
+	const T_SIZE_TYPE size = vct.size();
+	const T_SIZE_TYPE capacity = vct.capacity();
+	const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
+	// Cannot limit capacity's max value because it's implementation dependent
+
+	std::cout << "size: " << size << std::endl;
+	std::cout << "capacity: " << isCapacityOk << std::endl;
+	std::cout << "max_size: " << vct.max_size() << std::endl;
+	if (print_content)
+	{
+		typename NAMESPACE::vector<T>::const_iterator it = vct.begin();
+		typename NAMESPACE::vector<T>::const_iterator ite = vct.end();
+		std::cout << std::endl << "Content is:" << std::endl;
+		for (; it != ite; ++it)
+			std::cout << "- " << *it << std::endl;
+	}
+	std::cout << "###############################################" << std::endl;
 }
+
 
 int             main(void)
 {
-{
-	const int size = 5;
-	NAMESPACE::vector<TESTED_TYPE> vct(size);
-	NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_0(vct.rbegin());
-	NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_1(vct.rend());
-	NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_mid;
+        const int size = 5;
+        NAMESPACE::vector<TESTED_TYPE> vct(size);
+        NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it = vct.rbegin();
+        NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite = vct.rbegin();
 
-	NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_0 = vct.rbegin();
-	NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_1;
-	NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_mid;
+        for (int i = 0; i < size; ++i){
+                it[i] = (size - i) * 5;
+        }
+        it = it + 5;
+        it = 1 + it;
+        it = it - 4;
+        std::cout << *(it += 2) << std::endl;
+        std::cout << *(it -= 1) << std::endl;
 
-	for (int i = size; it_0 != it_1; --i)
-			*it_0++ = i;
-	it_0 = vct.rbegin();
-	cit_1 = vct.rend();
-	it_mid = it_0 + 3;
-	cit_mid = it_0 + 3; cit_mid = cit_0 + 3; cit_mid = it_mid;
+        *(it -= 2) = 42;
+        *(it += 2) = 21;
 
-	std::cout << std::boolalpha;
-	std::cout << ((it_0 + 3 == cit_0 + 3) && (cit_0 + 3 == it_mid)) << std::endl;
+        std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
+        std::cout << "(it == const_it): " << (ite == it) << std::endl;
+		std::cout << "it: [" << *it << "]" << " | ite: [" << *ite << "]" << std::endl
+		<< " | it base = [" << *(it.base()) << "] | " << "ite base = [" << *(ite.base()) << "]" << std::endl;
+        std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+        std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
 
-	std::cout << "\t\tft_eq_ope:" << std::endl;
-	// regular it
-	ft_eq_ope(it_0 + 3, it_mid); // 0
-	ft_eq_ope(it_0, it_1); // 1
-	ft_eq_ope(it_1 - 3, it_mid); //2
-	// const it
-	ft_eq_ope(cit_0 + 3, cit_mid); // 3
-	ft_eq_ope(cit_0, cit_1); // 4
-	ft_eq_ope(cit_1 - 3, cit_mid); // 5
-	// both it
-	ft_eq_ope(it_0 + 3, cit_mid); // 6
-	ft_eq_ope(it_mid, cit_0 + 3); // 7
-	ft_eq_ope(it_0, cit_1); // 8
-	ft_eq_ope(it_1, cit_0); // 9
-	ft_eq_ope(it_1 - 3, cit_mid); // 10
-	ft_eq_ope(it_mid, cit_1 - 3); // 11
+        printSize(vct, true);
+        return (0);
 }
-	return (0);
-}
-
 
 // int		main(void)
 // {

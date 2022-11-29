@@ -122,12 +122,12 @@ namespace ft{
 
 			ReverseIterator<T>		operator+=(int n) {
 				this->_pointer -= n;
-				return (ReverseIterator<T>(this->_pointer));
+				return (*this);
 			}
 
 			ReverseIterator<T>		operator-=(int n) {
 				this->_pointer += n;
-				return (ReverseIterator<T>(this->_pointer));
+				return (*this);
 			}
 
 			pointer					operator->(){return (this->_pointer);}
@@ -135,7 +135,6 @@ namespace ft{
 		private:
 			T*			_pointer;
 
-			/* Const Param constructor */
 	};
 
 	/* RandomIterator ope != */
@@ -176,7 +175,7 @@ namespace ft{
 	
 	template <typename T1, typename T2>
 	typename ReverseIterator<T1>::difference_type		operator-(const ReverseIterator<T1>& lhs, const ReverseIterator<T2>& rhs){
-		return (lhs.base() + rhs.base());
+		return (lhs.base() - rhs.base());
 	}	
 
 }

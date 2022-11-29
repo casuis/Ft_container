@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:47:25 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/17 16:22:20 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/29 22:26:47 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,11 @@ namespace ft{
 	template<typename T1>
 	RandomIterator<T1> operator-(int i, RandomIterator<T1> it){
 		return (RandomIterator<T1>(it - i));
+	}
+
+	template<typename T1, typename T2>
+	typename RandomIterator<T1>::difference_type	operator-(RandomIterator<T1> lfhs, RandomIterator<T2> rghs){
+		return (&(*lfhs) - &(*rghs));
 	}
 }
 
