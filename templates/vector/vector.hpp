@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/17 16:53:44 by asimon           ###   ########.fr       */
+/*   Updated: 2022/11/19 15:32:05 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,18 +146,24 @@ namespace ft
 			ft::ReverseIterator<T>			rbegin() const{
 				pointer				tmp;
 
-				if (this->_size != 0)
+				if (this->_size != 0){
 					tmp = &this->_data[this->_size - 1];
+				}
 				else
 					tmp = &this->_data[this->_size];
-				ft::ReverseIterator<T>			ret((ft::RandomIterator<T>(tmp)));
+				ft::ReverseIterator<T>			ret(tmp);
 				return (ret);
 				
 			}
 			
 			/* rend return a reverse pointer to the end of the container */
 			ft::ReverseIterator<T>			rend() const{
-				ft::ReverseIterator<T>		ret(this->_data - 1);
+				pointer				tmp;
+				if (this->_size != 0)
+					tmp = this->_data - 1;
+				else
+					tmp = this->_data;
+				ft::ReverseIterator<T>		ret(tmp);
 				return (ret);
 			}
 			

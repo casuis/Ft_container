@@ -110,9 +110,15 @@ namespace ft{
 				return (*(this->_pointer));
 			}
 
-			ReverseIterator<T>		operator+(int n){ return (ReverseIterator<T>(this->_pointer - n));}
+			ReverseIterator<T>		operator+(difference_type n){ return (ReverseIterator<T>(this->_pointer - n));}
 
-			ReverseIterator<T>		operator-(int n){ return (ReverseIterator<T>(this->_pointer + n));}
+			ReverseIterator<T>		operator-(difference_type n){ return (ReverseIterator<T>(this->_pointer + n));}
+
+			template <class Iterator>	
+			difference_type operator-(const ReverseIterator<Iterator>& rhs)
+			{
+				return (rhs.base() - this->base());
+			}
 
 			ReverseIterator<T>		operator+=(int n) {
 				this->_pointer -= n;
@@ -135,43 +141,43 @@ namespace ft{
 	/* RandomIterator ope != */
 	template <typename T1, typename T2>
 	bool		operator!=(ReverseIterator<T1> lft, ReverseIterator<T2> rght) {
-		return (&(*lft) != &(*rght));
+		return (lft.base() != rght.base());
 	}
 	
 	template <typename T1, typename T2>
 	bool		operator==(ReverseIterator<T1> lft, ReverseIterator<T2> rght) {
-		return (&(*lft) == &(*rght));
+		return (lft.base() == rght.base());
 	}
 	
 	template <typename T1, typename T2>
 	bool		operator<=(ReverseIterator<T1> lft, ReverseIterator<T2> rght) {
-		return (&(*lft) <= &(*rght));
+		return (lft.base() >= rght.base());
 	}
 	
 	template <typename T1, typename T2>
 	bool		operator>=(ReverseIterator<T1> lft, ReverseIterator<T2> rght) {
-		return (&(*lft) >= &(*rght));
+		return (lft.base() <= rght.base());
 	}
 	
 	template <typename T1, typename T2>
 	bool		operator>(ReverseIterator<T1> lft, ReverseIterator<T2> rght) {
-		return (&(*lft) > &(*rght));
+		return (lft.base() < rght.base());
 	}
 	
 	template <typename T1, typename T2>
 	bool		operator<(ReverseIterator<T1> lft, ReverseIterator<T2> rght) {
-		return (&(*lft) < &(*rght));
+		return (lft.base() > rght.base());
 	}
 
 	template <typename T2>
 	ReverseIterator<T2>		operator+(int lft, ReverseIterator<T2> rght) {
-		return (ReverseIterator<T2>(&(*rght) - lft));
+		return (ReverseIterator<T2>(rght - lft));
 	}
 	
 	template <typename T1, typename T2>
-	int		operator-(ReverseIterator<T1> it1, ReverseIterator<T2> it2){
-		return (&(*it2) - &(*it1));
-	}
+	typename ReverseIterator<T1>::difference_type		operator-(const ReverseIterator<T1>& lhs, const ReverseIterator<T2>& rhs){
+		return (lhs.base() + rhs.base());
+	}	
 
 }
 
