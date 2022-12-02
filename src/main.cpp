@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/29 22:34:35 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/02 16:23:09 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,28 @@ int             main(void)
         for (int i = 0; i < size; ++i){
                 it[i] = (size - i) * 5;
         }
+		std::cout << std::endl << std::endl << "----START----" << std::endl << std::endl; 
         it = it + 5;
         it = 1 + it;
         it = it - 4;
+		
+		std::cout << "value of it : [" << *it << "]" << std::endl;
         std::cout << *(it += 2) << std::endl;
+		std::cout << "value of it : [" << *it << "]" << std::endl;
         std::cout << *(it -= 1) << std::endl;
+		std::cout << "value of it : [" << *it << "]" << std::endl;
 
+		std::cout << "value of it : [" << *it << "]" << std::endl;
         *(it -= 2) = 42;
+		std::cout << "value of it : [" << *it << "]" << std::endl;
+		printSize(vct, true);
         *(it += 2) = 21;
+		std::cout << "value of it : [" << *it << "]" << std::endl;
+		printSize(vct, true);
 
         std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
         std::cout << "(it == const_it): " << (ite == it) << std::endl;
-		std::cout << "it: [" << *it << "]" << " | ite: [" << *ite << "]" << std::endl
+		std::cout << "it: [" << *it << "]" << " | ite: [" << *ite << "]"
 		<< " | it base = [" << *(it.base()) << "] | " << "ite base = [" << *(ite.base()) << "]" << std::endl;
         std::cout << "(const_ite - it): " << (ite - it) << std::endl;
         std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
