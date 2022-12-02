@@ -110,9 +110,9 @@ namespace ft{
 				return (*(this->_pointer));
 			}
 
-			ReverseIterator<T>		operator+(difference_type n){ return (ReverseIterator<T>(this->_pointer - n));}
+			ReverseIterator<T>		operator+(int n){ return (ReverseIterator<T>(this->_pointer - n));}
 
-			ReverseIterator<T>		operator-(difference_type n){ return (ReverseIterator<T>(this->_pointer + n));}
+			ReverseIterator<T>		operator-(int n){ return (ReverseIterator<T>(this->_pointer + n));}
 
 			template <class Iterator>	
 			difference_type operator-(const ReverseIterator<Iterator>& rhs)
@@ -169,8 +169,8 @@ namespace ft{
 	}
 
 	template <typename T2>
-	ReverseIterator<T2>		operator+(int lft, ReverseIterator<T2> rght) {
-		return (ReverseIterator<T2>(rght - lft));
+	ReverseIterator<T2>		operator+(int n, ReverseIterator<T2> rhs) {
+		return (ReverseIterator<T2>(rhs + n));
 	}
 	
 	template <typename T1, typename T2>
