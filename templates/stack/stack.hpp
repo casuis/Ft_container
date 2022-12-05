@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:35:29 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/02 17:16:52 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/05 17:15:29 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,53 +34,63 @@ class stack{
 	////////////////////////////////////////////////////////////////////////////////
 	/* Lifecycle */
 	
-		stack(){};
-		~stack(){};
+		/* Default constructor */
+		stack() {}
+
+		/* Param Constructor */
+		stack(const Container cpy_param): c(cpy_param) {}
+		
+		~stack() {}
+
+		////////////////////////////////////////////////////////////////////////////////
+	
+		bool 	empty() const { return (c.empty()); }
+
+		size_type size() const{ return (c.size()); }
+
+		value_type& top() { return (c[c.size()]); }
+
+		const value_type& top() const { return (c[c.size()]); }
+
+		void push (const value_type& val) { c.push_back(val); }
+
+		void pop() { c.pop(); }
+
+		void swap (stack& x) noexcept() { c.swap(x.c); }
+		
+		////////////////////////////////////////////////////////////////////////////////
+
+		friend bool operator== (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs){
+			return (lhs.c == rhs.c);
+		}
+
+		friend bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
+			return (lhs.c != rhs.c);
+		}
+
+		friend bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
+			return (lhs.c < rhs.c);
+		}
+
+		friend bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
+			return (lhs.c <= rhs.c);
+		}
+
+		friend bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
+			return (lhs.c > rhs.c);
+		}
+
+		friend bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
+			return (lhs.c >= rhs.c);
+		}
 
 	////////////////////////////////////////////////////////////////////////////////
-	
-		bool 	empty() const;
-
-		size_type size() const;
-
-		value_type& top();
-
-		const value_type& top() const;
-
-		void push (const value_type& val);
-
-		template <class... Args> void emplace (Args&&... args);
-
-		void pop();
-
-		void swap (stack& x) noexcept(/*see below*/);
-
 		
-		
-	private:
-		T*	stack;
+	protected:
+		Container		c;
 };
 
-template <class T, class Container>
-bool operator== (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
 
-template <class T, class Container>
-bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-
-template <class T, class Container>
-bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-
-template <class T, class Container>
-bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-
-template <class T, class Container>
-bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-
-template <class T, class Container>
-bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-
-template <class T, class Container>
-void swap (stack<T,Container>& x, stack<T,Container>& y) noexcept(noexcept(x.swap(y)));
 
 }
 
