@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/12/05 17:23:36 by asimon           ###   ########.fr        #
+#    Updated: 2022/12/05 19:00:19 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,10 @@ RM			=	/bin/rm -rf
 
 SRC_DIR		:=	./src/
 
-SRC		:=	$(shell find $(SRC_DIR)/main*.cpp)
+SRC_CPP			:=	main_vector.cpp\
+					main_stack.cpp
 
-# SRC			:=	$(addprefix $(SRC_DIR), $(SRC_CPP))
+SRC		:=	$(addprefix $(SRC_DIR), $(SRC_CPP))
 
 FT_OUT		:= ft_output
 
@@ -72,7 +73,7 @@ all: test
 
 $(NAME):
 	@echo "$(YELLOW)Creation de l'executable FT ..$(RESET)"
-	$(CXX) $(CXXFLAGS) -o $(NAME) $(INC) $(SRC) 
+	$(foreach var, $(SRC), $(CXX) $(CXXFLAGS) -o $(NAME) $(INC) $(var);)
 	@if [ -f $@ ]; then \
 		echo "$(GREEN)Executable $@ created! $(VALIDATE)$(RESET)"; \
 	else \
@@ -81,7 +82,7 @@ $(NAME):
 	
 $(NAME_STD): 
 	@echo "$(YELLOW)Creation de l'executable STD ..$(RESET)"
-	$(CXX) $(CXXFLAGS) -o $@ -D STD=1 $(INC) $(SRC)
+		$(foreach var, $(SRC), $(CXX) $(CXXFLAGS) -D STD=1 -o $(NAME) $(INC) $(var);)
 	@if [ -f $@ ]; then \
 		echo "$(GREEN)Executable $@ created! $(VALIDATE)$(RESET)"; \
 	else \
