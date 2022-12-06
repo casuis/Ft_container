@@ -6,50 +6,62 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/12/05 19:00:19 by asimon           ###   ########.fr        #
+#    Updated: 2022/12/06 19:07:11 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	ft_container
+NAME		:=	ft_container
 
-NAME_STD	=	std_container
+NAME_STD	:=	std_container
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                              SHELL                              #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-CXX			=	c++
+CXX				:=	c++
 
-CXXFLAGS	=	-Wall -Wextra -Werror -std=c++98 -g3
+CXXFLAGS		:=	-Wall -Wextra -Werror -std=c++98 -g3
 
-INC			=	-I./private/ -I./templates/vector/ -I./templates/iterator/ -I./templates/functions/
+INC				:=	-I./private/ -I./templates/vector/ -I./templates/iterator/ -I./templates/functions/
 
-MKDIR		=	/bin/mkdir -p
+MKDIR			=	/bin/mkdir -p
 
-RM			=	/bin/rm -rf
+RM				=	/bin/rm -rf
+
+SRC_DIR			:=	./src/
+
+TEMPLATE_DIR	:=	./templates/
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                              SRC                                #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-SRC_DIR		:=	./src/
 
-SRC_CPP			:=	main_vector.cpp\
-					main_stack.cpp
+MAIN_V		:=	main_vector.cpp
 
-SRC		:=	$(addprefix $(SRC_DIR), $(SRC_CPP))
+MAIN_S		:=	main_stack.cpp
 
-FT_OUT		:= ft_output
+MAIN_M		:=	main_map.cpp
 
-STD_OUT		:= std_putput
+EXEC_V		:=	vector_output
 
-RES			:= final_grade
+EXEC_S		:=	stack_output
+
+EXEC_M		:=	map_output
+
+FT_OUT		:=	ft_output
+
+STD_OUT		:=	std_output
+
+RES			:=	diff
+
+FT			:=	ft_
+
+STD			:=	std_
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                              VECTOR                             #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-V_DIR		=	$(addprefix $(SRC_DIR), vector/)
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -72,34 +84,92 @@ UNVALIDATE	= ❌
 all: test
 
 $(NAME):
-	@echo "$(YELLOW)Creation de l'executable FT ..$(RESET)"
-	$(foreach var, $(SRC), $(CXX) $(CXXFLAGS) -o $(NAME) $(INC) $(var);)
-	@if [ -f $@ ]; then \
-		echo "$(GREEN)Executable $@ created! $(VALIDATE)$(RESET)"; \
+	@echo "$(YELLOW)Creation des executables FT ..$(RESET)"
+
+	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
+		$(CXX) $(CXXFLAGS) -o $(FT)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
 	else \
-		echo "$(RED) Failed to create Executable $(UNVALIDATE)$(RESET)"; \
-	fi
-	
-$(NAME_STD): 
-	@echo "$(YELLOW)Creation de l'executable STD ..$(RESET)"
-		$(foreach var, $(SRC), $(CXX) $(CXXFLAGS) -D STD=1 -o $(NAME) $(INC) $(var);)
-	@if [ -f $@ ]; then \
-		echo "$(GREEN)Executable $@ created! $(VALIDATE)$(RESET)"; \
-	else \
-		echo "$(RED) Failed to create Executable $(UNVALIDATE)$(RESET)"; \
+		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
 	fi
 
+	@if [ -f $(FT)$(EXEC_V) ]; then \
+		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+	fi
+	
+	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
+		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
+	else \
+		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
+	fi
+
+	@if [ -f $(FT)$(EXEC_S) ]; then \
+		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
+	fi
+
+	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
+		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_M) $(MAIN_M); \
+	else \
+		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+	fi
+
+	@if [ -f $(FT)$(EXEC_M) ]; then \
+		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+	fi
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+$(NAME_STD): 
+	@echo "$(YELLOW)Creation de l'executable STD ..$(RESET)";
+
+	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
+		$(CXX) $(CXXFLAGS) -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
+	else \
+		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+	fi
+
+	@if [ -f $(STD)$(EXEC_V) ]; then \
+		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+	fi
+	
+	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
+		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
+	else \
+		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
+	fi
+
+	@if [ -f $(STD)$(EXEC_S) ]; then \
+		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
+	fi
+
+	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
+		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_M) $(MAIN_M); \
+	else \
+		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+	fi
+
+	@if [ -f $(STD)$(EXEC_M) ]; then \
+		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+	fi
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 test:
-	@$(MAKE) $(NAME)
-	@$(MAKE) $(NAME_STD)
+	@$(MAKE) -i $(NAME)
+	@$(MAKE) -i $(NAME_STD)
 	@mkdir -p res
-	@mv $(NAME) $(NAME_STD) res/
-	@./res/$(NAME) > ./res/$(FT_OUT)
-	@./res/$(NAME_STD) > ./res/$(STD_OUT)
-	@echo "$(YELLOW)Comparing the two outputs...$(RESET) "
-	@diff -y ./res/$(FT_OUT) ./res/$(STD_OUT) > ./res/$(RES); [ $$? -eq 1 ]
-	@echo "$(GREEN)ENDED$(RESET)"
-	@echo "$(CYAN)pls look in the res/ directory, if final_grade is empty no diff has been found$(RESET)"
+	@mv *_output res/
 
 go: re
 	./$(NAME)
