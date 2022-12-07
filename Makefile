@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/12/06 19:07:11 by asimon           ###   ########.fr        #
+#    Updated: 2022/12/07 12:17:07 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ CXX				:=	c++
 
 CXXFLAGS		:=	-Wall -Wextra -Werror -std=c++98 -g3
 
-INC				:=	-I./private/ -I./templates/vector/ -I./templates/iterator/ -I./templates/functions/
+INC				:=	-I./private/ -I./templates/vector/ -I./templates/stack/ -I./templates/iterator/ -I./templates/functions/
 
 MKDIR			=	/bin/mkdir -p
 
@@ -84,7 +84,7 @@ UNVALIDATE	= ❌
 all: test
 
 $(NAME):
-	@echo "$(YELLOW)Creation des executables FT ..$(RESET)"
+	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
 
 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
 		$(CXX) $(CXXFLAGS) -o $(FT)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
@@ -111,7 +111,7 @@ $(NAME):
 	fi
 
 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
-		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_M) $(MAIN_M); \
+		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
 	else \
 		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
 	fi
@@ -125,7 +125,7 @@ $(NAME):
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 $(NAME_STD): 
-	@echo "$(YELLOW)Creation de l'executable STD ..$(RESET)";
+	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
 
 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
 		$(CXX) $(CXXFLAGS) -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
@@ -152,7 +152,7 @@ $(NAME_STD):
 	fi
 
 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
-		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_M) $(MAIN_M); \
+		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
 	else \
 		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
 	fi

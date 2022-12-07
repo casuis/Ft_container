@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/06 18:08:20 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/07 11:14:04 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,13 @@ namespace ft
 		
 			/* Default constructor */
 			vector(const allocator_type& alloc = allocator_type())
-			: _alloc(alloc), _data(0x0), _size(0), _capacity(0) {return ;}
+			: _alloc(alloc), _size(0), _capacity(0) {
+				pointer		newVec;
+
+				newVec = this->_alloc.allocate(2);
+				this->_data = newVec;
+				return ;
+			}
 
 			/* Fill Constructor */
 			vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
