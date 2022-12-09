@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/12/07 12:17:07 by asimon           ###   ########.fr        #
+#    Updated: 2022/12/09 14:39:48 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ CXX				:=	c++
 
 CXXFLAGS		:=	-Wall -Wextra -Werror -std=c++98 -g3
 
-INC				:=	-I./private/ -I./templates/vector/ -I./templates/stack/ -I./templates/iterator/ -I./templates/functions/
+INC				:=	-I./private/ -I./templates/vector/ -I./templates/stack/ -I./templates/map/ -I./templates/iterator/ -I./templates/functions/
 
 MKDIR			=	/bin/mkdir -p
 
@@ -84,6 +84,7 @@ UNVALIDATE	= ❌
 all: test
 
 $(NAME):
+	@clear;
 	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
 
 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
@@ -165,6 +166,39 @@ $(NAME_STD):
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+vector: fclean
+	@clear;
+	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+
+	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
+		$(CXX) $(CXXFLAGS) -o $(FT)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
+	else \
+		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+	fi
+
+	@if [ -f $(FT)$(EXEC_V) ]; then \
+		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+	fi
+	
+	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
+
+	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
+		$(CXX) $(CXXFLAGS) -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
+	else \
+		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+	fi
+
+	@if [ -f $(STD)$(EXEC_V) ]; then \
+		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+	fi
+
+	@mkdir -p res
+	@mv *_output res/
+
 test:
 	@$(MAKE) -i $(NAME)
 	@$(MAKE) -i $(NAME_STD)
@@ -175,6 +209,7 @@ go: re
 	./$(NAME)
 
 clean:
+	@clear
 	$(RM) ./res/$(NAME) ./res/$(NAME_STD)
 
 fclean: clean

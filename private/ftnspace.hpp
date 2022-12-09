@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/07 10:51:39 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/09 14:40:11 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 #	define NAMESPACE ft
 # endif 
 
-# include <vector>
 # include <is_integral.hpp>
 # include <enable_if.hpp>
 # include <iterator_traits.hpp>
@@ -29,6 +28,7 @@
 # include <reverse_iterator.hpp> 
 # include <vector.hpp>
 # include <stack.hpp>
+# include <map.hpp>
 
 
 # define YELLOW "\033[1;33m"

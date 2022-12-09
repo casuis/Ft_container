@@ -6,16 +6,21 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:47:25 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/06 18:08:42 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/09 12:26:20 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MY_ITERATOR_HPP__
 # define __MY_ITERATOR_HPP__
 
-// # include <header.hpp>
-# include "iterator_traits.hpp"
-# include <../../private/header.hpp>
+/* Comment her for tester */
+# include <header.hpp>
+# include <iterator_traits.hpp>
+
+/* Decomment her for tester */
+// # include "../../private/header.hpp"
+// # include "./iterator_traits.hpp"
+
 namespace ft{
 
 	template <typename T = void>
@@ -101,7 +106,6 @@ namespace ft{
 
 			////////////////////////////////////////////////////////////////////////////////
 			/* Arithmetic operators */
-			/* NEED TO DO MORE OPERATION (ite + n, n + it, it += n ...) */
 
 			/* operator - */
 			RandomIterator<T>		operator-(int n){
@@ -148,7 +152,6 @@ namespace ft{
 	
 	/* Comparison operators */
 	
-	/* RandomIterator ope != */
 	template <typename T1, typename Iter>
 	bool		operator!=(RandomIterator<T1> lft, Iter rght) {
 		return (&(*lft) != &(*rght));
@@ -193,6 +196,8 @@ namespace ft{
 	typename RandomIterator<T1>::difference_type	operator-(RandomIterator<T1> lfhs, RandomIterator<T2> rghs){
 		return (&(*lfhs) - &(*rghs));
 	}
+	////////////////////////////////////////////////////////////////////////////////
+	
 }
 
 #endif

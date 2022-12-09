@@ -6,15 +6,18 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:35:29 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/07 11:51:44 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/09 12:27:53 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MY_STACK_HPP__
 # define __MY_STACK_HPP__
-# include "../../private/header.hpp"
-# include "../../private/ftnspace.hpp"
 
+/* Comment her for tester */
+# include <ftnspace.hpp>
+
+/* Decomment her for tester */
+// # include "../../private/ftnspace.hpp"
 
 namespace ft{
 	
