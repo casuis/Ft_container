@@ -1,6 +1,6 @@
 .vscode/settings.json
-templates/vector/containers_test/
+containers_test/
 42TESTERS-CONTAINERS
-./res/*
-./src/*.o
+res/
+src/*.o
 ./templates/*/plan_*.txt
