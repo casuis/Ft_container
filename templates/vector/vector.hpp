@@ -6,22 +6,26 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/07 11:14:04 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/09 15:17:22 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*  
-	https://cplusplus.com/reference/vector/vector/
-*/
 
 #ifndef __MY_VECTOR_HPP__
 # define __MY_VECTOR_HPP__
 
-# include <../../private/header.hpp>
-# include <../iterator/iterator.hpp>
-# include <../iterator/reverse_iterator.hpp>
-# include <../functions/enable_if.hpp>
-# include <../functions/is_integral.hpp>
+/* Comment this area for tester */
+# include <header.hpp>
+# include <iterator.hpp>
+# include <reverse_iterator.hpp>
+# include <enable_if.hpp>
+# include <is_integral.hpp>
+
+/* decomment her for tester */
+// # include <../../private/header.hpp>
+// # include <../iterator/iterator.hpp>
+// # include <../iterator/reverse_iterator.hpp>
+// # include <../functions/enable_if.hpp>
+// # include <../functions/is_integral.hpp>
 
 namespace ft
 {
@@ -165,6 +169,7 @@ namespace ft
 			/* rend return a reverse pointer to the end of the container */
 			ft::ReverseIterator<T>			rend() const{
 				pointer				tmp;
+				
 				if (this->_size != 0)
 					tmp = this->_data - 1;
 				else
@@ -185,6 +190,7 @@ namespace ft
 			/* cend retutn a const pointer to the end of the container */
 			const_iterator	cend(){
 				T*		tmp = this->_data;
+				
 				const ft::RandomIterator<T>	ret(static_cast<const T>(&tmp[this->_size]));
 				return (ret);
 			}
@@ -195,6 +201,7 @@ namespace ft
 			const ft::ReverseIterator<T>			crbegin(){
 				size_t		i = 0;
 				T*		tmp = this->_data;
+				
 				while (tmp[i])
 					i++;
 				const ft::ReverseIterator<T>		ret(static_cast<const T>(&tmp[i]));
@@ -248,14 +255,14 @@ namespace ft
 			
 			/* realloc the container to change his capacity to new_cap, the size don't change */
 			void			reserve(size_t new_cap) {
+				pointer 		newVec; 
+				size_t i = 0;
+				
 				if (this->_capacity > new_cap)
 					return ;
-				pointer 		newVec; 
-				
 				if (new_cap == 0)
 					new_cap = 1;
 				newVec = this->_alloc.allocate(new_cap);
-				size_t i = 0;
 				for (; i < new_cap && i < this->_size; i++){
 					try{
 						this->_alloc.construct(newVec + i, this->_data[i]);
@@ -455,23 +462,25 @@ namespace ft
 
 			/* insert by pos */
 			iterator 		insert (iterator position, const value_type& val){
-				vector<T>			tab(*this);
-				int					pos = 0;
+				int				pos = 0;
+				ft::vector<T>	tmp(*this);
 				
 				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++){
 					pos++;
 					if ((it + 1 == ite) && (it != position) && (it + 1 != position))
 						return (position);
 				}
-				while (this->_size + 1 > this->_capacity)
-					this->reserve(this->_capacity * 2);
+				if (this->_size + 1 > this->_capacity)
+					this->reserve(this->_capacity * 2);				
+					
 				position = this->begin() + pos;
 				if (position == this->end()){
 					this->push_back(val);
 					return (position);
 				}
+				
 				this->clear();
-				for (iterator start = tab.begin(), end = tab.end(), cmp = this->begin(); start != end; start++){
+				for (iterator start = tmp.begin(), end = tmp.end(), cmp = this->begin(); start != end; start++){
 					if (cmp == position)
 						this->push_back(val);
 					this->push_back(*start);
@@ -483,10 +492,17 @@ namespace ft
 			/* insert n elem by pos */
 			void 			insert (iterator position, size_type n, const value_type& val){
 				size_t		pos = 0;
+				size_t		new_cap = 2;
+				
 				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++)
 					pos++;
-				while (this->_size + n > this->_capacity)	
-					this->reserve(this->_capacity * 2);
+					
+				if (this->_capacity != 0)
+					new_cap *= this->_capacity; 
+				for (; this->_size + n > new_cap; new_cap *= 2) {} /* Calcul mem value needed  */
+				if (this->_size + n > this->_capacity)
+					this->reserve(new_cap);
+					
 				for (size_t i = 0; i < n; i++)
 					position = this->insert(this->begin() + pos, val);
 			}
@@ -494,17 +510,23 @@ namespace ft
 			/* insert by range */
 			template <typename InputIterator>
 			void 			insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0x0) {
-				size_t 		size = 0;
+				size_t 		add_size = 0;
 				size_t		pos = 0;
+				size_t		new_cap = 2;
+				
 				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++){
 					pos++;
 					if ((it + 1 == ite) && (it != position) && (it + 1 != position))
 						return ;
 				}
-				for (InputIterator it = first, ite = last; it != ite; it++)
-					size++;
-				while (this->_size + size > this->_capacity)
-					this->reserve(this->_capacity * 2);
+				
+				if (this->_capacity != 0)
+					new_cap *= this->_capacity;
+				for (InputIterator it = first, ite = last; it != ite; it++, add_size++) {}
+				for (; this->_size + add_size > new_cap; new_cap *= 2) {} /* Calcul mem value needed  */
+				if (this->_size + add_size > this->_capacity)
+					this->reserve(new_cap);
+					
 				position = this->begin() + pos;
 				for (; first != last; first++){
 					this->insert(position, *first);
@@ -512,17 +534,17 @@ namespace ft
 				}
 			}
 			
-			////////////////////////////////////////////////////////////////////////////////
-			/*                              Allocator                                     */
-			////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
+		/*                              Allocator                                     */
+		////////////////////////////////////////////////////////////////////////////////
 
 			allocator_type 	get_allocator() const{
 				return (this->_alloc);
 			}
 			
-			////////////////////////////////////////////////////////////////////////////////
-			/*                              Operators                                     */
-			////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
+		/*                              Operators                                     */
+		////////////////////////////////////////////////////////////////////////////////
 
 
 			vector<T>&		operator=(const vector<T>& old){
@@ -546,6 +568,9 @@ namespace ft
 			size_type		_capacity;
 
 	};
+	
+	////////////////////////////////////////////////////////////////////////////////
+	/* Operator's overload */
 	
 	template <typename T1, typename T2>
 	bool			operator==(const vector<T1> lft, const vector<T2> old){
@@ -597,6 +622,8 @@ namespace ft
 		}
 		return (true);
 	}
+	////////////////////////////////////////////////////////////////////////////////
+	
 }
 
 #endif
