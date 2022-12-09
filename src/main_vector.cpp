@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/06 18:00:52 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/09 14:46:21 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,6 +342,7 @@ int		main(void)
 			std::cout << CYAN << "=> Test insert:" << RESET << std::endl << std::endl;
 			NAMESPACE::vector<int>			test;
 			NAMESPACE::vector<int>			test_bis;
+			NAMESPACE::vector<int>			more_test;
 			
 			for (int i = 0; i < 10; i++)
 				test.push_back(0);
@@ -354,7 +355,10 @@ int		main(void)
 			test.insert(test.begin() + 1, test_bis.begin() + 2, test_bis.end());
 			
 			ft::print(test, "test 1: ");
-			test.insert(test.begin(), 3, 42);
+			
+			std::cout << "cap: [" << more_test.capacity() << "]" << std::endl; 
+			more_test.insert(more_test.begin(), 9, 42);
+			std::cout << "cap: [" << more_test.capacity() << "]" << std::endl;
 			ft::print(test, "test 2: ");
 
 			
@@ -393,6 +397,13 @@ int		main(void)
 	////////////////////////////////////////////////////////////////////////////////
 	{
 		std::cout << CYAN << "=========MORE TEST=========" << RESET << std::endl;
+
+		// NAMESPACE::vector<std::string>					test(8);
+		// NAMESPACE::vector<std::string>::iterator		it = test.begin();
+
+		// test.push_back("AAAAAA");
+		// std::cout << *it << std::endl;
+		
 
 		////////////////////////////////////////////////////////////////////////////////
 	}
