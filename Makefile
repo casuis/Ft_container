@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/12/09 14:39:48 by asimon           ###   ########.fr        #
+#    Updated: 2022/12/21 22:17:50 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -198,6 +198,39 @@ vector: fclean
 
 	@mkdir -p res
 	@mv *_output res/
+
+# stack: fclean
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+map: fclean
+	@clear;
+	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+
+	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
+		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
+	else \
+		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+	fi
+
+	@if [ -f $(FT)$(EXEC_M) ]; then \
+		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+	fi
+	
+	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
+
+	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
+		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
+	else \
+		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+	fi
+
+	@if [ -f $(STD)$(EXEC_M) ]; then \
+		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+	fi
 
 test:
 	@$(MAKE) -i $(NAME)

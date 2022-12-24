@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/09 11:52:20 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/24 16:53:40 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,8 @@
 
 /* lib for system fctn */
 # include <cstdlib>
+
+/* structur ft::pair */
+# include <pair.hpp>
 
 #endif

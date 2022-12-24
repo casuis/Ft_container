@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/09 14:40:11 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/24 16:51:55 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # include <vector.hpp>
 # include <stack.hpp>
 # include <map.hpp>
+# include <Bst.hpp>
+# include <pair.hpp>
 
 
 # define YELLOW "\033[1;33m"
