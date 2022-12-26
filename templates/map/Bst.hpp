@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/24 16:57:30 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/26 14:26:00 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ namespace ft{
 	template <typename Key, typename Value>
 	class NodeSentinel;
 
+
+	////////////////////////////////////////////////////////////////////////////////
+	
+
 	template <typename Key, typename Value>
 	class Node
 	{
@@ -37,6 +41,7 @@ namespace ft{
 			Node*		parent;
 			
 			ft::pair<Key, Value>		pair;
+			size_t						size;
 			bool						black;
 			bool						isLeftChild;
 
@@ -46,9 +51,11 @@ namespace ft{
 		/*                              Functions                                     */
 		////////////////////////////////////////////////////////////////////////////////
 		
-			Node(Key& key, Value& value){
+			Node(Key key, Value value){
 				ft::pair<Key, Value>		tmp(key, value);		
 				
+				std::cout << "value : [" << tmp._value << "]" << std::endl;
+				std::cout << "key : [" << tmp._key << "]" << std::endl;
 				this->parent = 0x0;
 				this->left = 0x0;
 				this->right = 0x0;
@@ -56,6 +63,7 @@ namespace ft{
 				this->black = false;
 				this->isLeftChild = false;
 				this->sentinel = false;
+				this->size = 0;
 				return ;
 			};
 			
@@ -66,22 +74,10 @@ namespace ft{
 				this->black = true;
 				this->isLeftChild = false;
 				this->sentinel = true;
+				this->size = 0;
 			};
 			
 			~Node() {};
-	};
-
-	template <typename Key, typename Value>
-	class NodeSentinel: public Node<Key, Value>{
-		friend 	class ft::Bst<Key, Value>;
-
-		
-		private:
-			size_t	size;
-			
-			NodeSentinel(): Node<Key, Value>() {
-				this->size = 0;
-			}
 	};
 	
 	template <typename Key, typename Value, typename NodeType, class Allocator>
@@ -106,30 +102,30 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 			Allocator							_alloc;
 			Node<Key, Value>					*root;
-			NodeSentinel<Key, Value>			*sentinel;
+			Node<Key, Value>					*sentinel;
 			
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Constructors                                  */
 		////////////////////////////////////////////////////////////////////////////////
 		
 			Bst(const allocator_type& alloc = allocator_type()): _alloc(alloc), root(0x0) {
-				std::cout << "start of Bst constructor" << std::endl;
-				sentinel = this->_alloc.allocate(1);
-				this->_alloc.construct(sentinel, NodeSentinel<Key, Value>());
-				// this->sentinel = NodeSentinel();
-				std::cout << "end of Bst constructor" << std::endl;
+				sentinel = this->_alloc.allocate(1);;
+				_alloc.construct(sentinel, Node<Key, Value>());
 				return ;
 			};
 			
-			~Bst() {};
+			~Bst() {
+				_alloc.destroy(sentinel);
+				_alloc.deallocate(sentinel, 1);
+			};
 
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Methodes                                      */
 		////////////////////////////////////////////////////////////////////////////////
 		
-			void	addNode(node pos, node newNode) {
+			void	addNode(node& newNode, node pos) {
 				if (root == 0x0){
-					root = newNode;
+					root = &newNode;
 					this->sentinel->left = root;
 					this->root->parent = this->sentinel;
 					return ;
@@ -143,7 +139,7 @@ namespace ft{
 						newNode->right = sentinel;
 					}
 					else if (newNode->value < pos->value && pos->left != sentinel)
-						addNode(pos->left, newNode);
+						addNode(newNode, pos->left);
 					else if (newNode->value > pos->value && pos->right == sentinel){
 						pos->right = newNode;
 						newNode->parent = pos;
@@ -152,8 +148,8 @@ namespace ft{
 						newNode->isLeftChild = false;
 					}
 					else
-						addNode(pos->right, newNode);
-					checkcolor(newNode);
+						addNode(newNode, pos->right);
+					// checkcolor(newNode);
 				}
 				return ;
 			};

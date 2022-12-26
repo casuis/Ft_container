@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 00:02:01 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/24 16:54:40 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/26 14:19:25 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,9 @@ namespace ft{
 		typedef K			key_type;
 		typedef V			value_type;
 		
-		private:
+		public:
 			key_type		_key;
 			value_type		_value;
-			
-		public:
 
 			pair(key_type key, value_type value): _key(key), _value(value) {return ;}
 
@@ -37,20 +35,21 @@ namespace ft{
 			
 			~pair() {return ;}
 
+			////////////////////////////////////////////////////////////////////////////////
+			
 			pair&		operator=(const pair& param){
-				key_type		tmp = this->_key;
-				value_type		tmp2 = this->_value;
-
-				
 				if (*this == param)
 					return (*this);
 				this->_key = param._key;
 				this->_value = param._value;
-				param._key = tmp;
-				param._value = tmp2;
 				return (*this);
 			}
 	};
+
+	template <typename First,  typename Second>
+	bool		operator==(const ft::pair<First, Second>& lhs, const ft::pair<First, Second>& rhs){
+		return (lhs._key == rhs._key && lhs._value == lhs._value);
+	}
 
 	
 }
