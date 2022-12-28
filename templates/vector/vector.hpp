@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/28 19:08:56 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/28 20:13:08 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,7 @@ namespace ft
 		
 			/* Default constructor */
 			vector(const allocator_type& alloc = allocator_type())
-			: _alloc(alloc), _size(0), _capacity(0) {
-				pointer		newVec;
-
-				newVec = this->_alloc.allocate(2);
-				this->_data = newVec;
+			: _alloc(alloc), _data(0x0), _size(0), _capacity(0)  {
 				return ;
 			}
 
@@ -366,7 +362,7 @@ namespace ft
 			
 			void push_back (const value_type& val){
 				if (this->_size + 1 > this->_capacity)
-					this->reserve(this->_capacity * 2);
+					this->reserve(this->_size * 2);
 				this->_alloc.construct(this->_data + this->_size, val);
 				this->_size += 1;
 			}
@@ -467,9 +463,12 @@ namespace ft
 					if ((it + 1 == ite) && (it != position) && (it + 1 != position))
 						return (position);
 				}
-				if (this->_size + 1 > this->_capacity)
-					this->reserve(this->_capacity * 2);				
-					
+				if (this->_size + n > this->_capacity){
+					if (this->_capacity * 2 >= this->_size + n)
+						this->reserve(this->_capacity * 2);
+					else
+						this->reserve(this->_size + n);
+				}
 				position = this->begin() + pos;
 				if (position == this->end()){
 					this->push_back(val);
@@ -494,12 +493,6 @@ namespace ft
 				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++)
 					pos++;
 					
-				if (this->_capacity != 0)
-					new_cap *= this->_capacity; 
-				for (; this->_size + n > new_cap; new_cap *= 2) {} /* Calcul mem value needed  */
-				if (this->_size + n > this->_capacity)
-					this->reserve(new_cap);
-					
 				for (size_t i = 0; i < n; i++)
 					position = this->insert(this->begin() + pos, val);
 			}
@@ -521,8 +514,12 @@ namespace ft
 					new_cap *= this->_capacity;
 				for (InputIterator it = first, ite = last; it != ite; it++, add_size++) {}
 				for (; this->_size + add_size > new_cap; new_cap *= 2) {} /* Calcul mem value needed  */
-				if (this->_size + add_size > this->_capacity)
-					this->reserve(new_cap);
+				if (this->_size + add_size > this->_capacity){
+					if (this->_size * 2 >= this->_size + add_size)
+						this->reserve(this->_size * 2);
+					else
+						this->reserve(this->_size + add_size);
+				}
 					
 				position = this->begin() + pos;
 				for (; first != last; first++){
