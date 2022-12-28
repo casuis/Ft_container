@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/24 16:51:55 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/28 18:54:40 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # include <reverse_iterator.hpp> 
 # include <vector.hpp>
 # include <stack.hpp>
-# include <map.hpp>
-# include <Bst.hpp>
+// # include <map.hpp>
+// # include <Bst.hpp>
 # include <pair.hpp>
 
 
@@ -42,7 +42,7 @@
 
 namespace ft{
 	
-	void		print(NAMESPACE::vector<int> tab, std::string msg){
+	void		print(NAMESPACE::vector<int>& tab, std::string msg){
 		for (size_t i = 0; i < tab.size(); i++){
 			std:: cout <<  GREEN << "| " << RESET;
 			std::cout << msg << "[" << GREEN << tab[i] << RESET << "]" << std::endl;
@@ -53,7 +53,7 @@ namespace ft{
 		std::cout << GREEN << std::string(42, '-') << RESET << std::endl;
 	}
 	
-	void		print( NAMESPACE::vector< NAMESPACE::vector<int> > tab, std::string msg){
+	void		print( NAMESPACE::vector< NAMESPACE::vector<int> >& tab, std::string msg){
 		for (size_t i = 0; i < tab.size(); i++){
 			for (size_t j = 0; j < tab.at(i).size(); j++){
 				std:: cout <<  GREEN << "| " << RESET;

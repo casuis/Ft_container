@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/28 19:03:00 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/28 19:53:50 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,7 +349,7 @@ int		main(void)
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << CYAN << "=> Test insert:" << RESET << std::endl << std::endl;
+			std::cout << CYAN << "=> Test insert normale:" << RESET << std::endl << std::endl;
 			NAMESPACE::vector<int>			test;
 			NAMESPACE::vector<int>			test_bis;
 			NAMESPACE::vector<int>			more_test;
@@ -369,14 +369,14 @@ int		main(void)
 			std::cout << "cap: [" << more_test.capacity() << "]" << std::endl; 
 			more_test.insert(more_test.begin(), 9, 42);
 			std::cout << "cap: [" << more_test.capacity() << "]" << std::endl;
-			ft::print(test, "test 2: ");
+			ft::print(more_test, "test 2: ");
 
 			
 			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
 		////////////////////////////////////////////////////////////////////////////////
 		{
-			std::cout << CYAN << "=> Test insert:" << RESET << std::endl << std::endl;
+			std::cout << CYAN << "=> Test insert inception:" << RESET << std::endl << std::endl;
 
 			NAMESPACE::vector< NAMESPACE::vector<int> >::iterator		it = tab_bis.begin();
 			NAMESPACE::vector< NAMESPACE::vector<int> >::iterator		ite = tab_bis.end();
@@ -385,6 +385,7 @@ int		main(void)
 			ft::print(tab, "tab avant insert: ");
 			tab.insert(tab.begin(), it, ite);
 			ft::print(tab, "tab apres insert: ");
+			std::cout << "tab size " << tab.size() << std::endl;
 
 			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}

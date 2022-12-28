@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/12/21 22:17:50 by asimon           ###   ########.fr        #
+#    Updated: 2022/12/27 16:46:46 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -185,7 +185,7 @@ vector: fclean
 	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
 
 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
-		$(CXX) $(CXXFLAGS) -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
+		$(CXX) $(CXXFLAGS) -D STD=1 -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
 	else \
 		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
 	fi
