@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/09 15:17:22 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/28 19:08:56 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ namespace ft
 			vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 			: _alloc(alloc), _size(n), _capacity(n){
 				pointer			newVec;
-				if (n % 2 != 0)
-					this->_capacity += 1;
 				newVec = this->_alloc.allocate(this->_capacity);
 				for (size_type i = 0; i < n; i++)
 					this->_alloc.construct(newVec + i, val);
@@ -243,13 +241,13 @@ namespace ft
 			bool			empty() const { return (this->_size == 0); }
 
 			/* return the size of the container */
-			size_t			size() const { return (this->_size);}
+			size_type			size() const { return (this->_size);}
 			
 			/* return the capacity of the vector */
-			size_t			capacity() const {return (this->_capacity);}
+			size_type			capacity() const {return (this->_capacity);}
 			
 			/* return the max sixe of the type T container */
-			size_t			max_size() const  {return (this->_alloc.max_size());}			
+			size_t			max_size() const throw() {return (this->_alloc.max_size());}			
 
 			////////////////////////////////////////////////////////////////////////////////
 			
@@ -374,9 +372,7 @@ namespace ft
 			}
 			
 			void	clear(){
-				for (size_t i = 0; i < this->_size; i++)
-					this->_alloc.destroy(this->_data + i);
-				this->_size = 0;
+				for (size_t i = 0; i < this->_size; ) {this->pop_back();}
 			}
 			
 			void	pop_back(){
@@ -465,6 +461,7 @@ namespace ft
 				int				pos = 0;
 				ft::vector<T>	tmp(*this);
 				
+				
 				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++){
 					pos++;
 					if ((it + 1 == ite) && (it != position) && (it + 1 != position))
@@ -548,7 +545,8 @@ namespace ft
 
 
 			vector<T>&		operator=(const vector<T>& old){
-				if (this->_capacity != 0 && old._capacity != 0 && this->_data == old._data)
+				std::cout << "in ope=" << std::endl;
+				if (this->_capacity == old._capacity && this->_data == old._data)
 					return (*this);
 				if (this->_capacity != 0)
 					this->_alloc.deallocate(this->_data, this->_capacity);
