@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/27 14:28:11 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/28 17:14:53 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Member Type                                   */
 		////////////////////////////////////////////////////////////////////////////////
+		
 			typedef Allocator				allocator_type;
 			typedef Key						key_type;
 			typedef Value					value_type;
@@ -102,6 +103,7 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Attributs                                     */
 		////////////////////////////////////////////////////////////////////////////////
+		
 			Allocator							_alloc;
 			Node<Key, Value>					*root;
 			Node<Key, Value>					*sentinel;
@@ -179,61 +181,61 @@ namespace ft{
 				return (0x0);
 			}
 
-			void		deleteNode(const value_type& value, node &pos){
+			void		deleteNode(const value_type& value, node *pos){
 				node		*tmp;
-				if (pos.pair._value == value){
-					tmp = pos.parent;
-					if (pos.isLeftChild == true && pos.left->sentinel == false){
-						tmp->left = pos.left;
-						tmp->left->right = pos.right;
-						pos.left->parent = tmp;
+				if (pos->pair._value == value){
+					tmp = pos->parent;
+					if (pos->isLeftChild == true && pos->left->sentinel == false){
+						tmp->left = pos->left;
+						tmp->left->right = pos->right;
+						pos->left->parent = tmp;
 						this->_alloc.destroy(&pos);
 					}
-					else if (pos.isLeftChild == true && pos.left->sentinel == true && pos.right->sentinel == false){
-						tmp->left = pos.right;
-						pos.right->parent = tmp;
+					else if (pos->isLeftChild == true && pos->left->sentinel == true && pos->right->sentinel == false){
+						tmp->left = pos->right;
+						pos->right->parent = tmp;
 						this->_alloc.destroy(&pos);
 					}
-					else if (pos.isLeftChild == false && pos.left->sentinel == false){
-						tmp->right = pos.left;
-						tmp->right->right = pos.right;
-						pos.left->parent = tmp;
+					else if (pos->isLeftChild == false && pos->left->sentinel == false){
+						tmp->right = pos->left;
+						tmp->right->right = pos->right;
+						pos->left->parent = tmp;
 						this->_alloc.destroy(&pos);
 					}
-					else if (!pos.isLeftChild && pos.left->sentinel && !pos.right->sentinel){
-						tmp->right = pos.right;
-						pos.right->parent = tmp;
+					else if (!pos->isLeftChild && pos->left->sentinel && !pos->right->sentinel){
+						tmp->right = pos->right;
+						pos->right->parent = tmp;
 						this->_alloc.destroy(&pos);
 					}
-					else if (pos.isLeftChild){
-						tmp->left = pos.left;
-						pos.left->parent = tmp;
+					else if (pos->isLeftChild){
+						tmp->left = pos->left;
+						pos->left->parent = tmp;
 						_alloc.destroy(&pos);
 					}
-					else if (pos.isLeftChild){
-						tmp->right = pos.right;
-						pos.right->parent = tmp;
+					else if (pos->isLeftChild){
+						tmp->right = pos->right;
+						pos->right->parent = tmp;
 						_alloc.destroy(&pos);
 					}
 					return ;
 				}
-				else if (value < pos.pair._value && !pos.left->sentinel ) {
-					deleteNode(value, *(pos.left));
+				else if (value < pos->pair._value && !pos->left->sentinel ) {
+					deleteNode(value, pos->left);
 					return ;
 				}
-				else if (value > pos.pair._value && !pos.right->sentinel) {
-					deleteNode(value, *(pos.right));
+				else if (value > pos->pair._value && !pos->right->sentinel) {
+					deleteNode(value, pos->right);
 					return ;
 				}
 				return ;
 			}
 
-			void		printBst(node& pos) const {
-				if (pos.left != sentinel)
-					printBst(*(pos.left));
-				std::cout << "value : [" << pos.pair._value  << "]" << std::endl;
-				if (pos.right != sentinel)
-					printBst(*(pos.right));
+			void		printBst(node* pos) const {
+				if (pos->left != sentinel)
+					printBst(pos.left);
+				std::cout << "value : [" << pos->pair._value  << "]" << std::endl;
+				if (pos->right != sentinel)
+					printBst(pos.right);
 				return ;
 			}
 
@@ -246,7 +248,7 @@ namespace ft{
 			}
 
 			void		correctTree(node *pos) {
-				if (pos->parent->isLeftChild){
+				if (pos->parent->isLeftChild) {
 					if (pos->parent->parent->right->black)
 						rotateNode(pos);
 					else {
@@ -256,14 +258,42 @@ namespace ft{
 						return;
 					}
 				}
-				else{
+				else {
 					if (pos->parent->parent->left->black)
 						rotateNode(pos);
 					else {
-
+						pos->parent->parent->left->black = true;
+						pos->parent->parent->black = false;
+						pos->parent->black = true;
 					}
 				}
 				return ;
+			}
+
+			void		rotateNode(node *pos) {
+				
+			}
+
+			node*		leftRotation(node *pos) {
+				node		*tmp = pos->right;
+				node->right = tmp->left;
+				tmp->left = node;
+				return (tmp);
+			}
+
+			node*		rightRotation(node *pos) {
+				node	*tmp = node->left;
+				pos->left = tmp->right;
+				tmp->right = pos;
+				return (tmp);
+			}
+
+			node*		leftRightRotation(node *pos) {
+
+			}
+
+			node*		rightLeftRotation(node *pos) {
+				
 			}
 	};
 
