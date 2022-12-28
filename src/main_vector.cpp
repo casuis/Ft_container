@@ -6,20 +6,26 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/09 14:46:21 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/28 19:03:00 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include <ftnspace.hpp>
 # include <iostream>
 
+#if STD == 1
+	std::string		print_nspace = "##STD";
+#else
+	std::string		print_nspace = "##FT";
+#endif
+
 int		main(void)
 {
-	
+
 	////////////////////////////////////////////////////////////////////////////////
 	/*                              VECTOR                                        */
 	////////////////////////////////////////////////////////////////////////////////
-	
+	std::cout << print_nspace << std::endl;
 	std::cout << std::endl << YELLOW << "##########VECTOR##########" << RESET << std::endl << std::endl;
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +147,7 @@ int		main(void)
 
 			ft::print(test, "test: ");
 			
-			std::cout << "resize for 10" << std::endl; 
+			std::cout << "reserve for 10" << std::endl; 
 			test.reserve(10);
 			
 			ft::print(test, "test after: ");
@@ -168,8 +174,12 @@ int		main(void)
 			std::cout << CYAN << "=> Test operator[]:" << RESET << std::endl << std::endl;
 			NAMESPACE::vector<int>			test;
 
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 10; i++){
 				test.push_back(i);
+				std::cout << "cap: [" << test.capacity() << "]" << std::endl; 
+				
+			}
+			
 				
 			ft::print(test, "test: ");
 			
