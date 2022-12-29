@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/28 20:13:08 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/29 20:38:37 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,12 +463,6 @@ namespace ft
 					if ((it + 1 == ite) && (it != position) && (it + 1 != position))
 						return (position);
 				}
-				if (this->_size + n > this->_capacity){
-					if (this->_capacity * 2 >= this->_size + n)
-						this->reserve(this->_capacity * 2);
-					else
-						this->reserve(this->_size + n);
-				}
 				position = this->begin() + pos;
 				if (position == this->end()){
 					this->push_back(val);
@@ -488,11 +482,16 @@ namespace ft
 			/* insert n elem by pos */
 			void 			insert (iterator position, size_type n, const value_type& val){
 				size_t		pos = 0;
-				size_t		new_cap = 2;
 				
 				for (iterator it = this->begin(), ite = this->end(); it != ite && it != position; it++)
 					pos++;
 					
+				if (this->_size + n > this->_capacity){
+					if (this->_size * 2 >= this->_size + n)
+						this->reserve(this->_size * 2);
+					else
+						this->reserve(this->_size + n);
+				}
 				for (size_t i = 0; i < n; i++)
 					position = this->insert(this->begin() + pos, val);
 			}

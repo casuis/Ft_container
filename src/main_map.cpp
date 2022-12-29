@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:14:31 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/26 18:57:04 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/29 20:30:54 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,41 +17,95 @@
 int main(void){
 
 	std::cout << std::endl << YELLOW << "##########MAP##########" << RESET << std::endl << std::endl;
-	{	
+	{
 		ft::Bst<int, int>		bst;
-		ft::Node<int, int>		*tmp;
-		ft::Node<int, int>		first_node(1, 100);
-		ft::Node<int, int>		second_node(2, 99);
-		ft::Node<int, int>		third_node(3, 105);
-		ft::Node<int, int>		fourth_node(4, 103);
 		
-		bst.addNode(first_node, *bst.root);
-		std::cout << "value root: [" << bst.root->pair._value << "]" << std::endl; 
-		bst.addNode(second_node, *bst.root);
-		bst.addNode(third_node, *bst.root);
-		bst.addNode(fourth_node, *bst.root);
-		bst.printBst(*(bst.root));
-		tmp = bst.searchNode(105, *(bst.root));
-		if (tmp != 0x0)
-			std::cout << "print search: [" << tmp->pair._value << "]" << std::endl;
-		tmp = bst.searchNode(99, *(bst.root));
-		if (tmp != 0x0)
-			std::cout << "print search: [" << tmp->pair._value << "]" << std::endl;
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << std::endl << CYAN << "------BST TEST------" << RESET << std::endl << std::endl;
+			
+			std::cout << CYAN << "=> ADD test: " << RESET << std::endl << std::endl;
+			
+			ft::Node<int, int>		*node;
 
-		bst.printBst(*(bst.root));
-		std::cout << "--------------" << std::endl;
-		bst.deleteNode(99, *(bst.root));
-		std::cout << "--------------" << std::endl;
-		bst.printBst(*(bst.root));
-		std::cout << "--------------" << std::endl;
-		bst.deleteNode(108, *(bst.root));
-		bst.printBst(*(bst.root));
-		std::cout << "--------------" << std::endl;
-		bst.deleteNode(103, *(bst.root));
-		bst.printBst(*(bst.root));
-		std::cout << "--------------" << std::endl;
+			node = bst.createNode(1, 10);
+			bst.addNode(node, bst.root);
+			node = bst.createNode(2, 1);
+			bst.addNode(node, bst.root);
+			node = bst.createNode(3, 17);
+			bst.addNode(node, bst.root);
+			node = bst.createNode(4, 8);
+			bst.addNode(node, bst.root);
+			node = bst.createNode(6, 6);
+			bst.addNode(node, bst.root);
+			node = bst.createNode(5, 7);
+			bst.addNode(node, bst.root);
+			std::cout << "root : [" << bst.root->pair._value << "]" << std::endl; 
+			bst.printBst(bst.root);
+				
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << std::endl << CYAN << "------BST TEST------" << RESET << std::endl << std::endl;
+			
+			std::cout << CYAN << "=> SEARCH test: " << RESET << std::endl << std::endl;
+			
+			ft::Node<int, int>		*tmp;
+			
+			tmp = bst.searchNode(105, bst.root);
+			if (tmp != 0x0)
+				std::cout << "print search: [" << tmp->pair._value << "]" << std::endl;
+			tmp = bst.searchNode(99, bst.root);
+			if (tmp != 0x0)
+				std::cout << "print search: [" << tmp->pair._value << "]" << std::endl;
+				
+				
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << std::endl << CYAN << "------BST TEST------" << RESET << std::endl << std::endl;
+			
+			std::cout << CYAN << "=> DELETE test: " << RESET << std::endl << std::endl;
+			
+			
+			bst.printBst(bst.root);
+			std::cout << "--------------" << std::endl
+			<< "Try to delete node 7" << std::endl << std::endl;
+			
+			bst.deleteNode(7, bst.root);
+			bst.printBst(bst.root);
+			
+			std::cout << "--------------" << std::endl
+			<< "Try to delete node 8" << std::endl << std::endl;
+			
+			bst.deleteNode(8, bst.root);
+			bst.printBst(bst.root);
+			
+			std::cout << "--------------" << std::endl
+			<< "Try to delete node 10" << std::endl << std::endl;
+			
+			bst.deleteNode(10, bst.root);
+			bst.printBst(bst.root);
+			std::cout << "value of root: [" << bst.root->pair._value << "]" << std::endl;
+			
+			
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
+		////////////////////////////////////////////////////////////////////////////////
+		{
+			std::cout << std::endl << CYAN << "------RBT TEST------" << RESET << std::endl << std::endl;
+			
+			std::cout << CYAN << "=> RBT test: " << RESET << std::endl << std::endl;
+			
+			
+			ft::Bst<int, int>		bst;
+			
+
+			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		}
 	}
-	std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 
 	return (0);
 }

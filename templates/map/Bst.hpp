@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/28 17:14:53 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/29 20:36:03 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ namespace ft{
 			Node(Key key, Value value){
 				ft::pair<Key, Value>		tmp(key, value);		
 				
-				std::cout << "value : [" << tmp._value << "]" << std::endl;
-				std::cout << "key : [" << tmp._key << "]" << std::endl;
 				this->parent = 0x0;
 				this->left = 0x0;
 				this->right = 0x0;
@@ -126,11 +124,10 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Methodes                                      */
 		////////////////////////////////////////////////////////////////////////////////
-		
-			void	addNode(node& newNode, node &pos) {
+		/* Add section */
+			void	addNode(node *newNode, node *pos) {
 				if (root == 0x0){
-					std::cout << "set root" << std::endl;
-					root = &newNode;
+					root = newNode;
 					this->sentinel->left = root;
 					this->root->parent = this->sentinel;
 					this->root->left = sentinel;
@@ -138,88 +135,69 @@ namespace ft{
 					return ;
 				}
 				else{
-					if (newNode.pair._value == pos.pair._value)
+					if (newNode->pair._value == pos->pair._value)
 						return ;
-					if (newNode.pair._value < pos.pair._value && pos.left == sentinel){
-						pos.left = &newNode;
-						newNode.parent = &pos;
-						newNode.isLeftChild = true;
-						newNode.left = sentinel;
-						newNode.right = sentinel;
+					if (newNode->pair._value < pos->pair._value && pos->left == sentinel){
+						pos->left = newNode;
+						newNode->parent = pos;
+						newNode->isLeftChild = true;
+						newNode->left = sentinel;
+						newNode->right = sentinel;
 					}
-					else if (newNode.pair._value < pos.pair._value && pos.left != sentinel)
-						addNode(newNode, *pos.left);
-					else if (newNode.pair._value > pos.pair._value && pos.right == sentinel){
-						pos.right = &newNode;
-						newNode.parent = &pos;
-						newNode.left = sentinel;
-						newNode.right = sentinel;
-						newNode.isLeftChild = false;
+					else if (newNode->pair._value < pos->pair._value && !pos->left->sentinel)
+						addNode(newNode, pos->left);
+					else if (newNode->pair._value > pos->pair._value && pos->right->sentinel){
+						pos->right = newNode;
+						newNode->parent = pos;
+						newNode->left = sentinel;
+						newNode->right = sentinel;
+						newNode->isLeftChild = false;
 					}
 					else
-						addNode(newNode, *pos.right);
-					// checkcolor(newNode);
+						addNode(newNode, pos->right);
+					checkColor(newNode);
 				}
 				return ;
 			};
 
-			node*		searchNode(const value_type& value, node& pos){
+			node*		createNode(key_type key, value_type value) {
+				node	*newNode;
+
+				newNode = this->_alloc.allocate(1);
+				this->_alloc.construct(newNode, node(key, value));
+				return (newNode);
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			/* Search section */
+	
+
+			node*		searchNode(const value_type& value, node* pos){
 				if (root == 0x0){
 					std::cerr << "BST is empty" << std::endl;
 					return (0x0);
 				}
-				if (pos.sentinel == true){
+				if (pos->sentinel == true){
 					std::cerr << "not in BST" << std::endl;
 					return (0x0);
 				}
-				if (value < pos.pair._value)
-					return (searchNode(value, *pos.left));
-				if (value > pos.pair._value)
-					return (searchNode(value, *pos.right));
-				if (value == pos.pair._value)
-					return (&pos);
+				if (value < pos->pair._value)
+					return (searchNode(value, pos->left));
+				if (value > pos->pair._value)
+					return (searchNode(value, pos->right));
+				if (value == pos->pair._value)
+					return (pos);
 				return (0x0);
 			}
 
+			////////////////////////////////////////////////////////////////////////////////
+			/* Delete section */			
+			
 			void		deleteNode(const value_type& value, node *pos){
-				node		*tmp;
-				if (pos->pair._value == value){
-					tmp = pos->parent;
-					if (pos->isLeftChild == true && pos->left->sentinel == false){
-						tmp->left = pos->left;
-						tmp->left->right = pos->right;
-						pos->left->parent = tmp;
-						this->_alloc.destroy(&pos);
-					}
-					else if (pos->isLeftChild == true && pos->left->sentinel == true && pos->right->sentinel == false){
-						tmp->left = pos->right;
-						pos->right->parent = tmp;
-						this->_alloc.destroy(&pos);
-					}
-					else if (pos->isLeftChild == false && pos->left->sentinel == false){
-						tmp->right = pos->left;
-						tmp->right->right = pos->right;
-						pos->left->parent = tmp;
-						this->_alloc.destroy(&pos);
-					}
-					else if (!pos->isLeftChild && pos->left->sentinel && !pos->right->sentinel){
-						tmp->right = pos->right;
-						pos->right->parent = tmp;
-						this->_alloc.destroy(&pos);
-					}
-					else if (pos->isLeftChild){
-						tmp->left = pos->left;
-						pos->left->parent = tmp;
-						_alloc.destroy(&pos);
-					}
-					else if (pos->isLeftChild){
-						tmp->right = pos->right;
-						pos->right->parent = tmp;
-						_alloc.destroy(&pos);
-					}
-					return ;
-				}
-				else if (value < pos->pair._value && !pos->left->sentinel ) {
+				node								*swap_node;
+				ft::pair<key_type, value_type>		tmp;
+				
+				if (value < pos->pair._value && !pos->left->sentinel ) {
 					deleteNode(value, pos->left);
 					return ;
 				}
@@ -227,18 +205,118 @@ namespace ft{
 					deleteNode(value, pos->right);
 					return ;
 				}
+				else if (pos->pair._value == value) {
+					if (pos->right->sentinel && pos->left->sentinel){
+						deleteLeaf(pos);
+						return ;
+					}
+					swap_node = returnSuccessor(pos);
+					if (swap_node->sentinel)
+						swap_node = returnPrecessor(pos);
+					tmp = pos->pair;
+					pos->pair = swap_node->pair;
+					swap_node->pair = tmp;
+					deleteLeaf(swap_node);
+				}
 				return ;
 			}
 
-			void		printBst(node* pos) const {
-				if (pos->left != sentinel)
-					printBst(pos.left);
-				std::cout << "value : [" << pos->pair._value  << "]" << std::endl;
-				if (pos->right != sentinel)
-					printBst(pos.right);
-				return ;
+			void		deleteLeaf(node *pos) {
+				if (pos == root)
+					this->root = 0x0;
+					
+				else if (pos->isLeftChild)
+					pos->parent->left = pos->left;
+				else if (!pos->isLeftChild)
+					pos->parent->right = pos->right;
+				this->_alloc.destroy(pos);
+				this->_alloc.deallocate(pos, 1);
+			}
+			
+			node*		returnSuccessor(node *pos) {
+				node		*ret;
+				if (pos->left->sentinel)
+					return (pos->left);
+				else {
+					ret = pos->left;
+					while (!ret->right->sentinel) // look for the largest node less than pos
+						ret = ret->right;
+					return (ret);
+				}
+				return (this->root->parent);
 			}
 
+			node*		returnPrecessor(node *pos) {
+				node		*ret;
+				if (pos->right->sentinel)
+					return (pos->left);
+				else {
+					ret = pos->right;
+					while (!ret->left->sentinel) // look for the smalest node greater than pos
+						ret = ret->left;
+					return (ret);
+				}
+				return (this->root->parent);
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			/* Rotations */
+
+			node*		leftRotation(node *pos) {
+				node		*ret = pos->right;
+				node		*tmp = pos->parent;
+				
+				/* Rotate */
+				pos->right = ret->left;
+				ret->left = pos;
+				
+				/* Update parents */
+				if (!pos->right->sentinel)
+					pos->right->parent = pos;
+				pos->parent = ret;
+				ret->parent = tmp;
+
+				/* Update root */
+				if (this->root == pos)
+					this->root = ret;
+				return (ret);
+			}
+
+			node*		rightRotation(node *pos) {
+				node	*tmp = pos->parent;
+				node	*ret = pos->left;
+				
+				/* Rotate */
+				pos->left = ret->right;
+				ret->right = pos;
+
+				/* Update parents */
+				if (!pos->right->sentinel)
+					pos->left->parent = pos;
+				ret->parent = tmp;
+				pos->parent = ret;
+				
+				/* Update root */
+				if (this->root == pos)
+					this->root = ret;
+				return (ret);
+			}
+
+			node*		leftRightRotation(node *pos) {
+				node	*nodeRight = leftRotation(pos->left);
+				node	*ret = rightRotation(nodeRight);
+				return (ret);
+			}
+
+			node*		rightLeftRotation(node *pos) {
+				node	*nodeLeft = rightRotation(pos->right);
+				node	*ret = leftRotation(nodeLeft); 				
+				return (ret);
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			/* Check / Updates */
+			
 			void		checkColor(node *pos) {
 				if (root == 0x0 || pos == root || pos->sentinel)
 					return ;
@@ -271,30 +349,48 @@ namespace ft{
 			}
 
 			void		rotateNode(node *pos) {
+				if (pos->isLeftChild) {
+					if (pos->parent->isLeftChild) {
+						rightRotation(pos->parent->parent);
+						pos->black = false;
+						pos->parent->black = true;	
+						pos->parent->right->black = false;
+					}
+					else {
+						rightLeftRotation(pos->parent->parent);
+						pos->black = true;
+						pos->right->black = false;
+						pos->left->black = false;
+					}
+				}
+				else {
+					if (pos->parent->isLeftChild) {
+						leftRotation(pos->parent->parent);
+						pos->black = false;
+						pos->parent->black = true;	
+						pos->parent->left->black = false;
+					}
+					else {
+						leftRightRotation(pos->parent->parent);
+						pos->black = true;
+						pos->right->black = false;
+						pos->left->black = false;
+					}
+				}
+			}
 				
+			////////////////////////////////////////////////////////////////////////////////
+			/* + */
+			
+			void		printBst(node* pos) const {
+				if (pos->left != sentinel)
+					printBst(pos->left);
+				std::cout << "value : [" << pos->pair._value  << "]" << std::endl;
+				if (pos->right != sentinel)
+					printBst(pos->right);
+				return ;
 			}
 
-			node*		leftRotation(node *pos) {
-				node		*tmp = pos->right;
-				node->right = tmp->left;
-				tmp->left = node;
-				return (tmp);
-			}
-
-			node*		rightRotation(node *pos) {
-				node	*tmp = node->left;
-				pos->left = tmp->right;
-				tmp->right = pos;
-				return (tmp);
-			}
-
-			node*		leftRightRotation(node *pos) {
-
-			}
-
-			node*		rightLeftRotation(node *pos) {
-				
-			}
 	};
 
 }
