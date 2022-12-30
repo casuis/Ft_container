@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/12/27 16:46:46 by asimon           ###   ########.fr        #
+#    Updated: 2022/12/30 17:23:30 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -231,6 +231,8 @@ map: fclean
 	else \
 		echo "$(RED)Error during creation of tests for map$(RESET)"; \
 	fi
+	@mkdir -p res
+	@mv *_output res/
 
 test:
 	@$(MAKE) -i $(NAME)
