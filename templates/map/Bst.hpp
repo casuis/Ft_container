@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/30 15:48:43 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/30 17:18:45 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,6 +344,7 @@ namespace ft{
 						pos->parent->parent->right->black = true;
 						pos->parent->parent->black = false;
 						pos->parent->black = true;
+						// this->root->black = true;
 						return;
 					}
 				}
@@ -354,6 +355,8 @@ namespace ft{
 						pos->parent->parent->left->black = true;
 						pos->parent->parent->black = false;
 						pos->parent->black = true;
+						// this->root->black = true;
+						return ;
 					}
 				}
 				return ;
@@ -366,12 +369,14 @@ namespace ft{
 						pos->black = false;
 						pos->parent->black = true;	
 						pos->parent->right->black = false;
+						this->root->black = true;
 					}
 					else {
 						rightLeftRotation(pos->parent->parent);
 						pos->black = true;
 						pos->right->black = false;
 						pos->left->black = false;
+						this->root->black = true;
 					}
 				}
 				else {
@@ -380,12 +385,14 @@ namespace ft{
 						pos->black = false;
 						pos->parent->black = true;	
 						pos->parent->left->black = false;
+						this->root->black = true;
 					}
 					else {
 						leftRightRotation(pos->parent->parent);
 						pos->black = true;
 						pos->right->black = false;
 						pos->left->black = false;
+						this->root->black = true;
 					}
 				}
 			}
@@ -399,7 +406,7 @@ namespace ft{
 			}
 
 			size_t		returnHeight(node *pos) const {
-				if (pos->sentinel)
+				if (pos->sentinel || root == 0x0)
 					return (0);
 				int		leftHeight = returnHeight(pos->left) + 1;
 				int		rightHeight = returnHeight(pos->right) + 1;
@@ -407,6 +414,27 @@ namespace ft{
 				if (leftHeight > rightHeight)
 					return (leftHeight);
 				return (rightHeight);
+			}
+
+			size_t		returnBlackNodes() {
+				return (returnBlackNodes(this->root));
+			}
+
+			size_t		returnBlackNodes(node* pos) {
+				if (root == 0x0)
+					return (0);
+				if (pos->sentinel)
+					return (1);
+				size_t	leftBnodes = returnBlackNodes(pos->left);
+				size_t	rightBnodes = returnBlackNodes(pos->right);
+
+				if (rightBnodes != leftBnodes)
+					std::cout << std::endl;
+				// 	correctTree(pos);
+
+				if (pos->black)
+					leftBnodes++;
+				return (leftBnodes);
 			}
 				
 			////////////////////////////////////////////////////////////////////////////////
@@ -454,8 +482,12 @@ namespace ft{
 				switch (choice) {
 					case 0:
 						printAllBst();
+						break;
 					case 1:
 						printBstSorted(this->root);
+						break;
+					default:
+						printAllBst();
 				}
 				return ;
 			}
