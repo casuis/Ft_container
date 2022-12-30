@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/29 20:36:03 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/30 15:48:43 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,18 +143,24 @@ namespace ft{
 						newNode->isLeftChild = true;
 						newNode->left = sentinel;
 						newNode->right = sentinel;
+						sentinel->size += 1;
 					}
-					else if (newNode->pair._value < pos->pair._value && !pos->left->sentinel)
+					else if (newNode->pair._value < pos->pair._value && !pos->left->sentinel){
+						newNode->size += 1;
 						addNode(newNode, pos->left);
+					}
 					else if (newNode->pair._value > pos->pair._value && pos->right->sentinel){
 						pos->right = newNode;
 						newNode->parent = pos;
+						newNode->isLeftChild = false;
 						newNode->left = sentinel;
 						newNode->right = sentinel;
-						newNode->isLeftChild = false;
+						sentinel->size += 1;
 					}
-					else
+					else {
+						newNode->size += 1;
 						addNode(newNode, pos->right);
+					}
 					checkColor(newNode);
 				}
 				return ;
@@ -231,6 +237,7 @@ namespace ft{
 					pos->parent->right = pos->right;
 				this->_alloc.destroy(pos);
 				this->_alloc.deallocate(pos, 1);
+				sentinel->size -= 1;
 			}
 			
 			node*		returnSuccessor(node *pos) {
@@ -273,6 +280,8 @@ namespace ft{
 				/* Update parents */
 				if (!pos->right->sentinel)
 					pos->right->parent = pos;
+				ret->isLeftChild = pos->isLeftChild;
+				pos->isLeftChild = true;
 				pos->parent = ret;
 				ret->parent = tmp;
 
@@ -283,18 +292,20 @@ namespace ft{
 			}
 
 			node*		rightRotation(node *pos) {
-				node	*tmp = pos->parent;
 				node	*ret = pos->left;
+				node	*tmp = pos->parent;
 				
 				/* Rotate */
 				pos->left = ret->right;
 				ret->right = pos;
 
 				/* Update parents */
-				if (!pos->right->sentinel)
+				if (!pos->left->sentinel)
 					pos->left->parent = pos;
-				ret->parent = tmp;
+				ret->isLeftChild = pos->isLeftChild;
+				pos->isLeftChild = false;
 				pos->parent = ret;
+				ret->parent = tmp;
 				
 				/* Update root */
 				if (this->root == pos)
@@ -378,19 +389,77 @@ namespace ft{
 					}
 				}
 			}
+			////////////////////////////////////////////////////////////////////////////////
+			/* Height section */
+
+			size_t		returnHeight() const {
+				if (root == 0x0)
+					return (0);
+				return (returnHeight(root));
+			}
+
+			size_t		returnHeight(node *pos) const {
+				if (pos->sentinel)
+					return (0);
+				int		leftHeight = returnHeight(pos->left) + 1;
+				int		rightHeight = returnHeight(pos->right) + 1;
+
+				if (leftHeight > rightHeight)
+					return (leftHeight);
+				return (rightHeight);
+			}
 				
 			////////////////////////////////////////////////////////////////////////////////
 			/* + */
 			
-			void		printBst(node* pos) const {
+			void		printBstSorted(node* pos) const {
 				if (pos->left != sentinel)
-					printBst(pos->left);
+					printBstSorted(pos->left);
 				std::cout << "value : [" << pos->pair._value  << "]" << std::endl;
 				if (pos->right != sentinel)
-					printBst(pos->right);
+					printBstSorted(pos->right);
 				return ;
 			}
 
+			void		printBstFormat(int level, int k, node *pos) const { 
+				if (pos->sentinel || this->root == 0x0)
+					return ;
+				printBstFormat(level + 1, k, pos->left);
+				printBstFormat(level + 1, k, pos->right);
+
+				if (k == level) {
+					std::cout << ((pos->isLeftChild) ? CYAN : YELLOW) << " |" << RESET 
+					<< "value : [" << pos->pair._value  
+					<< "] | black: [" << std::boolalpha << pos->black 
+					<< "]" << ((pos->isLeftChild) ? CYAN : YELLOW) << "| " << RESET;
+				}
+				return ;
+			}
+
+
+			void		printAllBst() const {
+				size_t		size = this->returnHeight();
+				
+				std::cout << 
+				CYAN << "left child" << RESET << " | " <<
+				YELLOW << "right child" << RESET << std::endl  << std::endl;
+				for (size_t i = 0; i < size; i++) {
+					printBstFormat(0, i, this->root);
+					std::cout << std::endl << GREEN << "\t++++++++++++++++" << RESET << std::endl;
+				}
+				std::cout  << std::endl << YELLOW << "-------------END OF BST PRINT-------------" << RESET << std::endl << std::endl;
+			}
+
+			void		print(int choice = 0) const {
+				switch (choice) {
+					case 0:
+						printAllBst();
+					case 1:
+						printBstSorted(this->root);
+				}
+				return ;
+			}
+			
 	};
 
 }
