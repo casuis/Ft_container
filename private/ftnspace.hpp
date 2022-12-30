@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/28 18:54:40 by asimon           ###   ########.fr       */
+/*   Updated: 2022/12/30 13:14:01 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,9 @@
 # include <reverse_iterator.hpp> 
 # include <vector.hpp>
 # include <stack.hpp>
-// # include <map.hpp>
-// # include <Bst.hpp>
+# include <map.hpp>
+# include <Bst.hpp>
 # include <pair.hpp>
-
-
-# define YELLOW "\033[1;33m"
-# define GREEN	"\033[1;32m"
-# define RED	"\033[1;31m"
-# define BLACK	"\033[1;30m"
-# define CYAN	"\033[1;36m"
-# define RESET	"\033[0m"
 
 namespace ft{
 	
