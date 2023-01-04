@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/30 17:18:45 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/04 18:30:06 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ namespace ft{
 					this->root->parent = this->sentinel;
 					this->root->left = sentinel;
 					this->root->right = sentinel;
+					this->root->black = true;
 					return ;
 				}
 				else{
@@ -162,6 +163,7 @@ namespace ft{
 						addNode(newNode, pos->right);
 					}
 					checkColor(newNode);
+					returnBlackNodes();
 				}
 				return ;
 			};
@@ -224,6 +226,7 @@ namespace ft{
 					swap_node->pair = tmp;
 					deleteLeaf(swap_node);
 				}
+				returnBlackNodes();
 				return ;
 			}
 
@@ -284,6 +287,12 @@ namespace ft{
 				pos->isLeftChild = true;
 				pos->parent = ret;
 				ret->parent = tmp;
+				pos->right->isLeftChild = false;
+
+				if (ret->isLeftChild)
+					tmp->left = ret;
+				else
+					tmp->right = ret;
 
 				/* Update root */
 				if (this->root == pos)
@@ -298,7 +307,6 @@ namespace ft{
 				/* Rotate */
 				pos->left = ret->right;
 				ret->right = pos;
-
 				/* Update parents */
 				if (!pos->left->sentinel)
 					pos->left->parent = pos;
@@ -306,6 +314,11 @@ namespace ft{
 				pos->isLeftChild = false;
 				pos->parent = ret;
 				ret->parent = tmp;
+				pos->left->isLeftChild = true;
+				if (ret->isLeftChild)
+					tmp->left = ret;
+				else
+					tmp->right = ret;
 				
 				/* Update root */
 				if (this->root == pos)
@@ -314,14 +327,14 @@ namespace ft{
 			}
 
 			node*		leftRightRotation(node *pos) {
-				node	*nodeRight = leftRotation(pos->left);
-				node	*ret = rightRotation(nodeRight);
+				node 	*leftNode = leftRotation(pos->left);
+				node	*ret = rightRotation(leftNode->parent);
 				return (ret);
 			}
 
 			node*		rightLeftRotation(node *pos) {
-				node	*nodeLeft = rightRotation(pos->right);
-				node	*ret = leftRotation(nodeLeft); 				
+				node	*rightNode = rightRotation(pos->right);
+				node	*ret = leftRotation(rightNode->parent); 				
 				return (ret);
 			}
 
@@ -331,70 +344,81 @@ namespace ft{
 			void		checkColor(node *pos) {
 				if (root == 0x0 || pos == root || pos->sentinel)
 					return ;
-				if (!pos->black && !pos->parent->black)
-					correctTree(pos);
+				if (!pos->black && !pos->parent->black) {
+					pos = correctTree(pos);
+				}
 				return (checkColor(pos->parent));
 			}
 
-			void		correctTree(node *pos) {
+			node*		correctTree(node *pos) {
+				if (pos == sentinel)
+					return (pos);
 				if (pos->parent->isLeftChild) {
 					if (pos->parent->parent->right->black)
-						rotateNode(pos);
+						pos = rotateNode(pos);
 					else {
 						pos->parent->parent->right->black = true;
 						pos->parent->parent->black = false;
 						pos->parent->black = true;
-						// this->root->black = true;
-						return;
+						this->root->black = true;
+						this->sentinel->black = true;
+						return (pos);
 					}
 				}
 				else {
 					if (pos->parent->parent->left->black)
-						rotateNode(pos);
+						pos = rotateNode(pos);
 					else {
 						pos->parent->parent->left->black = true;
 						pos->parent->parent->black = false;
 						pos->parent->black = true;
-						// this->root->black = true;
-						return ;
+						this->root->black = true;
+						this->sentinel->black = true;
+						return (pos) ;
 					}
 				}
-				return ;
+				return (pos);
 			}
 
-			void		rotateNode(node *pos) {
+			node*		rotateNode(node *pos) {
 				if (pos->isLeftChild) {
 					if (pos->parent->isLeftChild) {
-						rightRotation(pos->parent->parent);
-						pos->black = false;
-						pos->parent->black = true;	
-						pos->parent->right->black = false;
+						pos = rightRotation(pos->parent->parent);
+						std::cout << "pos : value : [" << pos->pair._value << "]" << std::endl;
+						pos->black = true;
+						pos->left->black = false;
+						pos->right->black = false;
 						this->root->black = true;
+						this->sentinel->black = true;
 					}
 					else {
-						rightLeftRotation(pos->parent->parent);
+						pos = rightLeftRotation(pos->parent->parent);
 						pos->black = true;
 						pos->right->black = false;
 						pos->left->black = false;
 						this->root->black = true;
+						this->sentinel->black = true;
 					}
 				}
 				else {
-					if (pos->parent->isLeftChild) {
-						leftRotation(pos->parent->parent);
-						pos->black = false;
-						pos->parent->black = true;	
-						pos->parent->left->black = false;
+					if (!pos->parent->isLeftChild) {
+						pos = leftRotation(pos->parent->parent);
+						pos->black = true;
+						pos->right->black = false;	
+						pos->left->black = false;
 						this->root->black = true;
+						this->sentinel->black = true;
 					}
 					else {
-						leftRightRotation(pos->parent->parent);
+						pos = leftRightRotation(pos->parent->parent);
 						pos->black = true;
 						pos->right->black = false;
 						pos->left->black = false;
 						this->root->black = true;
+						this->sentinel->black = true;
 					}
 				}
+				return (pos);
 			}
 			////////////////////////////////////////////////////////////////////////////////
 			/* Height section */
@@ -410,7 +434,6 @@ namespace ft{
 					return (0);
 				int		leftHeight = returnHeight(pos->left) + 1;
 				int		rightHeight = returnHeight(pos->right) + 1;
-
 				if (leftHeight > rightHeight)
 					return (leftHeight);
 				return (rightHeight);
@@ -425,12 +448,17 @@ namespace ft{
 					return (0);
 				if (pos->sentinel)
 					return (1);
+					
 				size_t	leftBnodes = returnBlackNodes(pos->left);
 				size_t	rightBnodes = returnBlackNodes(pos->right);
 
-				if (rightBnodes != leftBnodes)
-					std::cout << std::endl;
-				// 	correctTree(pos);
+				if (rightBnodes != leftBnodes) {
+					std::cout << "inbalance" << std::endl;
+					if (rightBnodes > leftBnodes)
+						checkColor(correctTree(pos->right));
+					else
+						checkColor(correctTree(pos->left));
+				}
 
 				if (pos->black)
 					leftBnodes++;
@@ -457,9 +485,8 @@ namespace ft{
 
 				if (k == level) {
 					std::cout << ((pos->isLeftChild) ? CYAN : YELLOW) << " |" << RESET 
-					<< "value : [" << pos->pair._value  
-					<< "] | black: [" << std::boolalpha << pos->black 
-					<< "]" << ((pos->isLeftChild) ? CYAN : YELLOW) << "| " << RESET;
+					<< ((pos->black) ? BLACK : RED) << "value : [" << pos->pair._value  
+					<< "]" << RESET << ((pos->isLeftChild) ? CYAN : YELLOW) << "| " << RESET;
 				}
 				return ;
 			}
