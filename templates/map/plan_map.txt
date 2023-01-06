@@ -1,0 +1,53 @@
+#MAP
+
+LIEN :
+	-> pdf : file:///mnt/nfs/homes/asimon/Downloads/introduction_algo%20(1).pdf
+	-> RBT : https://www.youtube.com/playlist?list=PLpPXw4zFa0uKKhaSz87IowJnOTzh9tiBk
+	-> rebalance deletion: https://www.geeksforgeeks.org/deletion-in-red-black-tree/
+
+(1). je dois creer mon arbre binaire:
+	-> Creation de std::pair
+	-> Creation des rotations
+	-> Implementation de l'equilibrage
+
+(2). Comprendre comment refaire std::less
+	-> possible rapport avec les comparaisons de string et char *
+6
+(3). Creer mes iterateurs
+
+(4). Creer mes fonctions
+
+(5). Check des leaks
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+#RBT RULES
+
+* Ne peut pas avoir deux nodes rouges consecutifs
+
+* Root est toujours black
+
+* Nulls est black
+
+* Meme nombre de black node sur chacunes des branches
+
+##ROTATIONS
+
+* Black aunt: => rotate
+
+* Red aunt: => color flip
+
+### LEFT ROTATION
+
+* Right sub child --> rotation on gp
+	=> gp become left of parent/ parent become gp / left of parent become right of gp
+
+### RIGHT ROTATION
+
+* Left subchild --> rotation on gp
+	=> gp become right of parent/ parent become gp / right of parent 

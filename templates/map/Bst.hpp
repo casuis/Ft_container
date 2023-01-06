@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/06 22:13:18 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/06 22:42:07 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,7 @@ namespace ft{
 				else if (pos->pair._value == value) {
 					if (pos->right->sentinel && pos->left->sentinel){
 						deleteLeaf(pos);
+						returnBlackNodes();
 						return ;
 					}
 					swap_node = returnSuccessor(pos);
@@ -226,7 +227,7 @@ namespace ft{
 					swap_node->pair = tmp;
 					deleteLeaf(swap_node);
 				}
-				// returnBlackNodes();
+				returnBlackNodes();
 				return ;
 			}
 
@@ -298,13 +299,6 @@ namespace ft{
 				if (this->root == pos)
 					this->root = ret;
 					
-				/* Update colors */
-				ret->black = true;
-				ret->right->black = false;
-				ret->left->black = false;
-				this->root->black = true;
-				this->sentinel->black = true;
-				
 				return (ret);
 			}
 
@@ -335,12 +329,6 @@ namespace ft{
 					this->root = ret;
 				
 				/* Update colors */
-				ret->black = true;
-				ret->right->black = false;
-				ret->left->black = false;
-				this->root->black = true;
-				this->sentinel->black = true;
-				
 				return (ret);
 			}
 
@@ -385,8 +373,9 @@ namespace ft{
 					}
 				}
 				else {
-					if (pos->parent->parent->left->black)
+					if (pos->parent->parent->left->black) {
 						pos = rotateNode(pos);
+					}
 					else {
 						pos->parent->parent->left->black = true;
 						pos->parent->parent->black = false;
@@ -396,22 +385,46 @@ namespace ft{
 						return (pos) ;
 					}
 				}
-				returnBlackNodes();
+				// returnBlackNodes();
 				return (pos);
 			}
 
 			node*		rotateNode(node *pos) {
 				if (pos->isLeftChild) {
-					if (pos->parent->isLeftChild) 
+					if (pos->parent->isLeftChild) {
 						pos = rightRotation(pos->parent->parent);
-					else
+						pos->black = true;
+						pos->right->black = false;
+						pos->left->black = false;
+						this->root->black = true;
+						this->sentinel->black = true;
+					}
+					else { 
 						pos = rightLeftRotation(pos->parent->parent);
+						pos->black = true;
+						pos->right->black = false;
+						pos->left->black = false;
+						this->root->black = true;
+						this->sentinel->black = true;
+					}
 				}
 				else {
-					if (!pos->parent->isLeftChild)
+					if (!pos->parent->isLeftChild) {
 						pos = leftRotation(pos->parent->parent);
-					else
+						pos->black = true;
+						pos->right->black = false;
+						pos->left->black = false;
+						this->root->black = true;
+						this->sentinel->black = true;
+					}
+					else {
 						pos = leftRightRotation(pos->parent->parent);
+						pos->black = true;
+						pos->right->black = false;
+						pos->left->black = false;
+						this->root->black = true;
+						this->sentinel->black = true;
+					}
 				}
 				return (pos);
 			}
@@ -448,8 +461,11 @@ namespace ft{
 				size_t	rightBnodes = returnBlackNodes(pos->right);
 
 				if (rightBnodes != leftBnodes) {
+					std::cout << "unbalanced on pos: [" << pos->pair._value << "]" << std::endl;
+					print();
 					(rightBnodes > leftBnodes) ? pos = leftRotation(pos) : pos = rightRotation(pos); /* If right side is bigger rotate on left else opposite */
-					checkColor(pos);
+					checkColor(pos->right);
+					checkColor(pos->left);
 				}
 
 				if (pos->black)
@@ -478,7 +494,7 @@ namespace ft{
 				if (k == level) {
 					std::cout << ((pos->isLeftChild) ? CYAN : YELLOW) << " |" << RESET 
 					<< ((pos->black) ? BLACK : RED) << "value : [" << pos->pair._value  
-					<< "]" << RESET << ((pos->isLeftChild) ? CYAN : YELLOW) << "| " << RESET;
+					<< "] | p: [" << pos->parent->pair._value << "]" << RESET << ((pos->isLeftChild) ? CYAN : YELLOW) << "| " << RESET;
 				}
 				return ;
 			}
