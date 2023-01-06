@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2022/12/30 17:23:30 by asimon           ###   ########.fr        #
+#    Updated: 2023/01/04 14:50:20 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -253,3 +253,45 @@ fclean: clean
 re: fclean all
 
 .PHONY: all re clean fclean
+
+# SRCDIR         = ./src
+
+# SRCS         = $(shell find $(SRCDIR) -name "*.cpp")
+
+# OBJS        = $(SRCS:.cpp=.o)
+
+# CXX            =  c++
+
+# CXXFLAGS    = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address 
+
+# INCLUDES     = $(shell find . -type f -name "*.hpp" | cut -c 3-)
+
+# NAME        = ft_containers
+
+# NAME_STD     = std_containers
+
+# SWAP_COMPIL = 0
+
+# all :	$(NAME_STD)
+
+# %.o:	%.cpp $(INCLUDES)
+# 	ifeq ($(SWAP_COMPIL), 0) 
+# 		@echo "======= SWAP_COMPIL is odd ======\n" ;\ 
+# 		$(CXX) $(CXXFLAGS) -D STD=1 -c $< -o $@ ; \
+# 	else
+# 		@echo "======= SWAP_COMPIL is even ======\n" ;
+# 		$(CXX) $(CXXFLAGS) -D STD=2 -c $< -o $@ ;
+	
+# 	endif
+    
+
+# $(NAME)     :  $(OBJS) $(INCLUDES)
+# 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
+# 	make clean
+
+# $(NAME_STD)    : $(OBJS) $(INCLUDES)
+# 	$(CXX) $(CXXFLAGS) -o $(NAME_STD) $(OBJS)
+# 	rm -f $(NAME_STD)
+# 	make clean
+# 	SWAP_COMPIL=1;
+# 	make $(NAME)

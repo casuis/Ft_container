@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/04 18:30:06 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/06 22:13:18 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ namespace ft{
 						addNode(newNode, pos->right);
 					}
 					checkColor(newNode);
-					returnBlackNodes();
+					// returnBlackNodes();
 				}
 				return ;
 			};
@@ -226,7 +226,7 @@ namespace ft{
 					swap_node->pair = tmp;
 					deleteLeaf(swap_node);
 				}
-				returnBlackNodes();
+				// returnBlackNodes();
 				return ;
 			}
 
@@ -293,10 +293,18 @@ namespace ft{
 					tmp->left = ret;
 				else
 					tmp->right = ret;
-
+					
 				/* Update root */
 				if (this->root == pos)
 					this->root = ret;
+					
+				/* Update colors */
+				ret->black = true;
+				ret->right->black = false;
+				ret->left->black = false;
+				this->root->black = true;
+				this->sentinel->black = true;
+				
 				return (ret);
 			}
 
@@ -307,6 +315,7 @@ namespace ft{
 				/* Rotate */
 				pos->left = ret->right;
 				ret->right = pos;
+				
 				/* Update parents */
 				if (!pos->left->sentinel)
 					pos->left->parent = pos;
@@ -315,6 +324,7 @@ namespace ft{
 				pos->parent = ret;
 				ret->parent = tmp;
 				pos->left->isLeftChild = true;
+				
 				if (ret->isLeftChild)
 					tmp->left = ret;
 				else
@@ -323,6 +333,14 @@ namespace ft{
 				/* Update root */
 				if (this->root == pos)
 					this->root = ret;
+				
+				/* Update colors */
+				ret->black = true;
+				ret->right->black = false;
+				ret->left->black = false;
+				this->root->black = true;
+				this->sentinel->black = true;
+				
 				return (ret);
 			}
 
@@ -354,8 +372,9 @@ namespace ft{
 				if (pos == sentinel)
 					return (pos);
 				if (pos->parent->isLeftChild) {
-					if (pos->parent->parent->right->black)
+					if (pos->parent->parent->right->black) {
 						pos = rotateNode(pos);
+					}
 					else {
 						pos->parent->parent->right->black = true;
 						pos->parent->parent->black = false;
@@ -377,46 +396,22 @@ namespace ft{
 						return (pos) ;
 					}
 				}
+				returnBlackNodes();
 				return (pos);
 			}
 
 			node*		rotateNode(node *pos) {
 				if (pos->isLeftChild) {
-					if (pos->parent->isLeftChild) {
+					if (pos->parent->isLeftChild) 
 						pos = rightRotation(pos->parent->parent);
-						std::cout << "pos : value : [" << pos->pair._value << "]" << std::endl;
-						pos->black = true;
-						pos->left->black = false;
-						pos->right->black = false;
-						this->root->black = true;
-						this->sentinel->black = true;
-					}
-					else {
+					else
 						pos = rightLeftRotation(pos->parent->parent);
-						pos->black = true;
-						pos->right->black = false;
-						pos->left->black = false;
-						this->root->black = true;
-						this->sentinel->black = true;
-					}
 				}
 				else {
-					if (!pos->parent->isLeftChild) {
+					if (!pos->parent->isLeftChild)
 						pos = leftRotation(pos->parent->parent);
-						pos->black = true;
-						pos->right->black = false;	
-						pos->left->black = false;
-						this->root->black = true;
-						this->sentinel->black = true;
-					}
-					else {
+					else
 						pos = leftRightRotation(pos->parent->parent);
-						pos->black = true;
-						pos->right->black = false;
-						pos->left->black = false;
-						this->root->black = true;
-						this->sentinel->black = true;
-					}
 				}
 				return (pos);
 			}
@@ -453,11 +448,8 @@ namespace ft{
 				size_t	rightBnodes = returnBlackNodes(pos->right);
 
 				if (rightBnodes != leftBnodes) {
-					std::cout << "inbalance" << std::endl;
-					if (rightBnodes > leftBnodes)
-						checkColor(correctTree(pos->right));
-					else
-						checkColor(correctTree(pos->left));
+					(rightBnodes > leftBnodes) ? pos = leftRotation(pos) : pos = rightRotation(pos); /* If right side is bigger rotate on left else opposite */
+					checkColor(pos);
 				}
 
 				if (pos->black)
