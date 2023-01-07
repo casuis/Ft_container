@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/06 22:42:07 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/07 19:55:30 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,12 @@ namespace ft{
 		/*                              Methodes                                      */
 		////////////////////////////////////////////////////////////////////////////////
 		/* Add section */
+			
+			void	addNode(node*newNode) {
+				addNode(newNode, this->root);
+				return ;
+			}
+
 			void	addNode(node *newNode, node *pos) {
 				if (root == 0x0){
 					root = newNode;
@@ -201,10 +207,13 @@ namespace ft{
 			////////////////////////////////////////////////////////////////////////////////
 			/* Delete section */			
 			
+			void		deleteNode(const value_type& value) {
+				deleteNode(value, this->root);
+				return ;
+			}
+			
+			/* find the node to delete*/
 			void		deleteNode(const value_type& value, node *pos){
-				node								*swap_node;
-				ft::pair<key_type, value_type>		tmp;
-				
 				if (value < pos->pair._value && !pos->left->sentinel ) {
 					deleteNode(value, pos->left);
 					return ;
@@ -213,36 +222,83 @@ namespace ft{
 					deleteNode(value, pos->right);
 					return ;
 				}
-				else if (pos->pair._value == value) {
-					if (pos->right->sentinel && pos->left->sentinel){
-						deleteLeaf(pos);
-						returnBlackNodes();
-						return ;
-					}
-					swap_node = returnSuccessor(pos);
-					if (swap_node->sentinel)
-						swap_node = returnPrecessor(pos);
-					tmp = pos->pair;
-					pos->pair = swap_node->pair;
-					swap_node->pair = tmp;
-					deleteLeaf(swap_node);
-				}
-				returnBlackNodes();
+				else if (pos->pair._value == value)
+					deleteNode(pos);
 				return ;
 			}
 
+			/* delete node */
+			void		deleteNode(node* pos) {
+				bool								need_to_fix = pos->black;
+				bool								is_left = pos->isLeftChild;
+				node								*fixNode = pos->parent;
+				node								*swap_node;
+				
+				if (pos->right->sentinel && pos->left->sentinel){
+					deleteLeaf(pos);
+					if (fixNode != sentinel)
+						fixDelete(fixNode, is_left, need_to_fix);
+					return ;
+				}
+				
+				swap_node = returnSuccessor(pos);
+				if (swap_node->sentinel)
+					swap_node = returnPrecessor(pos);
+				is_left = swap_node->isLeftChild;
+				need_to_fix = swap_node->black;
+				fixNode = swap_node->parent;
+				swapLeaf(swap_node, pos);
+				
+				deleteLeaf(swap_node);
+				fixDelete(fixNode, is_left, need_to_fix);
+				return ;
+			}
+			
+			void		swapLeaf(node* swap_node, node* pos) {
+				ft::pair<key_type, value_type>		tmp;
+				
+				/* relink child of swap_node */
+				if (!swap_node->right->sentinel && !swap_node->isLeftChild) {
+					swap_node->parent->right = swap_node->right;
+					swap_node->right->parent = swap_node->parent;
+				}
+				else if (!swap_node->right->sentinel && swap_node->isLeftChild) {
+					swap_node->parent->left = swap_node->right;
+					swap_node->right->parent = swap_node->parent;
+				}
+				else if (!swap_node->left->sentinel && !swap_node->isLeftChild) {
+					swap_node->parent->right = swap_node->left;
+					swap_node->left->parent = swap_node->parent;
+				}
+				else if (!swap_node->left->sentinel && swap_node->isLeftChild) {
+					swap_node->parent->left = swap_node->left;
+					swap_node->left->parent = swap_node->parent;
+				}
+				tmp = pos->pair;
+				pos->pair = swap_node->pair;
+				swap_node->pair = tmp;
+				return;	
+			}
+
+			void		fixDelete(node* pos, bool lft, bool need_to_fix) {
+				if (!need_to_fix) {
+					std::cout << "ici" << std::endl;
+					checkColor(pos);
+					return;
+				}
+				return ;
+				// if ()
+				
+			}
+			
 			void		deleteLeaf(node *pos) {
 				if (pos == root)
 					this->root = 0x0;
-					
-				else if (pos->isLeftChild)
-					pos->parent->left = pos->left;
-				else if (!pos->isLeftChild)
-					pos->parent->right = pos->right;
 				this->_alloc.destroy(pos);
 				this->_alloc.deallocate(pos, 1);
 				sentinel->size -= 1;
 			}
+
 			
 			node*		returnSuccessor(node *pos) {
 				node		*ret;
@@ -385,7 +441,6 @@ namespace ft{
 						return (pos) ;
 					}
 				}
-				// returnBlackNodes();
 				return (pos);
 			}
 
