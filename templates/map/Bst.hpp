@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/07 19:55:30 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/08 00:41:43 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,12 @@ namespace ft{
 				node								*fixNode = pos->parent;
 				node								*swap_node;
 				
+				print();
 				if (pos->right->sentinel && pos->left->sentinel){
+					if (pos->isLeftChild)
+						pos->parent->left = sentinel;
+					else
+						pos->parent->right = sentinel;
 					deleteLeaf(pos);
 					if (fixNode != sentinel)
 						fixDelete(fixNode, is_left, need_to_fix);
@@ -280,17 +285,128 @@ namespace ft{
 				return;	
 			}
 
-			void		fixDelete(node* pos, bool lft, bool need_to_fix) {
-				if (!need_to_fix) {
+			void		fixDelete(node* pos, bool lft, bool need_to_fix = true) {
+				if (!need_to_fix || pos == root) {
 					std::cout << "ici" << std::endl;
-					checkColor(pos);
+					// checkColor(pos);
 					return;
 				}
+				if (lft && !pos->left->black)
+					pos->left->black = true;
+				else if (!lft && !pos->right->black)
+					pos->right->black = true;
+				else if (is_black_sibling_red_child(pos, lft)) 
+					black_sibling_red_child(pos, lft);
+				else if (is_black_sibling_black_child(pos, lft)) {
+					std::cout << "=> entre black s black c" << std::endl;
+					print();
+					black_sibling_black_child(pos, lft);
+					print();
+					std::cout << "\t=?> sortie black s black c" << std::endl;
+				}
+				else if (is_red_sib(pos, lft))
+					red_sib(pos, lft);
+					
 				return ;
-				// if ()
-				
 			}
 			
+			/////////////////////////////////////////////////////////////////////////
+				/* Fix deletion comparaisons */
+				
+				bool		is_black_sibling_black_child(node *pos, bool lft) {
+					/* check if pos sibling have only black child */
+					return ((lft && !pos->right->sentinel 
+						&& (pos->right->left->black && pos->right->right->black))
+						|| (!lft && !pos->left->sentinel 
+						&& (pos->left->left->black && pos->left->right->black)));
+				}
+				
+				bool		is_black_sibling_red_child(node *pos, bool lft) {
+					/* check if pos sibling have a red child */
+					return ((lft && !pos->right->sentinel 
+						&& (!pos->right->left->black || !pos->right->right->black))
+						|| (!lft && !pos->left->sentinel 
+						&& (!pos->left->left->black || !pos->left->right->black))); 
+				}
+
+				bool		is_red_sib(node* pos, bool lft) {
+					/* Check if sibling is red */
+					return ((lft && !pos->right->black) || (!lft && !pos->left->black));
+				}
+			
+				/////////////////////////////////////////////////////////////////////////
+				/* Fix deletion operations */
+			
+				void		black_sibling_red_child(node *pos, bool lft) {
+					/* Check what rotation need to be done */
+					bool		color_swap;
+					node		*save;
+					
+					if (lft && !pos->right->sentinel && !pos->right->right->black) {
+						save = pos->right->right;
+						leftRotation(pos); 	
+						save->black = !save->black;
+					}
+					else if (!lft && !pos->left->sentinel && !pos->left->left->black) {
+						save = pos->left->left;
+						rightRotation(pos); 	
+						save->black = !save->black;
+					}
+					else if (!lft && !pos->left->sentinel && !pos->left->right->black) {
+						color_swap = pos->left->right->black;
+						pos->left->right->black = pos->left->black;
+						pos->left->black = color_swap;
+						leftRotation(pos->left);
+						black_sibling_red_child(pos, lft);
+					}
+					else if (lft && !pos->right->sentinel && !pos->right->left->black) {
+						color_swap = pos->right->left->black;
+						pos->right->left->black = pos->right->black;
+						pos->right->black = color_swap;
+						rightRotation(pos->right);
+						black_sibling_red_child(pos, lft);
+					}
+				}
+
+				void		black_sibling_black_child(node *pos, bool lft) {
+					if (lft) {
+						pos->right->black = false;
+						if (!pos->black)
+							pos->black = true;
+						else
+							fixDelete(pos->parent, pos->isLeftChild);
+					}
+					else {
+						pos->left->black = false;
+						if (!pos->black)
+							pos->black = true;
+						else
+							fixDelete(pos->parent, pos->isLeftChild);
+					}
+					return ;
+				}
+			
+				void	red_sib(node* pos, bool lft) {
+					bool	color_swap;
+					if (lft) {
+						color_swap = pos->right->black;
+						pos->right->black = pos->black;
+						pos->black = color_swap;
+						leftRotation(pos);
+						fixDelete(pos, lft);
+					}
+					else {
+						color_swap = pos->left->black;
+						pos->left->black = pos->black;
+						pos->black = color_swap;
+						rightRotation(pos);
+						fixDelete(pos, lft);
+					}
+					return ;
+				}
+				
+			////////////////////////////////////////////////////////////////////////////////
+				
 			void		deleteLeaf(node *pos) {
 				if (pos == root)
 					this->root = 0x0;
@@ -503,6 +619,7 @@ namespace ft{
 			}
 
 			size_t		returnBlackNodes() {
+				std::cout << "check if balance" << std::endl;
 				return (returnBlackNodes(this->root));
 			}
 
@@ -517,10 +634,6 @@ namespace ft{
 
 				if (rightBnodes != leftBnodes) {
 					std::cout << "unbalanced on pos: [" << pos->pair._value << "]" << std::endl;
-					print();
-					(rightBnodes > leftBnodes) ? pos = leftRotation(pos) : pos = rightRotation(pos); /* If right side is bigger rotate on left else opposite */
-					checkColor(pos->right);
-					checkColor(pos->left);
 				}
 
 				if (pos->black)

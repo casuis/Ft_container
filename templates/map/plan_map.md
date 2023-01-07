@@ -1,25 +1,16 @@
 # MAP
 
-LIEN :
-	-> pdf : file:///mnt/nfs/homes/asimon/Downloads/introduction_algo%20(1).pdf
-	-> RBT : https://www.youtube.com/playlist?list=PLpPXw4zFa0uKKhaSz87IowJnOTzh9tiBk
-	-> rebalance deletion: https://www.geeksforgeeks.org/deletion-in-red-black-tree/
+### LIEN :
+	
+* pdf : file:///mnt/nfs/homes/asimon/Downloads/introduction_algo%20(1).pdf
 
-(1). je dois creer mon arbre binaire:
-	-> Creation de std::pair
-	-> Creation des rotations
-	-> Implementation de l'equilibrage
+### RBT 
+* https://www.youtube.com/playlist?list=PLpPXw4zFa0uKKhaSz87IowJnOTzh9tiBk
 
-(2). Comprendre comment refaire std::less
-	-> possible rapport avec les comparaisons de string et char *
-6
-(3). Creer mes iterateurs
-
-(4). Creer mes fonctions
-
-(5). Check des leaks
-
-
+### rebalance deletion:
+* https://www.geeksforgeeks.org/deletion-in-red-black-tree/
+* https://medium.com/analytics-vidhya/deletion-in-red-black-rb-tree-92301e1474ea
+* https://www.codesdope.com/course/data-structures-red-black-trees-deletion/
 
 
 
@@ -35,6 +26,8 @@ LIEN :
 * Nulls est black
 
 * Meme nombre de black node sur chacunes des branches
+
+* Un nouveau node est toujours rouge
 
 ## ROTATIONS
 
@@ -57,4 +50,7 @@ LIEN :
 
 ### RULES
 
-* Violation if their is *double black* 
+_Violation if their is **double black**_ 
+> double black:  When a black node is deleted and replaced by a black child, the child is marked as double black
+
+* If sibling s is black and at least one of sibling’s children is red, perform rotation(s)
