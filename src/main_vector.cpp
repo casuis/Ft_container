@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:34:53 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/29 18:29:08 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/09 18:02:11 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,24 +226,6 @@ int		main(void)
 			ft::print(test, "test: ");
 			
 			std::cout << "value back: [" << GREEN << test.back() << RESET << "]" << std::endl;			
-			
-			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
-		}
-		////////////////////////////////////////////////////////////////////////////////
-		{
-			std::cout << CYAN << "=> Test data:" << RESET << std::endl << std::endl;
-			NAMESPACE::vector<int>			test;
-			int								*ptr;
-
-			for (int i = 0; i < 10; i++)
-				test.push_back(i);
-				
-			ft::print(test, "test: ");
-			
-			ptr = test.data();
-			
-			std::cout << "value ptr[0]: [" << GREEN << ptr[0] << RESET << "]" << std::endl;			
-			std::cout << "value ptr[1]: [" << ptr[1] << "]" << std::endl;			
 			
 			std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
 		}
