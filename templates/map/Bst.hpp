@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/08 00:41:43 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/09 20:44:14 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,7 @@ namespace ft{
 				node								*fixNode = pos->parent;
 				node								*swap_node;
 				
+				std::cout << "print before delete =>: " << std::endl;
 				print();
 				if (pos->right->sentinel && pos->left->sentinel){
 					if (pos->isLeftChild)
@@ -253,8 +254,10 @@ namespace ft{
 				need_to_fix = swap_node->black;
 				fixNode = swap_node->parent;
 				swapLeaf(swap_node, pos);
-				
+				std::cout << "delete swap_node: [" << swap_node->pair._value << "]" << std::endl;
 				deleteLeaf(swap_node);
+				std::cout << "print apres delete:" << std::endl;
+				print();
 				fixDelete(fixNode, is_left, need_to_fix);
 				return ;
 			}
@@ -269,10 +272,12 @@ namespace ft{
 				}
 				else if (!swap_node->right->sentinel && swap_node->isLeftChild) {
 					swap_node->parent->left = swap_node->right;
+					swap_node->right->isLeftChild = true;
 					swap_node->right->parent = swap_node->parent;
 				}
 				else if (!swap_node->left->sentinel && !swap_node->isLeftChild) {
 					swap_node->parent->right = swap_node->left;
+					swap_node->left->isLeftChild = false;
 					swap_node->left->parent = swap_node->parent;
 				}
 				else if (!swap_node->left->sentinel && swap_node->isLeftChild) {
@@ -286,8 +291,7 @@ namespace ft{
 			}
 
 			void		fixDelete(node* pos, bool lft, bool need_to_fix = true) {
-				if (!need_to_fix || pos == root) {
-					std::cout << "ici" << std::endl;
+				if (!need_to_fix || pos == sentinel) {
 					// checkColor(pos);
 					return;
 				}
@@ -295,17 +299,19 @@ namespace ft{
 					pos->left->black = true;
 				else if (!lft && !pos->right->black)
 					pos->right->black = true;
-				else if (is_black_sibling_red_child(pos, lft)) 
+				else if (is_red_sib(pos, lft))
+					red_sib(pos, lft);
+				else if (is_black_sibling_red_child(pos, lft)) {
 					black_sibling_red_child(pos, lft);
+				}
 				else if (is_black_sibling_black_child(pos, lft)) {
-					std::cout << "=> entre black s black c" << std::endl;
+					std::cout << "=> entre black s black c on pos: [" << pos->pair._value << "]" << std::endl;
+					std::cout << std::boolalpha << "lft: [" << lft << "]" << std::endl;
 					print();
 					black_sibling_black_child(pos, lft);
 					print();
 					std::cout << "\t=?> sortie black s black c" << std::endl;
 				}
-				else if (is_red_sib(pos, lft))
-					red_sib(pos, lft);
 					
 				return ;
 			}
@@ -340,30 +346,31 @@ namespace ft{
 				void		black_sibling_red_child(node *pos, bool lft) {
 					/* Check what rotation need to be done */
 					bool		color_swap;
-					node		*save;
 					
 					if (lft && !pos->right->sentinel && !pos->right->right->black) {
-						save = pos->right->right;
+						pos->right->black = pos->black;
+						pos->black = true;
+						pos->right->right->black = true;
 						leftRotation(pos); 	
-						save->black = !save->black;
 					}
 					else if (!lft && !pos->left->sentinel && !pos->left->left->black) {
-						save = pos->left->left;
+						pos->left->black = pos->black;
+						pos->black = true;
+						pos->left->left->black = true;
 						rightRotation(pos); 	
-						save->black = !save->black;
-					}
-					else if (!lft && !pos->left->sentinel && !pos->left->right->black) {
-						color_swap = pos->left->right->black;
-						pos->left->right->black = pos->left->black;
-						pos->left->black = color_swap;
-						leftRotation(pos->left);
-						black_sibling_red_child(pos, lft);
 					}
 					else if (lft && !pos->right->sentinel && !pos->right->left->black) {
 						color_swap = pos->right->left->black;
 						pos->right->left->black = pos->right->black;
 						pos->right->black = color_swap;
 						rightRotation(pos->right);
+						black_sibling_red_child(pos, lft);
+					}
+					else if (!lft && !pos->left->sentinel && !pos->left->right->black) {
+						color_swap = pos->left->right->black;
+						pos->left->right->black = pos->left->black;
+						pos->left->black = color_swap;
+						leftRotation(pos->left);
 						black_sibling_red_child(pos, lft);
 					}
 				}
@@ -410,6 +417,10 @@ namespace ft{
 			void		deleteLeaf(node *pos) {
 				if (pos == root)
 					this->root = 0x0;
+				if (pos->isLeftChild && pos->right->sentinel)
+					pos->parent->left = sentinel;
+				else if (!pos->isLeftChild && pos->left->sentinel)
+					pos->parent->right = sentinel;
 				this->_alloc.destroy(pos);
 				this->_alloc.deallocate(pos, 1);
 				sentinel->size -= 1;
@@ -629,11 +640,14 @@ namespace ft{
 				if (pos->sentinel)
 					return (1);
 					
+				std::cout << "pos :[" << pos->pair._value << "]" << std::endl;
 				size_t	leftBnodes = returnBlackNodes(pos->left);
 				size_t	rightBnodes = returnBlackNodes(pos->right);
-
 				if (rightBnodes != leftBnodes) {
 					std::cout << "unbalanced on pos: [" << pos->pair._value << "]" << std::endl;
+					std::cout << "value l : [" << leftBnodes<< "]" << "value r: [" << rightBnodes<< "]" << std::endl;
+					print();
+					exit(1);
 				}
 
 				if (pos->black)
