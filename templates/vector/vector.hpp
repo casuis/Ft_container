@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/29 20:38:37 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/09 18:00:57 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,62 +173,6 @@ namespace ft
 			}
 			
 		////////////////////////////////////////////////////////////////////////////////
-		/* C++11 */
-		
-			/* cbegin return a const pointer to the begining of the container */
-			const_iterator	cbegin(){
-				const ft::RandomIterator<T> ret(static_cast<const T>(this->_data));		
-				return (ret);
-			}
-
-			/* cend retutn a const pointer to the end of the container */
-			const_iterator	cend(){
-				T*		tmp = this->_data;
-				
-				const ft::RandomIterator<T>	ret(static_cast<const T>(&tmp[this->_size]));
-				return (ret);
-			}
-			
-			////////////////////////////////////////////////////////////////////////////////
-			
-			/* crbegin return a const reverse pointer to the begining of the container */
-			const ft::ReverseIterator<T>			crbegin(){
-				size_t		i = 0;
-				T*		tmp = this->_data;
-				
-				while (tmp[i])
-					i++;
-				const ft::ReverseIterator<T>		ret(static_cast<const T>(&tmp[i]));
-				return (ret);
-			}
-
-			/* crend return a const reverse pointer to the end of the container */
-			const ft::ReverseIterator<T>			crend(){
-				const ft::ReverseIterator<T>		ret(static_cast<const T>(this->_data));
-				return (ret);
-			}
-
-			////////////////////////////////////////////////////////////////////////////////
-			
-			/* Requests the container to reduce its capacity to fit its size */
-			void			shrink_to_fit(){
-				if (this->_size == this->_capacity)
-					return ;
-				ft::vector<T>		tmp(*this);
-				Allocator			alloc;
-				T*					newVec;
-
-				newVec = alloc.allocate(tmp._size);
-				for (size_t i = 0; i < tmp._size; i++)
-					this->_alloc.construct(newVec + i, tmp._data[i]);
-				for (size_t del = 0; del != this->_size; del++)
-					this->_alloc.destroy(this->_data + del);
-				this->_alloc.deallocate(this->_data, this->_capacity);
-				this->_data = newVec;
-				this->_capacity = this->_size;
-			}
-		
-		////////////////////////////////////////////////////////////////////////////////
 		/*                              Capacity                                      */
 		////////////////////////////////////////////////////////////////////////////////
 		
@@ -345,16 +289,6 @@ namespace ft
 				return (this->_data[this->_size - 1]);
 			}
 			
-			////////////////////////////////////////////////////////////////////////////////
-
-			value_type*			data(){
-				return (this->_data);
-			}
-
-			const value_type*	data() const{
-				return (this->_data);
-			}
-		
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Modifier                                      */
 		////////////////////////////////////////////////////////////////////////////////
