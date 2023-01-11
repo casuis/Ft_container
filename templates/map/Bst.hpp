@@ -6,25 +6,13 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/09 20:44:14 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/11 18:19:14 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
 namespace ft{
-	
-	template <typename Key, typename Value>
-	class Node;
-
-	template <typename Key, typename Value, typename NodeType = ft::Node<Key, Value>, class Allocator = std::allocator<NodeType> >
-	class Bst;
-
-	template <typename Key, typename Value>
-	class NodeSentinel;
-
-
-	////////////////////////////////////////////////////////////////////////////////
 	
 
 	template <typename Key, typename Value>
@@ -83,7 +71,7 @@ namespace ft{
 	template <typename Key, typename Value, typename NodeType, class Allocator>
 	class Bst
 	{
-		// friend			ft::map;
+		friend			class ft::map<Key, Value>;
 		
 		public:
 		////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +85,7 @@ namespace ft{
 			typedef Value*					value_pointer;
 			typedef Node<Key, Value>		node;			
 			
-		// private:
+		private:
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Attributs                                     */
 		////////////////////////////////////////////////////////////////////////////////

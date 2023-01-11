@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 00:02:01 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/07 18:29:04 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/11 16:56:58 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,5 @@ namespace ft{
 		return (lhs._key == rhs._key && lhs._value == rhs._value);
 	}
 
-	
 }
-
 #endif
