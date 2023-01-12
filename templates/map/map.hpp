@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/12 13:24:00 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/12 15:45:33 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ namespace ft {
 	class map {
 		
 		public:
-			typedef Key									key_type;
-			typedef T									mapped_type;
-			typedef std::pair<const Key, T>				value_type;
-			typedef std::size_t							size_type;
-			typedef std::ptrdiff_t						difference_type;
-			typedef Compare								key_compare;
-			typedef Allocator							allocator_type;
-			typedef value_type&							reference;
-			typedef const value_type&					const_reference;
-			typedef	typename Allocator::pointer			pointer;
-			typedef	typename Allocator::const_pointer	const_pointer;
-			// typedef	_Rb_tree_iterator<>				iterator;
-			// typedef	to_do						const_iterator;
+			typedef Key													key_type;
+			typedef T													mapped_type;
+			typedef std::pair<const Key, T>								value_type;
+			typedef std::size_t											size_type;
+			typedef std::ptrdiff_t										difference_type;
+			typedef Compare												key_compare;
+			typedef Allocator											allocator_type;
+			typedef value_type&											reference;
+			typedef const value_type&									const_reference;
+			typedef	typename Allocator::pointer							pointer;
+			typedef	typename Allocator::const_pointer					const_pointer;
+			typedef	ft::_Rb_tree_iterator< ft::_Rb_tree<Key, Value>::Node >			iterator;
+			typedef	ft::_Rb_tree_iterator<const ft::_Rb_tree<Key, Value>::Node>		const_iterator;
 			// typedef	to_do						reverse_iterator;
 			// typedef	to_do						const_reverse_iterator;
 	

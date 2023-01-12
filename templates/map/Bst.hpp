@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/12 13:26:40 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/12 15:34:48 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ namespace ft{
 	template <typename Key, typename Value>
 	class Node
 	{
-		friend 	class ft::Bst<Key, Value>;
+		friend 	class ft::_Rb_tree<Key, Value>;
 
 		public:
 		////////////////////////////////////////////////////////////////////////////////
@@ -69,9 +69,9 @@ namespace ft{
 	};
 	
 	template <typename Key, typename Value, typename NodeType, class Allocator>
-	class Bst
-	{
+	class _Rb_tree {
 		friend			class ft::map<Key, Value>;
+		friend			class ft::_Rb_tree_iterator<Node<Key, Value> >;
 		
 		public:
 		////////////////////////////////////////////////////////////////////////////////
@@ -98,14 +98,14 @@ namespace ft{
 		/*                              Constructors                                  */
 		////////////////////////////////////////////////////////////////////////////////
 		
-			Bst(const allocator_type& alloc = allocator_type()): _alloc(alloc), root(0x0) {
+			_Rb_tree(const allocator_type& alloc = allocator_type()): _alloc(alloc), root(0x0) {
 				sentinel = this->_alloc.allocate(1);;
 				_alloc.construct(sentinel, Node<Key, Value>());
 				return ;
 			};
 			
-			~Bst() {
-				freeBst(root);
+			~_Rb_tree() {
+				freeRb_tree(root);
 				_alloc.destroy(sentinel);
 				_alloc.deallocate(sentinel, 1);
 			};
@@ -115,11 +115,11 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		/* free section */
 
-		void		freeBst(node* pos) {
+		void		freeRb_tree(node* pos) {
 			if (pos == sentinel)
 				return;
-			freeBst(pos->left);
-			freeBst(pos->right);
+			freeRb_tree(pos->left);
+			freeRb_tree(pos->right);
 			_alloc.destroy(pos);
 			_alloc.deallocate(pos, 1);
 			return ;
@@ -191,11 +191,11 @@ namespace ft{
 
 			node*		searchNode(const value_type& value, node* pos){
 				if (root == 0x0){
-					std::cerr << "BST is empty" << std::endl;
+					std::cerr << "Rb_tree is empty" << std::endl;
 					return (0x0);
 				}
 				if (pos->sentinel == true){
-					std::cerr << "not in BST" << std::endl;
+					std::cerr << "not in Rb_tree" << std::endl;
 					return (0x0);
 				}
 				if (value < pos->pair._value)
@@ -237,8 +237,6 @@ namespace ft{
 				node								*fixNode = pos->parent;
 				node								*swap_node;
 				
-				std::cout << "print before delete =>: " << std::endl;
-				print();
 				if (pos->right->sentinel && pos->left->sentinel){
 					if (pos->isLeftChild)
 						pos->parent->left = sentinel;
@@ -257,10 +255,7 @@ namespace ft{
 				need_to_fix = swap_node->black;
 				fixNode = swap_node->parent;
 				swapLeaf(swap_node, pos);
-				std::cout << "delete swap_node: [" << swap_node->pair._value << "]" << std::endl;
 				deleteLeaf(swap_node);
-				std::cout << "print apres delete:" << std::endl;
-				print();
 				fixDelete(fixNode, is_left, need_to_fix);
 				return ;
 			}
@@ -294,27 +289,18 @@ namespace ft{
 			}
 
 			void		fixDelete(node* pos, bool lft, bool need_to_fix = true) {
-				if (!need_to_fix || pos == sentinel) {
-					// checkColor(pos);
+				if (!need_to_fix || pos == sentinel)
 					return;
-				}
 				if (lft && !pos->left->black)
 					pos->left->black = true;
 				else if (!lft && !pos->right->black)
 					pos->right->black = true;
 				else if (is_red_sib(pos, lft))
 					red_sib(pos, lft);
-				else if (is_black_sibling_red_child(pos, lft)) {
+				else if (is_black_sibling_red_child(pos, lft))
 					black_sibling_red_child(pos, lft);
-				}
-				else if (is_black_sibling_black_child(pos, lft)) {
-					std::cout << "=> entre black s black c on pos: [" << pos->pair._value << "]" << std::endl;
-					std::cout << std::boolalpha << "lft: [" << lft << "]" << std::endl;
-					print();
+				else if (is_black_sibling_black_child(pos, lft))
 					black_sibling_black_child(pos, lft);
-					print();
-					std::cout << "\t=?> sortie black s black c" << std::endl;
-				}
 					
 				return ;
 			}
@@ -433,27 +419,27 @@ namespace ft{
 			node*		returnSuccessor(node *pos) {
 				node		*ret;
 				if (pos->left->sentinel)
-					return (pos->left);
+					return (sentinel);
 				else {
 					ret = pos->left;
 					while (!ret->right->sentinel) // look for the largest node less than pos
 						ret = ret->right;
 					return (ret);
 				}
-				return (this->root->parent);
+				return (sentinel);
 			}
 
 			node*		returnPrecessor(node *pos) {
 				node		*ret;
 				if (pos->right->sentinel)
-					return (pos->left);
+					return (sentinel);
 				else {
 					ret = pos->right;
 					while (!ret->left->sentinel) // look for the smalest node greater than pos
 						ret = ret->left;
 					return (ret);
 				}
-				return (this->root->parent);
+				return (sentinel);
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
@@ -633,7 +619,6 @@ namespace ft{
 			}
 
 			size_t		returnBlackNodes() {
-				std::cout << "check if balance" << std::endl;
 				return (returnBlackNodes(this->root));
 			}
 
@@ -643,13 +628,10 @@ namespace ft{
 				if (pos->sentinel)
 					return (1);
 					
-				std::cout << "pos :[" << pos->pair._value << "]" << std::endl;
 				size_t	leftBnodes = returnBlackNodes(pos->left);
 				size_t	rightBnodes = returnBlackNodes(pos->right);
 				if (rightBnodes != leftBnodes) {
 					std::cout << "unbalanced on pos: [" << pos->pair._value << "]" << std::endl;
-					std::cout << "value l : [" << leftBnodes<< "]" << "value r: [" << rightBnodes<< "]" << std::endl;
-					print();
 					exit(1);
 				}
 
@@ -661,20 +643,20 @@ namespace ft{
 			////////////////////////////////////////////////////////////////////////////////
 			/* + */
 			
-			void		printBstSorted(node* pos) const {
+			void		printRb_treeSorted(node* pos) const {
 				if (pos->left != sentinel)
-					printBstSorted(pos->left);
+					printRb_treeSorted(pos->left);
 				std::cout << "value : [" << pos->pair._value  << "]" << std::endl;
 				if (pos->right != sentinel)
-					printBstSorted(pos->right);
+					printRb_treeSorted(pos->right);
 				return ;
 			}
 
-			void		printBstFormat(int level, int k, node *pos) const { 
+			void		printRb_treeFormat(int level, int k, node *pos) const { 
 				if (pos->sentinel || this->root == 0x0)
 					return ;
-				printBstFormat(level + 1, k, pos->left);
-				printBstFormat(level + 1, k, pos->right);
+				printRb_treeFormat(level + 1, k, pos->left);
+				printRb_treeFormat(level + 1, k, pos->right);
 
 				if (k == level) {
 					std::cout << ((pos->isLeftChild) ? CYAN : YELLOW) << " |" << RESET 
@@ -685,29 +667,29 @@ namespace ft{
 			}
 
 
-			void		printAllBst() const {
+			void		printAllRb_tree() const {
 				size_t		size = this->returnHeight();
 				
 				std::cout << 
 				CYAN << "left child" << RESET << " | " <<
 				YELLOW << "right child" << RESET << std::endl  << std::endl;
 				for (size_t i = 0; i < size; i++) {
-					printBstFormat(0, i, this->root);
+					printRb_treeFormat(0, i, this->root);
 					std::cout << std::endl << GREEN << "\t++++++++++++++++" << RESET << std::endl;
 				}
-				std::cout  << std::endl << YELLOW << "-------------END OF BST PRINT-------------" << RESET << std::endl << std::endl;
+				std::cout  << std::endl << YELLOW << "-------------END OF Rb_tree PRINT-------------" << RESET << std::endl << std::endl;
 			}
 
 			void		print(int choice = 0) const {
 				switch (choice) {
 					case 0:
-						printAllBst();
+						printAllRb_tree();
 						break;
 					case 1:
-						printBstSorted(this->root);
+						printRb_treeSorted(this->root);
 						break;
 					default:
-						printAllBst();
+						printAllRb_tree();
 				}
 				return ;
 			}

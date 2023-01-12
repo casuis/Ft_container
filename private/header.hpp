@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/11 18:27:00 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/12 15:38:42 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ namespace ft {
 	class Node;
 
 	template <typename Key, typename Value, typename NodeType = ft::Node<Key, Value>, class Allocator = std::allocator<NodeType> >
-	class Bst;
+	class _Rb_tree;
 
 	template <typename Key, typename Value>
 	class NodeSentinel;
@@ -59,6 +59,9 @@ namespace ft {
 	
 	template <class T, class Container = ft::vector<T> >
 	class stack;
+
+	template <typename T>
+	class _Rb_tree_iterator;
 
 }
 
