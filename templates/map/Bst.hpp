@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/11 18:19:14 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/12 13:26:40 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ namespace ft{
 			};
 			
 			~Bst() {
+				freeBst(root);
 				_alloc.destroy(sentinel);
 				_alloc.deallocate(sentinel, 1);
 			};
@@ -112,6 +113,20 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Methodes                                      */
 		////////////////////////////////////////////////////////////////////////////////
+		/* free section */
+
+		void		freeBst(node* pos) {
+			if (pos == sentinel)
+				return;
+			freeBst(pos->left);
+			freeBst(pos->right);
+			_alloc.destroy(pos);
+			_alloc.deallocate(pos, 1);
+			return ;
+		}
+		
+		////////////////////////////////////////////////////////////////////////////////
+		
 		/* Add section */
 			
 			void	addNode(node*newNode) {
