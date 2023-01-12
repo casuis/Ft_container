@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/09 18:00:57 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/11 18:14:17 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 
 namespace ft
 {
-	template <class T, class Allocator = std::allocator<T> >
+	template <class T, class Allocator>
 	class vector
 	{
 		public:

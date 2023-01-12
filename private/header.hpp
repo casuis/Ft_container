@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/30 13:13:55 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/11 18:27:00 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,29 @@
 # define BLACK	"\033[1;30m"
 # define CYAN	"\033[1;36m"
 # define RESET	"\033[0m"
+
+namespace ft {
+
+
+	template <typename Key, typename Value>
+	class Node;
+
+	template <typename Key, typename Value, typename NodeType = ft::Node<Key, Value>, class Allocator = std::allocator<NodeType> >
+	class Bst;
+
+	template <typename Key, typename Value>
+	class NodeSentinel;
+
+	template < class Key,  class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
+	class map;
+	
+	template <class T, class Allocator = std::allocator<T> >
+	class vector;
+	
+	template <class T, class Container = ft::vector<T> >
+	class stack;
+
+}
 
 
 #endif

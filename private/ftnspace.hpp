@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/30 13:14:01 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/11 17:59:42 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
 # include <iterator_traits.hpp>
 # include <iterator.hpp>
 # include <reverse_iterator.hpp> 
+# include <Bst.hpp>
+# include <pair.hpp>
 # include <vector.hpp>
 # include <stack.hpp>
 # include <map.hpp>
-# include <Bst.hpp>
-# include <pair.hpp>
 
 namespace ft{
 	

@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:35:29 by asimon            #+#    #+#             */
-/*   Updated: 2022/12/09 12:27:53 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/11 18:27:08 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 namespace ft{
 	
-	template <class T, class Container = ft::vector<T> >
+	template <class T, class Container>
 	class stack{
 		public:
 		
