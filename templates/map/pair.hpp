@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 00:02:01 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/11 16:56:58 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/16 20:36:20 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ namespace ft{
 		typedef V			value_type;
 		
 		public:
-			key_type		_key;
-			value_type		_value;
+			key_type		first;
+			value_type		second;
 
-			pair(key_type key, value_type value): _key(key), _value(value) {return ;}
+			pair(key_type key, value_type value): first(key), second(value) {return ;}
 
-			pair(): _key(key_type()), _value(value_type()) {}
+			pair(): first(key_type()), second(value_type()) {}
 			
 			template <typename T, typename Y>
-			pair(const pair<T, Y> param): _key(param._key), _value(param._value) {return ;}
+			pair(const pair<T, Y> param): first(param.first), second(param.second) {return ;}
 			
 			~pair() {return ;}
 
@@ -40,15 +40,15 @@ namespace ft{
 			pair&		operator=(const pair& param){
 				if (*this == param)
 					return (*this);
-				this->_key = param._key;
-				this->_value = param._value;
+				this->first = param.first;
+				this->second = param.second;
 				return (*this);
 			}
 	};
 
 	template <typename First,  typename Second>
 	bool		operator==(const ft::pair<First, Second>& lhs, const ft::pair<First, Second>& rhs){
-		return (lhs._key == rhs._key && lhs._value == rhs._value);
+		return (lhs.first == rhs.first && lhs.second == rhs.second);
 	}
 
 }

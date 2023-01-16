@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/12 15:34:48 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/16 21:08:33 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ namespace ft{
 	{
 		friend 	class ft::_Rb_tree<Key, Value>;
 
+
 		public:
+			typedef typename ft::pair<Key, Value>		pair_type;
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Attributs                                     */
 		////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +73,7 @@ namespace ft{
 	template <typename Key, typename Value, typename NodeType, class Allocator>
 	class _Rb_tree {
 		friend			class ft::map<Key, Value>;
-		friend			class ft::_Rb_tree_iterator<Node<Key, Value> >;
+		friend			class ft::_Rb_tree_iterator<ft::Node<Key, Value> >;
 		
 		public:
 		////////////////////////////////////////////////////////////////////////////////
@@ -115,15 +117,15 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		/* free section */
 
-		void		freeRb_tree(node* pos) {
-			if (pos == sentinel)
-				return;
-			freeRb_tree(pos->left);
-			freeRb_tree(pos->right);
-			_alloc.destroy(pos);
-			_alloc.deallocate(pos, 1);
-			return ;
-		}
+			void		freeRb_tree(node* pos) {
+				if (pos == sentinel)
+					return;
+				freeRb_tree(pos->left);
+				freeRb_tree(pos->right);
+				_alloc.destroy(pos);
+				_alloc.deallocate(pos, 1);
+				return ;
+			}
 		
 		////////////////////////////////////////////////////////////////////////////////
 		
@@ -145,9 +147,9 @@ namespace ft{
 					return ;
 				}
 				else{
-					if (newNode->pair._value == pos->pair._value)
+					if (newNode->pair.first == pos->pair.first)
 						return ;
-					if (newNode->pair._value < pos->pair._value && pos->left == sentinel){
+					if (newNode->pair.first < pos->pair.first && pos->left == sentinel){
 						pos->left = newNode;
 						newNode->parent = pos;
 						newNode->isLeftChild = true;
@@ -155,11 +157,11 @@ namespace ft{
 						newNode->right = sentinel;
 						sentinel->size += 1;
 					}
-					else if (newNode->pair._value < pos->pair._value && !pos->left->sentinel){
+					else if (newNode->pair.first < pos->pair.first && !pos->left->sentinel){
 						newNode->size += 1;
 						addNode(newNode, pos->left);
 					}
-					else if (newNode->pair._value > pos->pair._value && pos->right->sentinel){
+					else if (newNode->pair.first > pos->pair.first && pos->right->sentinel){
 						pos->right = newNode;
 						newNode->parent = pos;
 						newNode->isLeftChild = false;
@@ -189,6 +191,10 @@ namespace ft{
 			/* Search section */
 	
 
+			node*		searchNode(const value_type valu) {
+				return (searchNode(value, this->root));
+			}
+
 			node*		searchNode(const value_type& value, node* pos){
 				if (root == 0x0){
 					std::cerr << "Rb_tree is empty" << std::endl;
@@ -198,11 +204,11 @@ namespace ft{
 					std::cerr << "not in Rb_tree" << std::endl;
 					return (0x0);
 				}
-				if (value < pos->pair._value)
+				if (value < pos->pair.first)
 					return (searchNode(value, pos->left));
-				if (value > pos->pair._value)
+				if (value > pos->pair.first)
 					return (searchNode(value, pos->right));
-				if (value == pos->pair._value)
+				if (value == pos->pair.first)
 					return (pos);
 				return (0x0);
 			}
@@ -217,15 +223,15 @@ namespace ft{
 			
 			/* find the node to delete*/
 			void		deleteNode(const value_type& value, node *pos){
-				if (value < pos->pair._value && !pos->left->sentinel ) {
+				if (value < pos->pair.first && !pos->left->sentinel ) {
 					deleteNode(value, pos->left);
 					return ;
 				}
-				else if (value > pos->pair._value && !pos->right->sentinel) {
+				else if (value > pos->pair.first && !pos->right->sentinel) {
 					deleteNode(value, pos->right);
 					return ;
 				}
-				else if (pos->pair._value == value)
+				else if (pos->pair.first == value)
 					deleteNode(pos);
 				return ;
 			}
@@ -631,13 +637,30 @@ namespace ft{
 				size_t	leftBnodes = returnBlackNodes(pos->left);
 				size_t	rightBnodes = returnBlackNodes(pos->right);
 				if (rightBnodes != leftBnodes) {
-					std::cout << "unbalanced on pos: [" << pos->pair._value << "]" << std::endl;
+					std::cout << "unbalanced on pos: [" << pos->pair.second << "]" << std::endl;
 					exit(1);
 				}
 
 				if (pos->black)
 					leftBnodes++;
 				return (leftBnodes);
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			/* Geter section */
+
+			node*		getFirst() const {
+				node*	tmp = this->root;
+				while (!tmp->left->sentinel)
+					tmp = tmp->left;
+				return (tmp);
+			}
+
+			node*		getLast() const {
+				node*	tmp = this->root;
+				while (!tmp->right->sentinel)
+					tmp = tmp->right;
+				return (tmp);
 			}
 				
 			////////////////////////////////////////////////////////////////////////////////
@@ -646,7 +669,7 @@ namespace ft{
 			void		printRb_treeSorted(node* pos) const {
 				if (pos->left != sentinel)
 					printRb_treeSorted(pos->left);
-				std::cout << "value : [" << pos->pair._value  << "]" << std::endl;
+				std::cout << "value : [" << pos->pair.second  << "]" << std::endl;
 				if (pos->right != sentinel)
 					printRb_treeSorted(pos->right);
 				return ;
@@ -660,8 +683,8 @@ namespace ft{
 
 				if (k == level) {
 					std::cout << ((pos->isLeftChild) ? CYAN : YELLOW) << " |" << RESET 
-					<< ((pos->black) ? BLACK : RED) << "value : [" << pos->pair._value  
-					<< "] | p: [" << pos->parent->pair._value << "]" << RESET << ((pos->isLeftChild) ? CYAN : YELLOW) << "| " << RESET;
+					<< ((pos->black) ? BLACK : RED) << "value : [" << pos->pair.second  
+					<< "] | p: [" << pos->parent->pair.second << "]" << RESET << ((pos->isLeftChild) ? CYAN : YELLOW) << "| " << RESET;
 				}
 				return ;
 			}

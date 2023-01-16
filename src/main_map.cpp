@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:14:31 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/12 14:00:22 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/16 20:57:19 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,14 @@ int main(void) {
 
 	std::cout << std::endl << YELLOW << "##########MAP##########" << RESET << std::endl << std::endl;
 	{
-		// ft::map<int, int>		map_cont;
-		std::map<int, int>			map_cont_tmp;
-		std::vector<int> 			vec_tmp;
-
-		map_cont_tmp[0] = 1;
-		vec_tmp.push_back(1);
+		NAMESPACE::map<int, int>			map_tmp;
 		
-		std::map<int, int>::iterator it = map_cont_tmp.begin();
-		std::vector<int>::iterator it2= vec_tmp.begin();
+		// map_tmp[1] = 42;
+		// map_tmp[0] = -42;
 
-		it[1] = 42;
-		std::cout << "value : [" << it[1] << "]" << std::endl;
+		NAMESPACE::map<int, int>::iterator	map_it = map_tmp.begin();
+
+		std::cout << "value ite: [" << map_it->first << "]" << std::endl;
 	}
 
 	return (0);

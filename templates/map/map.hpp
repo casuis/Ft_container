@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/12 15:45:33 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/16 21:14:29 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ namespace ft {
 	class map {
 		
 		public:
-			typedef Key													key_type;
-			typedef T													mapped_type;
-			typedef std::pair<const Key, T>								value_type;
-			typedef std::size_t											size_type;
-			typedef std::ptrdiff_t										difference_type;
-			typedef Compare												key_compare;
-			typedef Allocator											allocator_type;
-			typedef value_type&											reference;
-			typedef const value_type&									const_reference;
-			typedef	typename Allocator::pointer							pointer;
-			typedef	typename Allocator::const_pointer					const_pointer;
-			typedef	ft::_Rb_tree_iterator< ft::_Rb_tree<Key, Value>::Node >			iterator;
-			typedef	ft::_Rb_tree_iterator<const ft::_Rb_tree<Key, Value>::Node>		const_iterator;
+			typedef Key																		key_type;
+			typedef T																		mapped_type;
+			typedef std::pair<const Key, T>													value_type;
+			typedef std::size_t																size_type;
+			typedef std::ptrdiff_t															difference_type;
+			typedef Compare																	key_compare;
+			typedef Allocator																allocator_type;
+			typedef value_type&																reference;
+			typedef const value_type&														const_reference;
+			typedef	typename Allocator::pointer												pointer;
+			typedef	typename Allocator::const_pointer										const_pointer;
+			typedef	ft::_Rb_tree_iterator< typename ft::_Rb_tree<Key, T>::node >			iterator;
+			typedef	ft::_Rb_tree_iterator< const typename ft::_Rb_tree<Key, T>::node>		const_iterator;
 			// typedef	to_do						reverse_iterator;
 			// typedef	to_do						const_reverse_iterator;
 	
@@ -58,17 +58,32 @@ namespace ft {
 					}
 			};
 			
-			ft::Bst<key_type, mapped_type>				bst;
+			ft::_Rb_tree<key_type, mapped_type>				_Rb_tree;
 
 			////////////////////////////////////////////////////////////////////////////////
 			
 			map() {
-				this->bst.addNode(this->bst.createNode(1, 10));
-				this->bst.print();
+				// TEST HER
+				this->_Rb_tree.addNode(this->_Rb_tree.createNode(1, 10));
+				this->_Rb_tree.print();
 				return ;
 			}
 			
 			~map() {}
+
+
+			iterator	begin() const {
+				iterator ret(*(this->_Rb_tree.getFirst()));
+				
+				return (ret);
+			}
+			
+			void 	operator[](key_type key, mapped_type elem) {
+				ft::_Rb_tree<key_type, mapped_type>::node		*tmp = _Rb_tree.searchNode(key);
+				if (!tmp)
+					_Rb_tree.addNode(_Rb_tree.createNode(key, elem));			
+				
+			} 
 		
 		private:
 			Allocator					_alloc;
