@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/16 21:14:29 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/17 00:52:25 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace ft {
 		public:
 			typedef Key																		key_type;
 			typedef T																		mapped_type;
-			typedef std::pair<const Key, T>													value_type;
+			typedef ft::pair<const Key, T>													value_type;
 			typedef std::size_t																size_type;
 			typedef std::ptrdiff_t															difference_type;
 			typedef Compare																	key_compare;
@@ -78,12 +78,17 @@ namespace ft {
 				return (ret);
 			}
 			
-			void 	operator[](key_type key, mapped_type elem) {
-				ft::_Rb_tree<key_type, mapped_type>::node		*tmp = _Rb_tree.searchNode(key);
-				if (!tmp)
-					_Rb_tree.addNode(_Rb_tree.createNode(key, elem));			
+			mapped_type& 	operator[](key_type key) {
+				typename ft::_Rb_tree<key_type, mapped_type>::node	*tmp = _Rb_tree.searchNode(key);
 				
-			} 
+				if (!tmp) {
+					tmp = _Rb_tree.createNode(key, mapped_type());
+					_Rb_tree.addNode(tmp);
+				}
+				return (tmp->pair.second);
+			}
+			
+			// value_type&		operator=()
 		
 		private:
 			Allocator					_alloc;

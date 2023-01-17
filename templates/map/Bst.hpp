@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/16 21:08:33 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/17 01:16:45 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ namespace ft{
 
 		public:
 			typedef typename ft::pair<Key, Value>		pair_type;
+			typedef Key				key_type;
+			typedef Value			mapped_type;
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Attributs                                     */
 		////////////////////////////////////////////////////////////////////////////////
@@ -174,10 +176,14 @@ namespace ft{
 						addNode(newNode, pos->right);
 					}
 					checkColor(newNode);
-					// returnBlackNodes();
 				}
 				return ;
 			};
+
+			void		updateNode(node* pos, value_type value) {
+				pos->pair.second = value;
+				this->_alloc.destroy(pos);
+			}
 
 			node*		createNode(key_type key, value_type value) {
 				node	*newNode;
@@ -191,19 +197,15 @@ namespace ft{
 			/* Search section */
 	
 
-			node*		searchNode(const value_type valu) {
+			node*		searchNode(const value_type value) {
 				return (searchNode(value, this->root));
 			}
 
 			node*		searchNode(const value_type& value, node* pos){
-				if (root == 0x0){
-					std::cerr << "Rb_tree is empty" << std::endl;
+				if (root == 0x0)
 					return (0x0);
-				}
-				if (pos->sentinel == true){
-					std::cerr << "not in Rb_tree" << std::endl;
+				if (pos->sentinel == true)
 					return (0x0);
-				}
 				if (value < pos->pair.first)
 					return (searchNode(value, pos->left));
 				if (value > pos->pair.first)
@@ -256,7 +258,7 @@ namespace ft{
 				
 				swap_node = returnSuccessor(pos);
 				if (swap_node->sentinel)
-					swap_node = returnPrecessor(pos);
+					swap_node = returnPredecessor(pos);
 				is_left = swap_node->isLeftChild;
 				need_to_fix = swap_node->black;
 				fixNode = swap_node->parent;
@@ -435,7 +437,7 @@ namespace ft{
 				return (sentinel);
 			}
 
-			node*		returnPrecessor(node *pos) {
+			node*		returnPredecessor(node *pos) {
 				node		*ret;
 				if (pos->right->sentinel)
 					return (sentinel);
