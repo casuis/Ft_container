@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/17 01:16:45 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/17 02:12:11 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -424,30 +424,36 @@ namespace ft{
 			}
 
 			
-			node*		returnSuccessor(node *pos) {
+			static node*		returnSuccessor(node *pos) {
 				node		*ret;
+				
+				if (pos == 0x0)
+					return (0x0);
 				if (pos->left->sentinel)
-					return (sentinel);
+					return (pos->left);
 				else {
 					ret = pos->left;
 					while (!ret->right->sentinel) // look for the largest node less than pos
 						ret = ret->right;
 					return (ret);
 				}
-				return (sentinel);
+				return (0x0);
 			}
 
-			node*		returnPredecessor(node *pos) {
+			static node*		returnPredecessor(node *pos) {
 				node		*ret;
+				
+				if (pos == 0x0)
+					return (0x0);
 				if (pos->right->sentinel)
-					return (sentinel);
+					return (pos->right);
 				else {
 					ret = pos->right;
 					while (!ret->left->sentinel) // look for the smalest node greater than pos
 						ret = ret->left;
 					return (ret);
 				}
-				return (sentinel);
+				return (0x0);
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
