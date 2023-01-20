@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/17 00:52:25 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/20 16:31:45 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,14 @@ namespace ft {
 
 
 			iterator	begin() const {
-				iterator ret(*(this->_Rb_tree.getFirst()));
+				iterator ret(this->_Rb_tree.getFirst(), this->_Rb_tree.sentinel);
 				
+				return (ret);
+			}
+
+			iterator	end() const {
+				iterator ret(this->_Rb_tree.sentinel, this->_Rb_tree.getLast());
+
 				return (ret);
 			}
 			
@@ -87,9 +93,14 @@ namespace ft {
 				}
 				return (tmp->pair.second);
 			}
-			
-			// value_type&		operator=()
 		
+			ft::map<Key, T>		operator=(ft::map<Key,T> const &rhs) {
+				if (this->_Rb_tree == rhs._Rb_tree)
+					return (*this);
+				this->_Rb_tree = rhs._Rb_tree;
+				return (*this);
+			}
+			
 		private:
 			Allocator					_alloc;
 			

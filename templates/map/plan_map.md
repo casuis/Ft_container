@@ -54,3 +54,11 @@ _Violation if their is **double black**_
 > double black:  When a black node is deleted and replaced by a black child, the child is marked as double black
 
 * If sibling s is black and at least one of sibling’s children is red, perform rotation(s)
+
+# MAP ITERATOR
+
+_creation d'un node breack point:_
+* parent = node precedant
+* sentinel = true
+* left = NULL
+* right = NULL

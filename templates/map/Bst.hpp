@@ -6,14 +6,14 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/17 02:12:11 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/20 16:22:28 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.hpp>
 
 namespace ft{
-	
+
 
 	template <typename Key, typename Value>
 	class Node
@@ -23,14 +23,15 @@ namespace ft{
 
 		public:
 			typedef typename ft::pair<Key, Value>		pair_type;
-			typedef Key				key_type;
-			typedef Value			mapped_type;
+			typedef Key									key_type;
+			typedef Value								mapped_type;
+			typedef ft::Node<Key, Value>				node_type;
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Attributs                                     */
 		////////////////////////////////////////////////////////////////////////////////
-			Node*		left;
-			Node*		right;
-			Node*		parent;
+			Node*						left;
+			Node*						right;
+			Node*						parent;
 			
 			ft::pair<Key, Value>		pair;
 			size_t						size;
@@ -70,7 +71,39 @@ namespace ft{
 			};
 			
 			~Node() {};
+
+			bool		operator<(node_type const & rhs) const {
+				if (this->pair.first == rhs.pair.first)
+					return (this->pair.second < rhs.pair.second);
+				return (this->pair.first < rhs.pair.first);
+			}
+
+			bool		operator<=(node_type const & rhs) const {
+				return (this->pair.first <= rhs.pair.first);
+			}
+
+			bool		operator>(node_type const & rhs) const {
+				return (rhs < this);
+			}
+			
+			bool		operator>=(node_type const & rhs) const {
+				return (rhs <= this);
+			}
+
+			bool		operator==(node_type const & rhs) const {
+				return (this->pair.first == rhs.pair.first && this->pair.second == rhs.pair.second);
+			}
+
+			bool		operator!=(node_type const & rhs) const {
+				if (this->sentinel || rhs.sentinel)
+					return (this->sentinel && rhs.sentinel && (this->parent == rhs.parent));
+				return (this->pair.first != rhs.pair.first || this->pair.second != rhs.pair.second);
+			}
 	};
+	
+	
+////////////////////////////////////////////////////////////////////////////////
+	
 	
 	template <typename Key, typename Value, typename NodeType, class Allocator>
 	class _Rb_tree {
@@ -423,11 +456,11 @@ namespace ft{
 				sentinel->size -= 1;
 			}
 
-			
+			/* the biggest of the smallest */
 			static node*		returnSuccessor(node *pos) {
 				node		*ret;
 				
-				if (pos == 0x0)
+				if (pos == 0x0 || !pos->left || !pos->right)
 					return (0x0);
 				if (pos->left->sentinel)
 					return (pos->left);
@@ -440,10 +473,11 @@ namespace ft{
 				return (0x0);
 			}
 
+			/* the smallest of the biggest */
 			static node*		returnPredecessor(node *pos) {
 				node		*ret;
 				
-				if (pos == 0x0)
+				if (pos == 0x0 || !pos->left || !pos->right)
 					return (0x0);
 				if (pos->right->sentinel)
 					return (pos->right);

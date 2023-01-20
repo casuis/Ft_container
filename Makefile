@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2023/01/04 14:50:20 by asimon           ###   ########.fr        #
+#    Updated: 2023/01/18 23:04:07 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -221,7 +221,7 @@ map: fclean
 	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
 
 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
-		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
+		$(CXX) $(CXXFLAGS) $(INC) -D STD=1 -o $(STD)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
 	else \
 		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
 	fi
