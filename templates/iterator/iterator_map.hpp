@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/18 22:54:04 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/20 18:12:11 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@ namespace ft {
 			typedef _Rb_tree_iterator<value_type>												iterator;
 			typedef typename ft::_Rb_tree<typename T::key_type, typename T::mapped_type>		Rb_tree_type;
 			
-			_Rb_tree_iterator(value_type&	param): node(&param) {}
+			_Rb_tree_iterator(value_type* param, value_type* begin, value_type* end): node(param), begin(begin), end(end) {}
 
 			_Rb_tree_iterator(): node(value_type()) {}
 			
 			~_Rb_tree_iterator() {}
 
-			value_type&		operator*() {
+			value_type&		operator*() const {
 				return (*node);
 			}
 
-			typename value_type::pair_type*		operator->() {
+			typename value_type::pair_type*		operator->() const {
 				return (&(node->pair));
 			}
 
@@ -41,18 +41,19 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 			/* incrementation/decr ope */
 			/*
-			**	need to check if it segfault 
+			**	need to check if it segfault in std
 			*/
 		
 			iterator&		operator++() {
-				if (!Rb_tree_type::returnPredecessor(this->node)->sentinel)
-					this->node = Rb_tree_type::returnPredecessor(this->node);
-				else if (Rb_tree_type::returnPredecessor(this->node)->sentinel 
-							&& this->node->isLeftChild && !this->node->parent->sentinel)
+				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
+				
+				if (buff && !buff->sentinel)
+					this->node = buff;
+				else if (buff && !buff->sentinel && this->node->isLeftChild 
+						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (Rb_tree_type::returnPredecessor(this->node) 
-							&& !this->node->isLeftChild && !this->node->parent->sentinel 
-								&& !this->node->parent->parent->sentinel)
+				else if (buff && !buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
+							&& !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
 				else
 					this->node = 0x0;
@@ -60,16 +61,16 @@ namespace ft {
 			}
 
 			iterator		operator++(int) {
-				iterator		tmp(*this);
+				iterator							tmp(*this);
+				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
 				
-				if (!Rb_tree_type::returnPredecessor(this->node)->sentinel)
-					this->node = Rb_tree_type::returnPredecessor(this->node);
-				else if (Rb_tree_type::returnPredecessor(this->node)->sentinel 
-							&& this->node->isLeftChild && !this->node->parent->sentinel)
+				
+				if (buff && !buff->sentinel)
+					this->node = buff;
+				else if (buff && !buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (Rb_tree_type::returnPredecessor(this->node) 
-							&& !this->node->isLeftChild && !this->node->parent->sentinel 
-								&& !this->node->parent->parent->sentinel)
+				else if (buff && !buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
+						&& !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
 				else
 					this->node = 0x0;
@@ -77,13 +78,14 @@ namespace ft {
 			}
 
 			iterator&		operator--() {
-				if (!Rb_tree_type::returnSuccessor(this->node)->sentinel)
-					this->node = Rb_tree_type::returnSuccessor(this->node);
-				else if (Rb_tree_type::returnSuccessor(this->node)->sentinel 
-							&& !this->node->isLeftChild && !this->node->parent->sentinel)
+				typename Rb_tree_type::node			*buff = Rb_tree_type::returnSuccessor(this->node);
+				
+				if (buff && !buff->sentinel)
+					this->node = buff;
+				else if (buff && !buff->sentinel && !this->node->isLeftChild 
+						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (Rb_tree_type::returnSuccessor(this->node) 
-							&& this->node->isLeftChild && !this->node->parent->sentinel 
+				else if (buff && !buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
 								&& !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
 				else
@@ -92,18 +94,18 @@ namespace ft {
 			}
 
 			iterator		operator--(int) {
-				iterator		tmp(*this);
+				iterator							tmp(*this);
+				typename Rb_tree_type::node			*buff = Rb_tree_type::returnSuccessor(this->node);
 				
-				if (!Rb_tree_type::returnSuccessor(this->node)->sentinel)
-					this->node = Rb_tree_type::returnSuccessor(this->node);
-				else if (Rb_tree_type::returnSuccessor(this->node)->sentinel 
-							&& !this->node->isLeftChild && !this->node->parent->sentinel)
+				if (buff && !buff->sentinel)
+					this->node = buff;
+				else if (buff && !buff->sentinel && !this->node->isLeftChild 
+						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (Rb_tree_type::returnSuccessor(this->node) 
-							&& this->node->isLeftChild && !this->node->parent->sentinel 
+				else if (buff && !buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
 								&& !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
-				else
+				else 
 					this->node = 0x0;
 				return (tmp);
 			}
@@ -122,31 +124,10 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 			/* Comparaison opperator */
 			
-			bool			operator==(iterator const & rhs) {
-				return (this->node == rhs.node);
-			}
-
-			bool			operator!=(iterator const & rhs) {
-				return (this->node != rhs.node);
-			}
-			
-			bool			operator>=(iterator const & rhs) {
-				return (this->node.pair.first >= rhs.pair.first);
-			}
-			
-			bool			operator>(iterator const & rhs) {
-				return (this->node.pair.first > rhs.pair.first);
-			}
-			
-			bool			operator<(iterator const & rhs) {
-				return (rhs > *this);	
-			}
-			
-			bool			operator<=(iterator const & rhs) {
-				return (rhs >= *this);
-			}
 
 		private:
 			value_type		*node;
+			value_type		*begin;
+			value_type		*end;
 	};
 }
