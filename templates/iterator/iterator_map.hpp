@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/20 18:12:11 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/21 11:36:36 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace ft {
 			typedef _Rb_tree_iterator<value_type>												iterator;
 			typedef typename ft::_Rb_tree<typename T::key_type, typename T::mapped_type>		Rb_tree_type;
 			
-			_Rb_tree_iterator(value_type* param, value_type* begin, value_type* end): node(param), begin(begin), end(end) {}
+			_Rb_tree_iterator(value_type* param): node(param) {}
 
 			_Rb_tree_iterator(): node(value_type()) {}
 			
@@ -55,8 +55,10 @@ namespace ft {
 				else if (buff && !buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
 							&& !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
+				else if (this->node->sentinel)
+					this->node = buff->right;
 				else
-					this->node = 0x0;
+					this->node = buff;
 				return (*this);
 			}
 
@@ -64,16 +66,17 @@ namespace ft {
 				iterator							tmp(*this);
 				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
 				
-				
 				if (buff && !buff->sentinel)
 					this->node = buff;
-				else if (buff && !buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel)
+				else if (buff && buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (buff && !buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
+				else if (buff && buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
 						&& !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
+				else if (this->node->sentinel)
+					this->node = buff->right;
 				else
-					this->node = 0x0;
+					this->node = buff;
 				return (tmp);
 			}
 
@@ -82,14 +85,16 @@ namespace ft {
 				
 				if (buff && !buff->sentinel)
 					this->node = buff;
-				else if (buff && !buff->sentinel && !this->node->isLeftChild 
+				else if (buff && buff->sentinel && !this->node->isLeftChild 
 						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (buff && !buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
+				else if (buff && buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
 								&& !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
+				else if (this->node->sentinel)
+					this->node = buff->right;
 				else
-					this->node = 0x0;
+					this->node = buff;
 				return (*this);
 			}
 
@@ -99,14 +104,16 @@ namespace ft {
 				
 				if (buff && !buff->sentinel)
 					this->node = buff;
-				else if (buff && !buff->sentinel && !this->node->isLeftChild 
+				else if (buff && buff->sentinel && !this->node->isLeftChild 
 						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (buff && !buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
+				else if (buff && buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
 								&& !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
-				else 
-					this->node = 0x0;
+				else if (this->node->sentinel)
+					this->node = buff->right;
+				else
+					this->node = buff;
 				return (tmp);
 			}
 
@@ -121,13 +128,15 @@ namespace ft {
 				return (*this);
 			}
 
+			bool			operator!=(iterator & rhs) const {
+				return (this->node != rhs.node);
+			}
+
 			////////////////////////////////////////////////////////////////////////////////
 			/* Comparaison opperator */
 			
 
 		private:
 			value_type		*node;
-			value_type		*begin;
-			value_type		*end;
 	};
 }

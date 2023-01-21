@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/20 16:31:45 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/21 13:04:55 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 			
 			map() {
-				// TEST HER
-				this->_Rb_tree.addNode(this->_Rb_tree.createNode(1, 10));
-				this->_Rb_tree.print();
 				return ;
 			}
 			
@@ -73,16 +70,41 @@ namespace ft {
 
 
 			iterator	begin() const {
-				iterator ret(this->_Rb_tree.getFirst(), this->_Rb_tree.sentinel);
+				iterator ret(this->_Rb_tree.getFirst());
 				
 				return (ret);
 			}
 
 			iterator	end() const {
-				iterator ret(this->_Rb_tree.sentinel, this->_Rb_tree.getLast());
+				iterator ret(this->_Rb_tree.sentinel);
 
 				return (ret);
 			}
+			
+			////////////////////////////////////////////////////////////////////////////////
+		
+			ft::map<Key, T>		operator=(ft::map<Key,T> const &rhs) {
+				if (this->_Rb_tree == rhs._Rb_tree)
+					return (*this);
+				this->_Rb_tree = rhs._Rb_tree;
+				return (*this);
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			
+			bool		empty() const {
+				return (this->_Rb_tree.root == 0x0);
+			}
+
+			size_t		size() const {
+				return (this->_Rb_tree.sentinel->size);
+			}
+
+			size_t		max_size() const {
+				return (this->_alloc.max_size());
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
 			
 			mapped_type& 	operator[](key_type key) {
 				typename ft::_Rb_tree<key_type, mapped_type>::node	*tmp = _Rb_tree.searchNode(key);
@@ -93,13 +115,37 @@ namespace ft {
 				}
 				return (tmp->pair.second);
 			}
-		
-			ft::map<Key, T>		operator=(ft::map<Key,T> const &rhs) {
-				if (this->_Rb_tree == rhs._Rb_tree)
-					return (*this);
-				this->_Rb_tree = rhs._Rb_tree;
-				return (*this);
+			
+			mapped_type&	at(const key_type& k) {
+				typename ft::_Rb_tree<Key, T>::node	*node = _Rb_tree.searchNode(k);
+
+				if (node == 0x0)
+					throw (std::out_of_range("Out of Range"));
+				return (node);
 			}
+			
+			////////////////////////////////////////////////////////////////////////////////
+			
+			ft::pair<iterator,bool>		insert(const value_type& val) {
+				typename ft::_Rb_tree<Key, T>::node		*node = _Rb_tree.searchNode(val.first);
+				ft::pair<iterator, bool>				ret;
+				
+				if (!node){
+					node = _Rb_tree.createNode(val)
+					_Rb_tree.addNode(node);
+					ret->second = true;
+				}
+				else
+					ret->second = false;
+				ret->first = iterator(node);
+				return; 
+			}
+			
+			// iterator	insert(iterator position, const value_type& val);
+			
+			// template <class InputIterator> 
+			// void		insert(InputIterator first, InputIterator last);
+
 			
 		private:
 			Allocator					_alloc;

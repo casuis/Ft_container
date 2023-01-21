@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/20 16:22:28 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/21 12:58:59 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,17 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Functions                                     */
 		////////////////////////////////////////////////////////////////////////////////
+		
+			Node(ft::pair<Key, Value>& param) {
+				this->parent = 0x0;
+				this->left = 0x0;
+				this->right = 0x0;
+				this->pair = param;
+				this->black = false;
+				this->isLeftChild = false;
+				this->sentinel = false;
+				this->size = 0;
+			}
 		
 			Node(Key key, Value value){
 				ft::pair<Key, Value>		tmp(key, value);		
@@ -153,7 +164,7 @@ namespace ft{
 		/* free section */
 
 			void		freeRb_tree(node* pos) {
-				if (pos == sentinel)
+				if (pos == sentinel || pos == 0x0)
 					return;
 				freeRb_tree(pos->left);
 				freeRb_tree(pos->right);
@@ -175,10 +186,12 @@ namespace ft{
 				if (root == 0x0){
 					root = newNode;
 					this->sentinel->left = root;
+					this->sentinel->size += 1;
 					this->root->parent = this->sentinel;
 					this->root->left = sentinel;
 					this->root->right = sentinel;
 					this->root->black = true;
+					updateSentinel();
 					return ;
 				}
 				else{
@@ -209,9 +222,15 @@ namespace ft{
 						addNode(newNode, pos->right);
 					}
 					checkColor(newNode);
+					updateSentinel();
 				}
 				return ;
 			};
+
+			void		updateSentinel() {
+				this->sentinel->right = getLast();
+				this->sentinel->left = getLast();
+			}
 
 			void		updateNode(node* pos, value_type value) {
 				pos->pair.second = value;
@@ -223,6 +242,14 @@ namespace ft{
 
 				newNode = this->_alloc.allocate(1);
 				this->_alloc.construct(newNode, node(key, value));
+				return (newNode);
+			}
+
+			node*		createNode(ft::pair<Key, Value>& param) {
+				node	*newNode;
+
+				newNode = this->_alloc.allocate(1);
+				this->_alloc.construct(newNode, node(param));
 				return (newNode);
 			}
 
@@ -253,6 +280,7 @@ namespace ft{
 			
 			void		deleteNode(const value_type& value) {
 				deleteNode(value, this->root);
+				updateSentinel();
 				return ;
 			}
 			
