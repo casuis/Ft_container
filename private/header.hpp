@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 12:44:07 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/23 13:16:18 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@
 # include <cstdlib>
 
 /* structur ft::pair */
-# include <pair.hpp>
+// # include <pair.hpp>
+
+# include "../templates/map/pair.hpp"
 
 # define YELLOW "\033[1;33m"
 # define GREEN	"\033[1;32m"

@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 16:03:55 by asimon            #+#    #+#             */
-/*   Updated: 2022/11/17 12:11:54 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/23 15:39:22 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define __IS_INTEGRAL_HPP__
 
 // # include <header.hpp>
-# include <../../private/header.hpp>
+# include "../../private/header.hpp"
 namespace ft{
 
 /* Default template */

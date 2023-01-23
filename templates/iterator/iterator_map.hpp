@@ -6,11 +6,13 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/21 11:36:36 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/23 15:57:55 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <header.hpp>
+// #include <header.hpp>
+# include "../../private/header.hpp"
+
 
 namespace ft {
 	
@@ -21,10 +23,13 @@ namespace ft {
 			typedef T																			value_type;
 			typedef _Rb_tree_iterator<value_type>												iterator;
 			typedef typename ft::_Rb_tree<typename T::key_type, typename T::mapped_type>		Rb_tree_type;
-			
+			typedef std::ptrdiff_t																difference_type;
+			typedef T*																			pointer;
+			typedef T&																			reference;
+			typedef std::random_access_iterator_tag												iterator_category;
 			_Rb_tree_iterator(value_type* param): node(param) {}
 
-			_Rb_tree_iterator(): node(value_type()) {}
+			_Rb_tree_iterator(): node(0x0) {}
 			
 			~_Rb_tree_iterator() {}
 
@@ -40,9 +45,6 @@ namespace ft {
 
 			////////////////////////////////////////////////////////////////////////////////
 			/* incrementation/decr ope */
-			/*
-			**	need to check if it segfault in std
-			*/
 		
 			iterator&		operator++() {
 				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
@@ -121,10 +123,10 @@ namespace ft {
 			/* Assignation operator */
 
 			iterator		operator=(const iterator param) {
-				if (this->node == param->node)
+				if (this->node == &(*param))
 					return (*this);
 				else
-					this->node = param->node;
+					this->node = &(*param);
 				return (*this);
 			}
 

@@ -6,11 +6,12 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 13:00:27 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/23 16:42:38 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <header.hpp>
+// #include <header.hpp>
+# include "../../private/header.hpp"
 
 namespace ft{
 
@@ -19,6 +20,7 @@ namespace ft{
 	class Node
 	{
 		friend 	class ft::_Rb_tree<Key, Value>;
+		friend	class ft::map<Key, Value>;
 
 
 		public:
@@ -118,9 +120,10 @@ namespace ft{
 	
 	template <typename Key, typename Value, typename Compare, typename NodeType, class Allocator>
 	class _Rb_tree {
-		friend			class ft::map<Key, Value>;
+		friend			class ft::map<Key, Value, Compare>;
 		friend			class ft::_Rb_tree_iterator<ft::Node<Key, Value> >;
 		
+			
 		public:
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Member Type                                   */
@@ -133,16 +136,6 @@ namespace ft{
 			typedef Value*					value_pointer;
 			typedef Node<Key, Value>		node;
 			typedef Compare					key_compare;	
-			
-		private:
-		////////////////////////////////////////////////////////////////////////////////
-		/*                              Attributs                                     */
-		////////////////////////////////////////////////////////////////////////////////
-		
-			Allocator							_alloc;
-			key_compare							_comp;
-			Node<Key, Value>					*root;
-			Node<Key, Value>					*sentinel;
 			
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Constructors                                  */
@@ -178,6 +171,7 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		
 		/* Add section */
+		public:
 			
 			void	addNode(node*newNode) {
 				addNode(newNode, this->root);
@@ -199,7 +193,7 @@ namespace ft{
 				else{
 					if (newNode->pair.first == pos->pair.first)
 						return ;
-					if (_comp(newNode->pair.first, pos->pair.first) && pos->left == sentinel){
+					if (_comp(newNode->pair.first, pos->pair.first) && pos->left->sentinel){
 						pos->left = newNode;
 						newNode->parent = pos;
 						newNode->isLeftChild = true;
@@ -788,6 +782,22 @@ namespace ft{
 				}
 				return ;
 			}
+
+			ft::_Rb_tree<Key, Value, Compare>	operator=(typename ft::_Rb_tree<Key, Value, Compare>& tree) {
+				this->root = tree.root;
+				this->sentinel = tree.sentinel;
+				return ;
+			}
+			
+		private:
+		////////////////////////////////////////////////////////////////////////////////
+		/*                              Attributs                                     */
+		////////////////////////////////////////////////////////////////////////////////
+		
+			Allocator							_alloc;
+			key_compare							_comp;
+			Node<Key, Value>					*root;
+			Node<Key, Value>					*sentinel;
 			
 	};
 

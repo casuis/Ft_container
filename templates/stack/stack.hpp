@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:35:29 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/11 18:27:08 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/23 15:40:36 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define __MY_STACK_HPP__
 
 /* Comment her for tester */
-# include <ftnspace.hpp>
+# include "../../private/ftnspace.hpp"
 
 /* Decomment her for tester */
 // # include "../../private/ftnspace.hpp"

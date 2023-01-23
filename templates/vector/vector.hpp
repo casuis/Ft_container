@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/11 18:14:17 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/23 15:40:55 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 # define __MY_VECTOR_HPP__
 
 /* Comment this area for tester */
-# include <header.hpp>
-# include <iterator.hpp>
-# include <reverse_iterator.hpp>
-# include <enable_if.hpp>
-# include <is_integral.hpp>
+// # include <header.hpp>
+// # include <iterator.hpp>
+// # include <reverse_iterator.hpp>
+// # include <enable_if.hpp>
+// # include <is_integral.hpp>
 
 /* decomment her for tester */
-// # include <../../private/header.hpp>
-// # include <../iterator/iterator.hpp>
-// # include <../iterator/reverse_iterator.hpp>
-// # include <../functions/enable_if.hpp>
-// # include <../functions/is_integral.hpp>
+# include "../../private/header.hpp"
+# include "../iterator/iterator.hpp"
+# include "../iterator/reverse_iterator.hpp"
+# include "../functions/enable_if.hpp"
+# include "../functions/is_integral.hpp"
 
 namespace ft
 {
@@ -475,7 +475,6 @@ namespace ft
 
 
 			vector<T>&		operator=(const vector<T>& old){
-				std::cout << "in ope=" << std::endl;
 				if (this->_capacity == old._capacity && this->_data == old._data)
 					return (*this);
 				if (this->_capacity != 0)
