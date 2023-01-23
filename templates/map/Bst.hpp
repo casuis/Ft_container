@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 10:24:31 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/23 13:00:27 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ namespace ft{
 ////////////////////////////////////////////////////////////////////////////////
 	
 	
-	template <typename Key, typename Value, typename NodeType, class Allocator>
+	template <typename Key, typename Value, typename Compare, typename NodeType, class Allocator>
 	class _Rb_tree {
 		friend			class ft::map<Key, Value>;
 		friend			class ft::_Rb_tree_iterator<ft::Node<Key, Value> >;
@@ -131,7 +131,8 @@ namespace ft{
 			typedef Value					value_type;
 			typedef Key*					key_pointer;
 			typedef Value*					value_pointer;
-			typedef Node<Key, Value>		node;			
+			typedef Node<Key, Value>		node;
+			typedef Compare					key_compare;	
 			
 		private:
 		////////////////////////////////////////////////////////////////////////////////
@@ -139,6 +140,7 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		
 			Allocator							_alloc;
+			key_compare							_comp;
 			Node<Key, Value>					*root;
 			Node<Key, Value>					*sentinel;
 			
@@ -146,7 +148,7 @@ namespace ft{
 		/*                              Constructors                                  */
 		////////////////////////////////////////////////////////////////////////////////
 		
-			_Rb_tree(const allocator_type& alloc = allocator_type()): _alloc(alloc), root(0x0) {
+			_Rb_tree(const allocator_type& alloc = allocator_type()): _alloc(alloc), _comp(key_compare()), root(0x0) {
 				sentinel = this->_alloc.allocate(1);;
 				_alloc.construct(sentinel, Node<Key, Value>());
 				return ;
@@ -197,7 +199,7 @@ namespace ft{
 				else{
 					if (newNode->pair.first == pos->pair.first)
 						return ;
-					if (newNode->pair.first < pos->pair.first && pos->left == sentinel){
+					if (_comp(newNode->pair.first, pos->pair.first) && pos->left == sentinel){
 						pos->left = newNode;
 						newNode->parent = pos;
 						newNode->isLeftChild = true;
@@ -205,11 +207,11 @@ namespace ft{
 						newNode->right = sentinel;
 						sentinel->size += 1;
 					}
-					else if (newNode->pair.first < pos->pair.first && !pos->left->sentinel){
+					else if (_comp(newNode->pair.first, pos->pair.first) && !pos->left->sentinel){
 						newNode->size += 1;
 						addNode(newNode, pos->left);
 					}
-					else if (newNode->pair.first > pos->pair.first && pos->right->sentinel){
+					else if (_comp(pos->pair.first, newNode->pair.first) && pos->right->sentinel){
 						pos->right = newNode;
 						newNode->parent = pos;
 						newNode->isLeftChild = false;
@@ -266,11 +268,11 @@ namespace ft{
 					return (0x0);
 				if (pos->sentinel == true)
 					return (0x0);
-				if (value < pos->pair.first)
+				if (_comp(value, pos->pair.first))
 					return (searchNode(value, pos->left));
-				if (value > pos->pair.first)
+				if (_comp(pos->pair.first, value))
 					return (searchNode(value, pos->right));
-				if (value == pos->pair.first)
+				if (!_comp(value, pos->pair.first) && !_comp(pos->pair.first, value))
 					return (pos);
 				return (0x0);
 			}
@@ -286,15 +288,15 @@ namespace ft{
 			
 			/* find the node to delete*/
 			void		deleteNode(const key_type& value, node *pos){
-				if (value < pos->pair.first && !pos->left->sentinel ) {
+				if (_comp(value, pos->pair.first) && !pos->left->sentinel ) {
 					deleteNode(value, pos->left);
 					return ;
 				}
-				else if (value > pos->pair.first && !pos->right->sentinel) {
+				else if (_comp(pos->pair.first, value) && !pos->right->sentinel) {
 					deleteNode(value, pos->right);
 					return ;
 				}
-				else if (pos->pair.first == value)
+				else if (!_comp(pos->pair.first, value) && !_comp(value, pos->pair.first))
 					deleteNode(pos);
 				return ;
 			}

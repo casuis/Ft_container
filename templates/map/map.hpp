@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 12:35:09 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/23 12:54:53 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ namespace ft {
 					}
 			};
 			
-			ft::_Rb_tree<key_type, mapped_type>				_Rb_tree;
 
 			////////////////////////////////////////////////////////////////////////////////
 			
@@ -293,7 +292,8 @@ namespace ft {
 			}
 			
 		private:
-			Allocator					_alloc;
+			Allocator										_alloc;
+			ft::_Rb_tree<key_type, mapped_type, key_compare>				_Rb_tree;
 			
 	};
 	
