@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/21 12:58:59 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/23 10:24:31 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,11 +257,11 @@ namespace ft{
 			/* Search section */
 	
 
-			node*		searchNode(const value_type value) {
+			node*		searchNode(const key_type value) {
 				return (searchNode(value, this->root));
 			}
 
-			node*		searchNode(const value_type& value, node* pos){
+			node*		searchNode(const key_type& value, node* pos){
 				if (root == 0x0)
 					return (0x0);
 				if (pos->sentinel == true)
@@ -278,14 +278,14 @@ namespace ft{
 			////////////////////////////////////////////////////////////////////////////////
 			/* Delete section */			
 			
-			void		deleteNode(const value_type& value) {
+			void		deleteNode(const key_type& value) {
 				deleteNode(value, this->root);
 				updateSentinel();
 				return ;
 			}
 			
 			/* find the node to delete*/
-			void		deleteNode(const value_type& value, node *pos){
+			void		deleteNode(const key_type& value, node *pos){
 				if (value < pos->pair.first && !pos->left->sentinel ) {
 					deleteNode(value, pos->left);
 					return ;

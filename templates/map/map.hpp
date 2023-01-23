@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/21 13:04:55 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/23 12:35:09 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ namespace ft {
 				
 				protected:
 					Compare comp;
-					value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+					value_compare(Compare c) : comp(c) {}  // constructed with map's comparison object
 				
 				public:
 					typedef bool result_type;
@@ -80,7 +80,7 @@ namespace ft {
 
 				return (ret);
 			}
-			
+
 			////////////////////////////////////////////////////////////////////////////////
 		
 			ft::map<Key, T>		operator=(ft::map<Key,T> const &rhs) {
@@ -131,21 +131,166 @@ namespace ft {
 				ft::pair<iterator, bool>				ret;
 				
 				if (!node){
-					node = _Rb_tree.createNode(val)
+					node = _Rb_tree.createNode(val);
 					_Rb_tree.addNode(node);
 					ret->second = true;
 				}
 				else
 					ret->second = false;
 				ret->first = iterator(node);
-				return; 
+				return (ret); 
 			}
 			
-			// iterator	insert(iterator position, const value_type& val);
+			iterator	insert(iterator position, const value_type& val) {
+				insert(val);
+				return (position);
+			}
 			
-			// template <class InputIterator> 
-			// void		insert(InputIterator first, InputIterator last);
+			template <class InputIterator> 
+			void		insert(InputIterator first, InputIterator last) {
+				for (; first != last; first++) {
+					insert(first->node->pair);
+				}
+				return ;
+			}
 
+			////////////////////////////////////////////////////////////////////////////////
+			
+			void erase (iterator position) {
+				_Rb_tree.deleteNode(*position);
+			}
+			
+			size_type erase (const key_type& k) {
+				typename ft::_Rb_tree<Key, T>::node		*node = _Rb_tree.searchNode(k);
+
+				if (!node)
+					return (0);
+				_Rb_tree.deleteNode(node);
+				return (1);
+			}
+			
+			void erase (iterator first, iterator last) {
+				for (; first != last; first++) {
+					_Rb_tree.deleteNode(*first);
+				}
+				return ;
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			
+			void swap (map& x) {
+				ft::_Rb_tree<Key, T>		tmp = _Rb_tree;
+				
+				if (x == _Rb_tree)
+					return ;
+				_Rb_tree = x;
+				x = tmp;
+				return ;
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			
+			void clear() {
+				ft::_Rb_tree<Key, T>		tmp;
+				
+				this->_Rb_tree = tmp;
+				return ;
+			}
+			
+			////////////////////////////////////////////////////////////////////////////////
+
+			key_compare key_comp() const {
+				return (key_compare());
+			}
+
+			value_compare value_comp() const {
+				return (value_compare(key_comp()));
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			
+			iterator		find(const key_type& k) {
+				typename ft::_Rb_tree<Key, T>::node		*node = _Rb_tree.searchNode(k);
+				
+				if (!node)
+					return (this->end());
+				return (iterator(node));
+			}
+			
+			const_iterator	find(const key_type& k) const {
+				typename ft::_Rb_tree<Key, T>::node		*node = _Rb_tree.searchNode(k);
+				
+				if (!node)
+					return (const_iterator(_Rb_tree.sentinel));
+				return (const_iterator(node));
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			
+			size_type count (const key_type& k) const {
+				typename ft::_Rb_tree<Key, T>::node		*node = _Rb_tree.searchNode(k);
+				
+				if (!node)
+					return (0);
+				return (1);
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			
+			iterator	lower_bound(const key_type& k) {
+			key_compare		comp = key_compare();
+				for (iterator first = this->begin(), last = this->end(); first != last; first++) {
+					if (comp(first->first, k))
+						return (first);
+				}
+				return (this->end());
+			}
+			
+			const_iterator	lower_bound(const key_type& k) const {
+				for (iterator first = this->begin(), last = this->end(); first != last; first++) {
+					if (comp(first->first, k))
+						return (first);
+				}
+				return (const_iterator(_Rb_tree.sentinel));
+			}
+			
+			iterator		upper_bound(const key_type& k) {
+				for (iterator first = this->begin(), last = this->end(); first != last; first++) {
+					if (comp(k, first->first))
+						return (first);
+				}
+				return (this->end());
+			}
+			
+			const_iterator	upper_bound(const key_type& k) const {
+				for (iterator first = this->begin(), last = this->end(); first != last; first++) {
+					if (comp(k, first->first))
+						return (first);
+				}
+				return (const_iterator(_Rb_tree.sentinel));
+			}
+
+			pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+				for (const_iterator first = const_iterator(_Rb_tree.getFirst()), last = const_iterator(_Rb_tree.sentinel); first != last; first++) {
+					if (key_compare(first->first, k) && key_compare(k, first->first))
+						return (ft::pair<const_iterator, const_iterator>(first, first));
+				}
+				return (ft::pair<const_iterator, const_iterator>(upper_bound(k), upper_bound(k)));
+			}
+			
+			pair<iterator,iterator>             equal_range (const key_type& k) {
+				for (iterator first = iterator(_Rb_tree.getFirst()), last = iterator(_Rb_tree.sentinel); first != last; first++) {
+					if (key_compare(first->first, k) && key_compare(k, first->first))
+						return (ft::pair<iterator, iterator>(first, first));
+				}
+				return (ft::pair<iterator, iterator>(upper_bound(k), upper_bound(k)));
+			}
+			
+			////////////////////////////////////////////////////////////////////////////////
+			
+			allocator_type get_allocator() const {
+				return (this->_alloc);
+			}
 			
 		private:
 			Allocator					_alloc;
