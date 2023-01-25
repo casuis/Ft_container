@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 15:40:55 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/25 15:48:26 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ namespace ft
 			
 			/* Copy Constructor */
 			vector(const ft::vector<T> &old)
-			: _alloc(old._alloc), _size(old._size), _capacity(old._capacity) {
+			: _alloc(old._alloc), _size(old._size), _capacity(old._size) {
 				size_t i = 0;
 				pointer		newVec;
 				
@@ -109,7 +109,9 @@ namespace ft
 			~vector(){
 				for (size_t del = 0; del != this->_size; del++)
 					this->_alloc.destroy(this->_data + del);
-				this->_alloc.deallocate(this->_data, this->_capacity);
+				if (this->_data) {
+					this->_alloc.deallocate(this->_data, this->_capacity);
+				}
 				return ;
 			};
 
@@ -474,16 +476,21 @@ namespace ft
 		////////////////////////////////////////////////////////////////////////////////
 
 
-			vector<T>&		operator=(const vector<T>& old){
-				if (this->_capacity == old._capacity && this->_data == old._data)
+			vector<T>&		operator=(const vector<T>& param){
+				if (&param == this)
 					return (*this);
-				if (this->_capacity != 0)
+
+				this->clear();
+				if (param.size() > this->_capacity)
+				{
 					this->_alloc.deallocate(this->_data, this->_capacity);
-				this->_capacity = old._capacity;
-				this->_data = this->_alloc.allocate(this->_capacity);
-				for (size_t i = 0; i < old._size; i++)
-					this->_data[i] = old._data[i];
-				this->_size = old._size;
+					this->_capacity = param.size();
+					this->_data = this->_alloc.allocate(this->_capacity);
+				}
+
+				for (size_type i = 0; i < param.size(); i++)
+					this->push_back(param[i]);
+
 				return (*this);
 			}
 			

@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 16:42:38 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/25 16:19:36 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ namespace ft{
 	template <typename Key, typename Value, typename Compare, typename NodeType, class Allocator>
 	class _Rb_tree {
 		friend			class ft::map<Key, Value, Compare>;
-		friend			class ft::_Rb_tree_iterator<ft::Node<Key, Value> >;
+		friend			class ft::_Rb_tree_iterator<ft::pair<Key, Value>, ft::Node<Key, Value> >;
 		
 			
 		public:
@@ -129,13 +129,13 @@ namespace ft{
 		/*                              Member Type                                   */
 		////////////////////////////////////////////////////////////////////////////////
 		
-			typedef Allocator				allocator_type;
-			typedef Key						key_type;
-			typedef Value					value_type;
-			typedef Key*					key_pointer;
-			typedef Value*					value_pointer;
-			typedef Node<Key, Value>		node;
-			typedef Compare					key_compare;	
+			typedef Allocator					allocator_type;
+			typedef Key							key_type;
+			typedef Value						value_type;
+			typedef Key*						key_pointer;
+			typedef Value*						value_pointer;
+			typedef ft::Node<Key, Value>		node;
+			typedef Compare						key_compare;	
 			
 		////////////////////////////////////////////////////////////////////////////////
 		/*                              Constructors                                  */
@@ -253,11 +253,11 @@ namespace ft{
 			/* Search section */
 	
 
-			node*		searchNode(const key_type value) {
+			node*		searchNode(const key_type value) const {
 				return (searchNode(value, this->root));
 			}
 
-			node*		searchNode(const key_type& value, node* pos){
+			node*		searchNode(const key_type& value, node* pos) const {
 				if (root == 0x0)
 					return (0x0);
 				if (pos->sentinel == true)
@@ -786,7 +786,9 @@ namespace ft{
 			ft::_Rb_tree<Key, Value, Compare>	operator=(typename ft::_Rb_tree<Key, Value, Compare>& tree) {
 				this->root = tree.root;
 				this->sentinel = tree.sentinel;
-				return ;
+				this->_alloc = tree._alloc;
+				this->_comp = tree._comp;
+				return (*this);
 			}
 			
 		private:

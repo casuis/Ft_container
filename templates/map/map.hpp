@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 16:10:53 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/25 16:34:24 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ namespace ft {
 		
 		public:
 		
-			typedef Key																		key_type;
-			typedef T																		mapped_type;
-			typedef ft::pair<const Key, T>													value_type;
-			typedef std::size_t																size_type;
-			typedef std::ptrdiff_t															difference_type;
-			typedef Compare																	key_compare;
-			typedef Allocator																allocator_type;
-			typedef value_type&																reference;
-			typedef const value_type&														const_reference;
-			typedef	typename Allocator::pointer												pointer;
-			typedef	typename Allocator::const_pointer										const_pointer;
-			typedef	ft::_Rb_tree_iterator< typename ft::_Rb_tree<Key, T>::node >			iterator;
-			typedef	ft::_Rb_tree_iterator< const typename ft::_Rb_tree<Key, T>::node>		const_iterator;
+			typedef Key																					key_type;
+			typedef T																					mapped_type;
+			typedef ft::pair<Key, T>																value_type;
+			typedef std::size_t																			size_type;
+			typedef std::ptrdiff_t																		difference_type;
+			typedef Compare																				key_compare;
+			typedef Allocator																			allocator_type;
+			typedef value_type&																			reference;
+			typedef const value_type&																	const_reference;
+			typedef	typename Allocator::pointer															pointer;
+			typedef	typename Allocator::const_pointer													const_pointer;
+			typedef	ft::_Rb_tree_iterator< value_type, typename ft::_Rb_tree<Key, T>::node >			iterator;
+			typedef	ft::_Rb_tree_iterator< const value_type, typename ft::_Rb_tree<Key, T>::node>		const_iterator;
 			// typedef	to_do						reverse_iterator;
 			// typedef	to_do						const_reverse_iterator;
 	
@@ -76,8 +76,7 @@ namespace ft {
 			}
 			
 			map (const map& x) {
-				insert(x.begin(), x.end());
-				this->_alloc = x._alloc;
+				*this = x;
 				return ;
 			}
 
@@ -99,9 +98,13 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 		
 			ft::map<Key, T, Compare>		operator=(ft::map<Key,T, Compare> const &rhs) {
-				if (this->_Rb_tree == rhs._Rb_tree)
+				if (this == &rhs)
 					return (*this);
-				this->_Rb_tree = rhs._Rb_tree;
+				if (!this->empty())
+					this->clear();
+				this->_alloc = rhs._alloc;
+				this->_comp = rhs._comp;
+				this->insert(rhs.begin(), rhs.end());
 				return (*this);
 			}
 
@@ -145,7 +148,7 @@ namespace ft {
 				typename ft::_Rb_tree<Key, T>::node		*node = _Rb_tree.searchNode(val.first);
 				ft::pair<iterator, bool>				ret;
 				
-				if (!node){
+				if (!node) {
 					node = _Rb_tree.createNode(val.first, val.second);
 					_Rb_tree.addNode(node);
 					ret.second = true;
@@ -164,7 +167,7 @@ namespace ft {
 			template <class InputIterator> 
 			void		insert(InputIterator first, InputIterator last) {
 				for (; first != last; first++) {
-					insert((*first).pair);
+					insert(*first);
 				}
 				return ;
 			}
@@ -172,7 +175,7 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 			
 			void erase (iterator position) {
-				_Rb_tree.deleteNode(&(*position));
+				_Rb_tree.deleteNode(*position);
 			}
 			
 			size_type erase (const key_type& k) {
@@ -194,12 +197,24 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 			
 			void swap (map& x) {
-				ft::_Rb_tree<Key, T, Compare>		tmp = _Rb_tree;
+				typename ft::_Rb_tree<Key, T, Compare>::node				tmp_root = _Rb_tree.root;
+				typename ft::_Rb_tree<Key, T, Compare>::node				tmp_sentinel = _Rb_tree.sentinel;
+				typename ft::_Rb_tree<Key, T, Compare>::key_compare			tmp_comp = _Rb_tree._comp;
+				typename ft::_Rb_tree<Key, T, Compare>::Allocator_type		tmp_alloc = _Rb_tree._alloc;
 				
-				if (x == _Rb_tree)
+				
+				if (&(x._Rb_tree) == &(_Rb_tree))
 					return ;
-				_Rb_tree = x;
-				x = tmp;
+				
+				_Rb_tree.root = x._Rb_tree.root;
+				_Rb_tree.sentinel = x._Rb_tree.sentinel;
+				_Rb_tree._comp = x._Rb_tree._comp;
+				_Rb_tree._alloc = x._Rb_tree._alloc;
+
+				x._Rb_tree.root = tmp_root;
+				x._Rb_tree.sentinel = tmp_sentinel;
+				x._Rb_tree._alloc = tmp_alloc;
+				x._Rb_tree._comp = tmp_comp;
 				return ;
 			}
 
@@ -253,9 +268,8 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 			
 			iterator	lower_bound(const key_type& k) {
-			key_compare		comp = key_compare();
 				for (iterator first = this->begin(), last = this->end(); first != last; first++) {
-					if (comp(first->first, k))
+					if (_comp(first->first, k))
 						return (first);
 				}
 				return (this->end());
@@ -263,7 +277,7 @@ namespace ft {
 			
 			const_iterator	lower_bound(const key_type& k) const {
 				for (iterator first = this->begin(), last = this->end(); first != last; first++) {
-					if (comp(first->first, k))
+					if (_comp(first->first, k))
 						return (first);
 				}
 				return (const_iterator(_Rb_tree.sentinel));
@@ -271,14 +285,14 @@ namespace ft {
 			
 			iterator		upper_bound(const key_type& k) {
 				for (iterator first = this->begin(), last = this->end(); first != last; first++) {
-					if (comp(k, first->first))
+					if (_comp(k, first->first))
 						return (first);
 				}
 				return (this->end());
 			}
 			
 			const_iterator	upper_bound(const key_type& k) const {
-				for (iterator first = this->begin(), last = this->end(); first != last; first++) {
+				for (const_iterator first = this->begin(), last = this->end(); first != last; first++) {
 					if (_comp(k, first->first))
 						return (first);
 				}
@@ -313,7 +327,49 @@ namespace ft {
 			ft::_Rb_tree<key_type, mapped_type, key_compare>				_Rb_tree;
 			
 	};
-	
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator==(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator!=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return (!(lhs == rhs));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator<(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator<=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return (!(rhs < lhs));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator>(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return (rhs < lhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator>=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return (!(lhs < rhs));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	void	swap(map<Key, T, Compare, Alloc>& a, map<Key, T, Compare, Alloc>& b)
+	{
+		a.swap(b);
+	}
+
 }
 
 #endif

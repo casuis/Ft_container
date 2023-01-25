@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 13:16:18 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/25 11:56:23 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ namespace ft {
 	template <class T, class Container = ft::vector<T> >
 	class stack;
 
-	template <typename T>
+	template <typename T, typename N>
 	class _Rb_tree_iterator;
 
 }
