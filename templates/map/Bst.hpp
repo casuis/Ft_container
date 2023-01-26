@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/25 16:19:36 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/26 16:03:45 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ namespace ft{
 		
 			typedef Allocator					allocator_type;
 			typedef Key							key_type;
-			typedef Value						value_type;
+			typedef Value						·value_type;
 			typedef Key*						key_pointer;
 			typedef Value*						value_pointer;
 			typedef ft::Node<Key, Value>		node;

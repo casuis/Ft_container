@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/25 15:48:26 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/26 17:36:18 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace ft
 		public:
 		
 		////////////////////////////////////////////////////////////////////////////////
-		/*                              Member Type                                  */
+		/*                              Member Type                                   */
 		////////////////////////////////////////////////////////////////////////////////
 		
 			typedef T													value_type;
@@ -195,29 +195,46 @@ namespace ft
 			
 			/* realloc the container to change his capacity to new_cap, the size don't change */
 			void			reserve(size_t new_cap) {
-				pointer 		newVec; 
-				size_t i = 0;
+				// pointer 		newVec; 
+				// size_t i = 0;
 				
-				if (this->_capacity > new_cap)
-					return ;
-				if (new_cap == 0)
-					new_cap = 1;
-				newVec = this->_alloc.allocate(new_cap);
-				for (; i < new_cap && i < this->_size; i++){
-					try{
+				// if (this->_capacity > new_cap)
+				// 	return ;
+				// if (new_cap == 0)
+				// 	new_cap = 1;
+				// newVec = this->_alloc.allocate(new_cap);
+				// for (; i < new_cap && i < this->_size; i++){
+				// 	try{
+				// 		this->_alloc.construct(newVec + i, this->_data[i]);
+				// 	}
+				// 	catch (const std::exception& e){
+				// 		for (size_t del = 0; del != i; del++)
+				// 			this->_alloc.destroy(newVec + del);
+				// 		std::exit(1);
+				// 	}
+				// }
+				// for (size_t del = 0; del < i; del++)
+				// 	this->_alloc.destroy(this->_data + del);
+				// if (this->_data)
+				// 	this->_alloc.deallocate(this->_data, this->_capacity);
+				// this->_data = newVec;
+				// this->_capacity = new_cap;
+				if (new_cap > this->max_size())
+					throw (std::length_error("vector::reserve"));
+
+				else if (new_cap > this->_capacity)
+				{
+					pointer	newVec = this->_alloc.allocate(new_cap);
+					
+					for (size_type i = 0; i < this->_size && i < new_cap; i++)
+					{
 						this->_alloc.construct(newVec + i, this->_data[i]);
+						this->_alloc.destroy(this->_data + i);
 					}
-					catch (const std::exception& e){
-						for (size_t del = 0; del != i; del++)
-							this->_alloc.destroy(newVec + del);
-						std::exit(1);
-					}
+					this->_alloc.deallocate(this->_data, this->_capacity);
+					this->_capacity = new_cap;
+					this->_data = newVec;
 				}
-				for (size_t del = 0; del < i; del++)
-					this->_alloc.destroy(this->_data + del);
-				this->_alloc.deallocate(this->_data, this->_capacity);
-				this->_data = newVec;
-				this->_capacity = new_cap;
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
@@ -226,7 +243,7 @@ namespace ft
 			void		resize(size_type n, value_type val = value_type()){
 				size_t	 i = this->_size;
 				size_t	 cap = this->_capacity;
-				if (n > this->_capacity){
+				if (n > this->_capacity) {
 					if (this->_capacity * 2 >= n)
 						this->reserve(cap * 2);
 					else
@@ -297,8 +314,12 @@ namespace ft
 		
 			
 			void push_back (const value_type& val){
-				if (this->_size + 1 > this->_capacity)
+				if (this->_size + 1 > this->_capacity) {
 					this->reserve(this->_size * 2);
+					std::cout << "\t\tici print" << std::endl;
+				}
+				std::cout << "\tsize: " << _size << std::endl;
+				std::cout << "\tcapacity: " << _capacity << std::endl;
 				this->_alloc.construct(this->_data + this->_size, val);
 				this->_size += 1;
 			}
