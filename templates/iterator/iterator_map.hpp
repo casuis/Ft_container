@@ -6,11 +6,12 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/25 12:01:55 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/30 16:56:29 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include <header.hpp>
+#ifndef __ITERATOR_MAP__
+# define __ITERATOR_MAP__
 # include "../../private/header.hpp"
 
 
@@ -32,6 +33,10 @@ namespace ft {
 			_Rb_tree_iterator(): node(0x0) {}
 			
 			~_Rb_tree_iterator() {}
+
+			operator _Rb_tree_iterator<const T, N>() const {
+				return (_Rb_tree_iterator<const T, N>(this->node));
+			}
 
 			reference		operator*() const {
 				return (node->pair);
@@ -70,10 +75,11 @@ namespace ft {
 				
 				if (buff && !buff->sentinel)
 					this->node = buff;
-				else if (buff && buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel)
+				else if (buff && !buff->sentinel && this->node->isLeftChild 
+						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (buff && buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
-						&& !this->node->parent->parent->sentinel)
+				else if (buff && !buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
+							&& !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
 				else if (this->node->sentinel)
 					this->node = buff->right;
@@ -142,15 +148,14 @@ namespace ft {
 				return (this->node != src.getNode());
 			}
 
-			////////////////////////////////////////////////////////////////////////////////
-			/* Comparaison opperator */
-			
+			N*			getNode() const {
+				return (this->node);
+			}
 
 		private:
 			N		*node;
 
-			N*			getNode() const {
-				return (this->node);
-			}
 	};
 }
+
+#endif

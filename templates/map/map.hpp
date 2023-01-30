@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/25 16:34:24 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/30 17:22:07 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace ft {
 		
 			typedef Key																					key_type;
 			typedef T																					mapped_type;
-			typedef ft::pair<Key, T>																value_type;
+			typedef ft::pair<Key, T>																	value_type;
 			typedef std::size_t																			size_type;
 			typedef std::ptrdiff_t																		difference_type;
 			typedef Compare																				key_compare;
@@ -82,17 +82,12 @@ namespace ft {
 
 			~map() {}
 
-
 			iterator	begin() const {
-				iterator ret(this->_Rb_tree.getFirst());
-				
-				return (ret);
+				return (iterator(this->_Rb_tree.getFirst()));
 			}
 
 			iterator	end() const {
-				iterator ret(this->_Rb_tree.sentinel);
-
-				return (ret);
+				return (iterator(this->_Rb_tree.sentinel));
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
@@ -276,7 +271,7 @@ namespace ft {
 			}
 			
 			const_iterator	lower_bound(const key_type& k) const {
-				for (iterator first = this->begin(), last = this->end(); first != last; first++) {
+				for (const_iterator first = this->begin(), last = this->end(); first != last; first++) {
 					if (_comp(first->first, k))
 						return (first);
 				}
@@ -300,19 +295,11 @@ namespace ft {
 			}
 
 			pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
-				for (const_iterator first = const_iterator(_Rb_tree.getFirst()), last = const_iterator(_Rb_tree.sentinel); first != last; first++) {
-					if (key_compare(first->first, k) && key_compare(k, first->first))
-						return (ft::pair<const_iterator, const_iterator>(first, first));
-				}
-				return (ft::pair<const_iterator, const_iterator>(upper_bound(k), upper_bound(k)));
+				return (ft::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k)));
 			}
 			
 			pair<iterator,iterator>             equal_range (const key_type& k) {
-				for (iterator first = iterator(_Rb_tree.getFirst()), last = iterator(_Rb_tree.sentinel); first != last; first++) {
-					if (key_compare(first->first, k) && key_compare(k, first->first))
-						return (ft::pair<iterator, iterator>(first, first));
-				}
-				return (ft::pair<iterator, iterator>(upper_bound(k), upper_bound(k)));
+				return (ft::pair<iterator, iterator>(lower_bound(k), upper_bound(k)));
 			}
 			
 			////////////////////////////////////////////////////////////////////////////////
@@ -324,7 +311,7 @@ namespace ft {
 		private:
 			Compare															_comp;
 			Allocator														_alloc;
-			ft::_Rb_tree<key_type, mapped_type, key_compare>				_Rb_tree;
+			ft::_Rb_tree<key_type, mapped_type, key_compare>				_Rb_tree; 
 			
 	};
 

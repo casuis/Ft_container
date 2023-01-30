@@ -6,11 +6,12 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/26 16:03:45 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/30 16:23:58 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include <header.hpp>
+#ifndef __BST_HPP__
+# define __BST_HPP__
 # include "../../private/header.hpp"
 
 namespace ft{
@@ -131,7 +132,7 @@ namespace ft{
 		
 			typedef Allocator					allocator_type;
 			typedef Key							key_type;
-			typedef Value						·value_type;
+			typedef Value						value_type;
 			typedef Key*						key_pointer;
 			typedef Value*						value_pointer;
 			typedef ft::Node<Key, Value>		node;
@@ -703,7 +704,7 @@ namespace ft{
 				size_t	leftBnodes = returnBlackNodes(pos->left);
 				size_t	rightBnodes = returnBlackNodes(pos->right);
 				if (rightBnodes != leftBnodes) {
-					std::cout << "unbalanced on pos: [" << pos->pair.second << "]" << std::endl;
+					std::cerr << "unbalanced on pos: [" << pos->pair.first << "]" << std::endl;
 					exit(1);
 				}
 
@@ -717,6 +718,8 @@ namespace ft{
 
 			node*		getFirst() const {
 				node*	tmp = this->root;
+				if (tmp->sentinel)
+					return (tmp);
 				while (!tmp->left->sentinel)
 					tmp = tmp->left;
 				return (tmp);
@@ -804,3 +807,5 @@ namespace ft{
 	};
 
 }
+
+#endif
