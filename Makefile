@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2023/01/18 23:04:07 by asimon           ###   ########.fr        #
+#    Updated: 2023/01/30 20:28:54 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -233,6 +233,34 @@ map: fclean
 	fi
 	@mkdir -p res
 	@mv *_output res/
+
+
+stack: fclean
+	@clear
+	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
+		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
+	else \
+		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
+	fi
+
+	@if [ -f $(FT)$(EXEC_S) ]; then \
+		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
+	fi
+	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
+	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
+		$(CXX) $(CXXFLAGS) $(INC) -D STD=1 -o $(STD)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
+	else \
+		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
+	fi
+
+	@if [ -f $(STD)$(EXEC_S) ]; then \
+		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
+	else \
+		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
+	fi
 
 test:
 	@$(MAKE) -i $(NAME)
