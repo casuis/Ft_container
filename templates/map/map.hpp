@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/30 17:22:07 by asimon           ###   ########.fr       */
+/*   Updated: 2023/01/30 20:06:12 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ namespace ft {
 			typedef	typename Allocator::const_pointer													const_pointer;
 			typedef	ft::_Rb_tree_iterator< value_type, typename ft::_Rb_tree<Key, T>::node >			iterator;
 			typedef	ft::_Rb_tree_iterator< const value_type, typename ft::_Rb_tree<Key, T>::node>		const_iterator;
-			// typedef	to_do						reverse_iterator;
-			// typedef	to_do						const_reverse_iterator;
+			typedef	ft::ReverseIterator<iterator>														reverse_iterator;
+			typedef	ft::ReverseIterator<const_iterator>													const_reverse_iterator;
 	
 			////////////////////////////////////////////////////////////////////////////////
 			class value_compare
