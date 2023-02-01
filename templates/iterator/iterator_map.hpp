@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/30 16:56:29 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/01 21:10:09 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ namespace ft {
 				
 				if (buff && !buff->sentinel)
 					this->node = buff;
-				else if (buff && !buff->sentinel && this->node->isLeftChild 
+				else if (buff && buff->sentinel && this->node->isLeftChild 
 						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (buff && !buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
-							&& !this->node->parent->parent->sentinel)
+				else if (buff && buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
+						&& this->node->parent->isLeftChild && !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
 				else if (this->node->sentinel)
 					this->node = buff->right;
@@ -71,15 +71,16 @@ namespace ft {
 
 			iterator		operator++(int) {
 				iterator							tmp(*this);
+				std::cout << "++ | node: " << this->node->pair.first << std::endl;
 				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
 				
 				if (buff && !buff->sentinel)
 					this->node = buff;
-				else if (buff && !buff->sentinel && this->node->isLeftChild 
+				else if (buff && buff->sentinel && this->node->isLeftChild 
 						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (buff && !buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
-							&& !this->node->parent->parent->sentinel)
+				else if (buff && buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
+						&& this->node->parent->isLeftChild && !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
 				else if (this->node->sentinel)
 					this->node = buff->right;
@@ -97,7 +98,7 @@ namespace ft {
 						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
 				else if (buff && buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
-								&& !this->node->parent->parent->sentinel)
+						&& !this->node->parent->parent->sentinel)
 					this->node = this->node->parent->parent;
 				else if (this->node->sentinel)
 					this->node = buff->right;

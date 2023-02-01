@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/30 20:06:12 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/01 21:14:09 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,14 @@ namespace ft {
 
 			////////////////////////////////////////////////////////////////////////////////
 		
-			ft::map<Key, T, Compare>		operator=(ft::map<Key,T, Compare> const &rhs) {
+			ft::map<Key, T, Compare>&		operator=(ft::map<Key,T, Compare> const &rhs) {
 				if (this == &rhs)
 					return (*this);
 				if (!this->empty())
 					this->clear();
-				this->_alloc = rhs._alloc;
 				this->_comp = rhs._comp;
+				this->_alloc = rhs._alloc;
+				
 				this->insert(rhs.begin(), rhs.end());
 				return (*this);
 			}
@@ -106,15 +107,15 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 			
 			bool		empty() const {
-				return (this->_Rb_tree.root == 0x0);
+				return (this->_Rb_tree.size == 0);
 			}
 
 			size_t		size() const {
-				return (this->_Rb_tree.sentinel->size);
+				return (this->_Rb_tree.size);
 			}
 
 			size_t		max_size() const {
-				return (this->_alloc.max_size());
+				return (this->_Rb_tree.max_size());
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
@@ -161,16 +162,15 @@ namespace ft {
 			
 			template <class InputIterator> 
 			void		insert(InputIterator first, InputIterator last) {
-				for (; first != last; first++) {
+				for (; first != last; first++)
 					insert(*first);
-				}
 				return ;
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
 			
 			void erase (iterator position) {
-				_Rb_tree.deleteNode(*position);
+				_Rb_tree.deleteNode(_Rb_tree.searchNode(position->first));
 			}
 			
 			size_type erase (const key_type& k) {
@@ -183,8 +183,12 @@ namespace ft {
 			}
 			
 			void erase (iterator first, iterator last) {
-				for (; first != last; first++) {
-					_Rb_tree.deleteNode(&(*first));
+				for (key_type actual = 0, next = 0; first != last; ) {
+					actual = first->first;
+					first++;
+					next = first->first;
+					this->erase(actual);
+					first = iterator(_Rb_tree.searchNode(next));
 				}
 				return ;
 			}
@@ -216,9 +220,7 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 			
 			void clear() {
-				ft::_Rb_tree<Key, T, Compare>		tmp;
-				
-				this->_Rb_tree = tmp;
+				this->_Rb_tree.freeRb_tree();
 				return ;
 			}
 			
@@ -264,7 +266,7 @@ namespace ft {
 			
 			iterator	lower_bound(const key_type& k) {
 				for (iterator first = this->begin(), last = this->end(); first != last; first++) {
-					if (_comp(first->first, k))
+					if (_comp(k, first->first) || (!_comp(k, first->first) && !_comp(first->first, k)))
 						return (first);
 				}
 				return (this->end());
@@ -272,7 +274,7 @@ namespace ft {
 			
 			const_iterator	lower_bound(const key_type& k) const {
 				for (const_iterator first = this->begin(), last = this->end(); first != last; first++) {
-					if (_comp(first->first, k))
+					if (_comp(k, first->first) || (!_comp(k, first->first) && !_comp(first->first, k)))
 						return (first);
 				}
 				return (const_iterator(_Rb_tree.sentinel));

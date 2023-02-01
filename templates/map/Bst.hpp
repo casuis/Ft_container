@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/30 16:23:58 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/01 21:26:38 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ namespace ft{
 			Node*						parent;
 			
 			ft::pair<Key, Value>		pair;
-			size_t						size;
 			bool						black;
 			bool						isLeftChild;
 
@@ -55,7 +54,6 @@ namespace ft{
 				this->black = false;
 				this->isLeftChild = false;
 				this->sentinel = false;
-				this->size = 0;
 			}
 		
 			Node(Key key, Value value){
@@ -68,7 +66,6 @@ namespace ft{
 				this->black = false;
 				this->isLeftChild = false;
 				this->sentinel = false;
-				this->size = 0;
 				return ;
 			};
 			
@@ -81,7 +78,6 @@ namespace ft{
 				this->black = true;
 				this->isLeftChild = false;
 				this->sentinel = true;
-				this->size = 0;
 			};
 			
 			~Node() {};
@@ -142,7 +138,7 @@ namespace ft{
 		/*                              Constructors                                  */
 		////////////////////////////////////////////////////////////////////////////////
 		
-			_Rb_tree(const allocator_type& alloc = allocator_type()): _alloc(alloc), _comp(key_compare()), root(0x0) {
+			_Rb_tree(const allocator_type& alloc = allocator_type()): _alloc(alloc), _comp(key_compare()), root(0x0), size(0) {
 				sentinel = this->_alloc.allocate(1);;
 				_alloc.construct(sentinel, Node<Key, Value>());
 				return ;
@@ -159,6 +155,11 @@ namespace ft{
 		////////////////////////////////////////////////////////////////////////////////
 		/* free section */
 
+			void		freeRb_tree() {
+				freeRb_tree(root);
+				return ;
+			}
+			
 			void		freeRb_tree(node* pos) {
 				if (pos == sentinel || pos == 0x0)
 					return;
@@ -166,6 +167,8 @@ namespace ft{
 				freeRb_tree(pos->right);
 				_alloc.destroy(pos);
 				_alloc.deallocate(pos, 1);
+				size = 0;
+				root = 0x0;
 				return ;
 			}
 		
@@ -183,7 +186,7 @@ namespace ft{
 				if (root == 0x0){
 					root = newNode;
 					this->sentinel->left = root;
-					this->sentinel->size += 1;
+					this->size += 1;
 					this->root->parent = this->sentinel;
 					this->root->left = sentinel;
 					this->root->right = sentinel;
@@ -200,10 +203,9 @@ namespace ft{
 						newNode->isLeftChild = true;
 						newNode->left = sentinel;
 						newNode->right = sentinel;
-						sentinel->size += 1;
+						this->size += 1;
 					}
 					else if (_comp(newNode->pair.first, pos->pair.first) && !pos->left->sentinel){
-						newNode->size += 1;
 						addNode(newNode, pos->left);
 					}
 					else if (_comp(pos->pair.first, newNode->pair.first) && pos->right->sentinel){
@@ -212,10 +214,9 @@ namespace ft{
 						newNode->isLeftChild = false;
 						newNode->left = sentinel;
 						newNode->right = sentinel;
-						sentinel->size += 1;
+						this->size += 1;
 					}
 					else {
-						newNode->size += 1;
 						addNode(newNode, pos->right);
 					}
 					checkColor(newNode);
@@ -277,7 +278,6 @@ namespace ft{
 			
 			void		deleteNode(const key_type& value) {
 				deleteNode(value, this->root);
-				updateSentinel();
 				return ;
 			}
 			
@@ -311,6 +311,7 @@ namespace ft{
 					deleteLeaf(pos);
 					if (fixNode != sentinel)
 						fixDelete(fixNode, is_left, need_to_fix);
+					updateSentinel();
 					return ;
 				}
 				
@@ -323,9 +324,12 @@ namespace ft{
 				swapLeaf(swap_node, pos);
 				deleteLeaf(swap_node);
 				fixDelete(fixNode, is_left, need_to_fix);
+				updateSentinel();
+				std::cout << "end" << std::endl;
 				return ;
 			}
 			
+			/* NEED TO SWAP ALL NODE AND NOT JUST PAIR */
 			void		swapLeaf(node* swap_node, node* pos) {
 				ft::pair<key_type, value_type>		tmp;
 				
@@ -478,7 +482,7 @@ namespace ft{
 					pos->parent->right = sentinel;
 				this->_alloc.destroy(pos);
 				this->_alloc.deallocate(pos, 1);
-				sentinel->size -= 1;
+				this->size -= 1;
 			}
 
 			/* the biggest of the smallest */
@@ -718,8 +722,8 @@ namespace ft{
 
 			node*		getFirst() const {
 				node*	tmp = this->root;
-				if (tmp->sentinel)
-					return (tmp);
+				if (!size)
+					return (sentinel);
 				while (!tmp->left->sentinel)
 					tmp = tmp->left;
 				return (tmp);
@@ -727,6 +731,8 @@ namespace ft{
 
 			node*		getLast() const {
 				node*	tmp = this->root;
+				if (!size)
+					return (sentinel);
 				while (!tmp->right->sentinel)
 					tmp = tmp->right;
 				return (tmp);
@@ -793,6 +799,10 @@ namespace ft{
 				this->_comp = tree._comp;
 				return (*this);
 			}
+
+			size_t			max_size() const {
+				return (this->_alloc.max_size());
+			}
 			
 		private:
 		////////////////////////////////////////////////////////////////////////////////
@@ -803,6 +813,8 @@ namespace ft{
 			key_compare							_comp;
 			Node<Key, Value>					*root;
 			Node<Key, Value>					*sentinel;
+			size_t								size;
+
 			
 	};
 
