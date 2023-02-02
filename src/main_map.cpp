@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:14:31 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/01 19:04:26 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/02 18:16:32 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,32 +108,33 @@ void	ft_erase(MAP &mp, U param, V param2)
 
 int		main(void)
 {
+
 	std::list<T3> lst;
 	unsigned int lst_size = 10;
 	for (unsigned int i = 0; i < lst_size; ++i)
 		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
 	ft::map<T1, T2> mp(lst.begin(), lst.end());
 	printSize(mp);
-
+	std::cout << "=== START TEST ===" << std::endl;
 	ft_erase(mp, ++mp.begin());
 
-	ft_erase(mp, mp.begin());
-	ft_erase(mp, --mp.end());
+	// ft_erase(mp, mp.begin());
+	// ft_erase(mp, --mp.end());
 
-	ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
-	ft_erase(mp, --(--(--mp.end())), --mp.end());
+	// ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
+	// ft_erase(mp, --(--(--mp.end())), --mp.end());
 
-	mp[10] = "Hello";
-	mp[11] = "Hi there";
-	printSize(mp);
-	ft_erase(mp, --(--(--mp.end())), mp.end());
+	// mp[10] = "Hello";
+	// mp[11] = "Hi there";
+	// printSize(mp);
+	// ft_erase(mp, --(--(--mp.end())), mp.end());
 
-	mp[12] = "ONE";
-	mp[13] = "TWO";
-	mp[14] = "THREE";
-	mp[15] = "FOUR";
-	printSize(mp);
-	ft_erase(mp, mp.begin(), mp.end());
+	// mp[12] = "ONE";
+	// mp[13] = "TWO";
+	// mp[14] = "THREE";
+	// mp[15] = "FOUR";
+	// printSize(mp);
+	// ft_erase(mp, mp.begin(), mp.end());
 
 	return (0);
 }

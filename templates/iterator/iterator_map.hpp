@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/01 21:10:09 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/02 18:19:28 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ namespace ft {
 			/* incrementation/decr ope */
 		
 			iterator&		operator++() {
+				std::cout << "++ | node: " << this->node->pair.first << std::endl; // arthur
 				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
 				
 				if (buff && !buff->sentinel)
@@ -71,7 +72,7 @@ namespace ft {
 
 			iterator		operator++(int) {
 				iterator							tmp(*this);
-				std::cout << "++ | node: " << this->node->pair.first << std::endl;
+				std::cout << "++ | node: " << this->node->pair.first << std::endl; //arthur
 				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
 				
 				if (buff && !buff->sentinel)

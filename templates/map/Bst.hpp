@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/01 21:26:38 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/02 18:14:48 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,41 +320,63 @@ namespace ft{
 					swap_node = returnPredecessor(pos);
 				is_left = swap_node->isLeftChild;
 				need_to_fix = swap_node->black;
-				fixNode = swap_node->parent;
 				swapLeaf(swap_node, pos);
-				deleteLeaf(swap_node);
+				fixNode = pos->parent;
+				deleteLeaf(pos);
 				fixDelete(fixNode, is_left, need_to_fix);
 				updateSentinel();
+				printAllRb_tree();
 				std::cout << "end" << std::endl;
 				return ;
 			}
 			
 			/* NEED TO SWAP ALL NODE AND NOT JUST PAIR */
 			void		swapLeaf(node* swap_node, node* pos) {
-				ft::pair<key_type, value_type>		tmp;
+				node*								parent_tmp = pos->parent;
+				node*								Lchild_tmp = pos->left;
+				node*								Rchild_tmp = pos->right;
+				bool								is_left = pos->isLeftChild;
+				bool								black_tmp = pos->black;
+
+				if (pos == this->root)
+					this->root = swap_node;
+				pos->left = swap_node->left; 
+				if (!swap_node->left->sentinel)
+					pos->left->parent = pos;
+				pos->right = swap_node->right;
+				if (!swap_node->right->sentinel)
+					pos->right->parent = pos;
+				if (pos != swap_node->parent) {
+					pos->parent = swap_node->parent;
+					if (swap_node->isLeftChild)
+						pos->parent->left = pos;
+					else
+						pos->parent->right = pos;
+					swap_node->left = Lchild_tmp;
+					swap_node->right = Rchild_tmp;
+				}
+				else {
+					pos->parent = swap_node;
+					if (swap_node->isLeftChild) {
+						swap_node->left = pos;
+						swap_node->right = Rchild_tmp;
+					}
+					else {
+						swap_node->right = pos;
+						swap_node->left = Lchild_tmp;
+					}
+				}
+				swap_node->parent = parent_tmp;
+				if (pos->isLeftChild)
+					parent_tmp->left = swap_node;
+				else
+					parent_tmp->right = swap_node;
+				pos->black = swap_node->black;
+				pos->isLeftChild = swap_node->isLeftChild;
+				swap_node->black = black_tmp;
+				swap_node->isLeftChild = is_left;
+				std::cout << "end of swap" << std::endl; // arthur
 				
-				/* relink child of swap_node */
-				if (!swap_node->right->sentinel && !swap_node->isLeftChild) {
-					swap_node->parent->right = swap_node->right;
-					swap_node->right->parent = swap_node->parent;
-				}
-				else if (!swap_node->right->sentinel && swap_node->isLeftChild) {
-					swap_node->parent->left = swap_node->right;
-					swap_node->right->isLeftChild = true;
-					swap_node->right->parent = swap_node->parent;
-				}
-				else if (!swap_node->left->sentinel && !swap_node->isLeftChild) {
-					swap_node->parent->right = swap_node->left;
-					swap_node->left->isLeftChild = false;
-					swap_node->left->parent = swap_node->parent;
-				}
-				else if (!swap_node->left->sentinel && swap_node->isLeftChild) {
-					swap_node->parent->left = swap_node->left;
-					swap_node->left->parent = swap_node->parent;
-				}
-				tmp = pos->pair;
-				pos->pair = swap_node->pair;
-				swap_node->pair = tmp;
 				return;	
 			}
 
@@ -688,6 +710,7 @@ namespace ft{
 			size_t		returnHeight(node *pos) const {
 				if (pos->sentinel || root == 0x0)
 					return (0);
+				std::cout << "in" << std::endl;
 				int		leftHeight = returnHeight(pos->left) + 1;
 				int		rightHeight = returnHeight(pos->right) + 1;
 				if (leftHeight > rightHeight)
