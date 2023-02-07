@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/07 17:45:57 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 19:01:53 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ namespace ft {
 			
 			~_Rb_tree_iterator() {}
 
-			// operator _Rb_tree_iterator<const T, N>() const {
-			// 	return (_Rb_tree_iterator<const T, N>(this->node));
-			// }
+			operator _Rb_tree_iterator<const T, N>() const {
+				return (_Rb_tree_iterator<const T, N>(this->node));
+			}
 
 			reference		operator*() const {
 				return (node->pair);

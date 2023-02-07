@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/07 16:54:51 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 19:09:53 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ namespace ft {
 			typedef const value_type&																	const_reference;
 			typedef	typename Allocator::pointer															pointer;
 			typedef	typename Allocator::const_pointer													const_pointer;
+			
 			typedef	ft::_Rb_tree_iterator< value_type, typename ft::_Rb_tree<Key, T>::node >			iterator;
 			typedef	ft::_Rb_tree_iterator< const value_type, typename ft::_Rb_tree<Key, T>::node>		const_iterator;
+			
 			typedef	ft::ReverseIterator<iterator>														reverse_iterator;
 			typedef	ft::ReverseIterator<const_iterator>													const_reverse_iterator;
 	
@@ -82,12 +84,21 @@ namespace ft {
 
 			~map() {}
 
-			iterator	begin() const {
+			iterator	begin() {
 				return (iterator(this->_Rb_tree.getFirst()));
 			}
 
-			iterator	end() const {
+			const_iterator	begin() const {
+				return (const_iterator(this->_Rb_tree.getFirst()));
+			}
+
+
+			iterator	end() {
 				return (iterator(this->_Rb_tree.sentinel));
+			}
+
+			const_iterator	end() const {
+				return (const_iterator(this->_Rb_tree.sentinel));
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
