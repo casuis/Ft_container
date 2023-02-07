@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 00:02:01 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/25 10:43:59 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 19:41:59 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace ft{
 			////////////////////////////////////////////////////////////////////////////////
 			
 			pair&		operator=(const pair& param){
-				if (*this == param)
+				if (this == &param)
 					return (*this);
 				this->first = param.first;
 				this->second = param.second;

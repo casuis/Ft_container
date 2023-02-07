@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/07 19:09:53 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 19:43:52 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,10 +203,10 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 			
 			void swap (map& x) {
-				typename ft::_Rb_tree<Key, T, Compare>::node				tmp_root = _Rb_tree.root;
-				typename ft::_Rb_tree<Key, T, Compare>::node				tmp_sentinel = _Rb_tree.sentinel;
+				typename ft::_Rb_tree<Key, T, Compare>::node				*tmp_root = _Rb_tree.root;
+				typename ft::_Rb_tree<Key, T, Compare>::node				*tmp_sentinel = _Rb_tree.sentinel;
 				typename ft::_Rb_tree<Key, T, Compare>::key_compare			tmp_comp = _Rb_tree._comp;
-				typename ft::_Rb_tree<Key, T, Compare>::Allocator_type		tmp_alloc = _Rb_tree._alloc;
+				typename ft::_Rb_tree<Key, T, Compare>::allocator_type		tmp_alloc = _Rb_tree._alloc;
 				
 				
 				if (&(x._Rb_tree) == &(_Rb_tree))
