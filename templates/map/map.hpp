@@ -6,12 +6,12 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/07 19:43:52 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 19:59:06 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _MAP_CONTAINER_
-# define _MAP_CONTAINER_
+#ifndef __MAP_CONTAINER__
+# define __MAP_CONTAINER__
 /* Comment her for tester */
 // # include <ftnspace.hpp>
 
@@ -40,8 +40,8 @@ namespace ft {
 			typedef	ft::_Rb_tree_iterator< value_type, typename ft::_Rb_tree<Key, T>::node >			iterator;
 			typedef	ft::_Rb_tree_iterator< const value_type, typename ft::_Rb_tree<Key, T>::node>		const_iterator;
 			
-			typedef	ft::ReverseIterator<iterator>														reverse_iterator;
-			typedef	ft::ReverseIterator<const_iterator>													const_reverse_iterator;
+			typedef	ft::_Rb_tree_rev_iterator< value_type, typename ft::_Rb_tree<Key, T>::node >		reverse_iterator;
+			typedef	ft::_Rb_tree_rev_iterator<const value_type, typename ft::_Rb_tree<Key, T>::node >	const_reverse_iterator;
 	
 			////////////////////////////////////////////////////////////////////////////////
 			class value_compare

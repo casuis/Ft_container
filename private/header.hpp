@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/30 20:27:59 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 20:00:20 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ namespace ft {
 
 	template <typename T, typename N>
 	class _Rb_tree_iterator;
+
+	template <typename T, typename N>
+	class _Rb_tree_rev_iterator;
 
 }
 

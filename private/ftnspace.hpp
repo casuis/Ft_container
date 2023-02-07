@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/30 15:00:28 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 19:58:28 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # include "../templates/stack/stack.hpp"
 # include "../templates/map/map.hpp"
 # include "../templates/iterator/iterator_map.hpp"
+# include "../templates/iterator/reverse_iterator_map.hpp"
 
 namespace ft{
 
