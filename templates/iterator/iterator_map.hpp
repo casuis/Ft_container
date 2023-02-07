@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/02 18:19:28 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 17:45:57 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,18 @@ namespace ft {
 			typedef value_type&																reference;
 			typedef std::random_access_iterator_tag											iterator_category;
 
-			_Rb_tree_iterator(N* param): node(param) {}
 			_Rb_tree_iterator(): node(0x0) {}
+			_Rb_tree_iterator(N* param): node(param) {}
+
+			template <class U>
+			_Rb_tree_iterator(const _Rb_tree_iterator< typename ft::enable_if< !ft::is_const<U>::value, U >::value_type, N > &src)
+			:node(src.node) {} 
 			
 			~_Rb_tree_iterator() {}
 
-			operator _Rb_tree_iterator<const T, N>() const {
-				return (_Rb_tree_iterator<const T, N>(this->node));
-			}
+			// operator _Rb_tree_iterator<const T, N>() const {
+			// 	return (_Rb_tree_iterator<const T, N>(this->node));
+			// }
 
 			reference		operator*() const {
 				return (node->pair);
@@ -52,7 +56,6 @@ namespace ft {
 			/* incrementation/decr ope */
 		
 			iterator&		operator++() {
-				std::cout << "++ | node: " << this->node->pair.first << std::endl; // arthur
 				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
 				
 				if (buff && !buff->sentinel)
@@ -72,7 +75,6 @@ namespace ft {
 
 			iterator		operator++(int) {
 				iterator							tmp(*this);
-				std::cout << "++ | node: " << this->node->pair.first << std::endl; //arthur
 				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
 				
 				if (buff && !buff->sentinel)

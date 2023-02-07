@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 16:03:55 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 15:39:22 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 17:45:28 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,29 @@ struct is_integral<void>
 	public :
 		static const bool		value = true;
 };
-}
 
+template <class T>
+struct is_const {
+
+	typedef T value_type;
+	typedef ft::is_integral<T> type;
+
+	
+	public :
+		static const bool		value = false;
+		
+};
+
+template <class T>
+struct is_const<const T> {
+	
+	typedef const T value_type;
+	typedef ft::is_integral<const T> type;
+
+	
+	public :
+		static const bool		value = true;
+};
+
+}
 #endif

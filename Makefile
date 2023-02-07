@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2023/01/30 20:28:54 by asimon           ###   ########.fr        #
+#    Updated: 2023/02/07 16:54:20 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NAME_STD	:=	std_container
 
 CXX				:=	c++
 
-CXXFLAGS		:=	-Wall -Wextra -Werror -std=c++98 -g3
+CXXFLAGS		:=	-std=c++98 -g3 -Wall -Wextra -Werror 
 
 INC				:=	-I./private/ -I./templates/vector/ -I./templates/stack/ -I./templates/map/ -I./templates/iterator/ -I./templates/functions/
 

@@ -6,14 +6,14 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:14:31 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/02 18:16:32 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 17:08:26 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ftnspace.hpp>
 #include <iostream>
 #include <map>
-#define _pair ft::pair
+#define _pair NAMESPACE::pair
 
 // int main(void) {
 
@@ -83,58 +83,14 @@ void	printReverse(ft::map<T1, T2> &mp)
 	}
 	std::cout << "_______________________________________________" << std::endl;
 }
-
 #define T1 int
-#define T2 std::string
-typedef _pair<const T1, T2> T3;
-
-static int iter = 0;
-
-template <typename MAP, typename U>
-void	ft_erase(MAP &mp, U param)
-{
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.erase(param);
-	printSize(mp);
-}
-
-template <typename MAP, typename U, typename V>
-void	ft_erase(MAP &mp, U param, V param2)
-{
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.erase(param, param2);
-	printSize(mp);
-}
+#define T2 int
 
 int		main(void)
 {
+	NAMESPACE::map<T1, T2> const mp;
+	NAMESPACE::map<T1, T2>::iterator it = mp.begin(); // <-- error expected
 
-	std::list<T3> lst;
-	unsigned int lst_size = 10;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
-	ft::map<T1, T2> mp(lst.begin(), lst.end());
-	printSize(mp);
-	std::cout << "=== START TEST ===" << std::endl;
-	ft_erase(mp, ++mp.begin());
-
-	// ft_erase(mp, mp.begin());
-	// ft_erase(mp, --mp.end());
-
-	// ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
-	// ft_erase(mp, --(--(--mp.end())), --mp.end());
-
-	// mp[10] = "Hello";
-	// mp[11] = "Hi there";
-	// printSize(mp);
-	// ft_erase(mp, --(--(--mp.end())), mp.end());
-
-	// mp[12] = "ONE";
-	// mp[13] = "TWO";
-	// mp[14] = "THREE";
-	// mp[15] = "FOUR";
-	// printSize(mp);
-	// ft_erase(mp, mp.begin(), mp.end());
-
+	(void)it;
 	return (0);
 }

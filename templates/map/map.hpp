@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/07 16:33:05 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 16:54:51 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ namespace ft {
 			}
 			
 			iterator	insert(iterator position, const value_type& val) {
-				insert(val);
+				ft::pair<iterator, bool>	ret = insert(val);
+				position = ret.first;
 				return (position);
 			}
 			
