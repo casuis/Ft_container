@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/02 18:14:48 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 16:34:38 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,8 +325,6 @@ namespace ft{
 				deleteLeaf(pos);
 				fixDelete(fixNode, is_left, need_to_fix);
 				updateSentinel();
-				printAllRb_tree();
-				std::cout << "end" << std::endl;
 				return ;
 			}
 			
@@ -360,10 +358,12 @@ namespace ft{
 					if (swap_node->isLeftChild) {
 						swap_node->left = pos;
 						swap_node->right = Rchild_tmp;
+						swap_node->right->parent = swap_node;
 					}
 					else {
 						swap_node->right = pos;
 						swap_node->left = Lchild_tmp;
+						swap_node->left->parent = swap_node;
 					}
 				}
 				swap_node->parent = parent_tmp;
@@ -375,7 +375,6 @@ namespace ft{
 				pos->isLeftChild = swap_node->isLeftChild;
 				swap_node->black = black_tmp;
 				swap_node->isLeftChild = is_left;
-				std::cout << "end of swap" << std::endl; // arthur
 				
 				return;	
 			}
@@ -710,7 +709,6 @@ namespace ft{
 			size_t		returnHeight(node *pos) const {
 				if (pos->sentinel || root == 0x0)
 					return (0);
-				std::cout << "in" << std::endl;
 				int		leftHeight = returnHeight(pos->left) + 1;
 				int		rightHeight = returnHeight(pos->right) + 1;
 				if (leftHeight > rightHeight)

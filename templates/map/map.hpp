@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/02 18:09:39 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/07 16:33:05 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,13 +170,10 @@ namespace ft {
 			////////////////////////////////////////////////////////////////////////////////
 			
 			void erase (iterator position) {
-				std::cout << "start erase pos" << std::endl;
-				std::cout << "pos->first: " << position->first << std::endl;
 				_Rb_tree.deleteNode(_Rb_tree.searchNode(position->first));
 			}
 			
 			size_type erase (const key_type& k) {
-				std::cout << "start erase key_type" << std::endl;
 				typename ft::_Rb_tree<Key, T>::node		*node = _Rb_tree.searchNode(k);
 
 				if (!node)
@@ -186,12 +183,8 @@ namespace ft {
 			}
 			
 			void erase (iterator first, iterator last) {
-				std::cout << "start erase iter" << std::endl;
-				while (first != last) {
-					std::cout << "------------------ici" << std::endl;
+				while (first != last)
 					this->erase(first++);
-
-				}
 				return ;
 			}
 
