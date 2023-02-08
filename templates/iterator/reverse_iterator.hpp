@@ -79,7 +79,7 @@ namespace ft{
 
 			/* operator ++ post */
 			ReverseIterator<T>	operator++(){
-				this->_pointer -= 1;
+				this->_pointer--;
 				return (*this);
 			}
 
@@ -87,13 +87,13 @@ namespace ft{
 			ReverseIterator<T>		operator++(int){
 				ReverseIterator<T>		tmp(*this);
 
-				this->_pointer -= 1;
+				this->_pointer--;
 				return (tmp);
 			}
 
 			/* operator -- post */
 			ReverseIterator<T>		operator--(){
-				this->_pointer += 1;
+				this->_pointer++;
 				return (*this);
 			}
 
@@ -101,7 +101,7 @@ namespace ft{
 			ReverseIterator<T>		operator--(int){
 				ReverseIterator<T>		tmp(*this);
 
-				this->_pointer += 1;
+				this->_pointer++;
 				return (tmp);
 			}
 

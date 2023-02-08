@@ -6,156 +6,106 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 19:49:47 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/07 19:59:33 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/08 19:42:52 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __REV_ITERATOR_MAP__
 # define __REV_ITERATOR_MAP__
+# include "../../private/header.hpp"
 
 namespace ft {
 
-	template <typename T, typename N>
+	template <typename Iter>
 	class _Rb_tree_rev_iterator {
 		
 		public:
-			typedef T																		value_type;
-			typedef ft::_Rb_tree_rev_iterator<value_type, N>									iterator;
-			typedef typename ft::_Rb_tree<typename N::key_type, typename N::mapped_type>	Rb_tree_type;
-			typedef std::ptrdiff_t															difference_type;
-			typedef value_type*																pointer;
-			typedef value_type&																reference;
-			typedef std::random_access_iterator_tag											iterator_category;
+			typedef typename ft::iterator_traits<Iter>::reference 			reference;
+			typedef typename ft::iterator_traits<Iter>::value_type 			value_type;
+			typedef typename ft::iterator_traits<Iter>::pointer				pointer;
+			typedef typename ft::iterator_traits<Iter>::difference_type		difference_type;
+			typedef typename ft::iterator_traits<Iter>::iterator_category	iterator_category;
+			typedef	Iter													iterator_type;
+			typedef	_Rb_tree_rev_iterator< Iter >							reverse_iterator;
 
-			_Rb_tree_rev_iterator(): node(0x0) {}
-			_Rb_tree_rev_iterator(N* param): node(param) {}
+			////////////////////////////////////////////////////////////////////////////////
+
+			_Rb_tree_rev_iterator(): _current() {}
+			
+			_Rb_tree_rev_iterator(iterator_type src): _current(iterator_type(src)) {}
 
 			template <class U>
-			_Rb_tree_rev_iterator(const _Rb_tree_rev_iterator< typename ft::enable_if< !ft::is_const<U>::value, U >::value_type, N > &src)
-			:node(src.node) {} 
+			_Rb_tree_rev_iterator( const _Rb_tree_rev_iterator<U> &src) : _current(src.base()) {}
+
+			_Rb_tree_rev_iterator( const _Rb_tree_rev_iterator &src) : _current(src.base()) {}
 			
 			~_Rb_tree_rev_iterator() {}
 
-			operator _Rb_tree_rev_iterator<const T, N>() const {
-				return (_Rb_tree_rev_iterator<const T, N>(this->node));
-			}
+			////////////////////////////////////////////////////////////////////////////////
 
 			reference		operator*() const {
-				return (node->pair);
+				iterator_type tmp(this->_current);
+				return (*--tmp);
 			}
 
 			pointer		operator->() const {
-				return (&(node->pair));
+				return (&(operator*()));
 			}
-
-			// pas d'operateur []
 
 			////////////////////////////////////////////////////////////////////////////////
 			/* incrementation/decr ope */
 		
-			iterator&		operator--() {
-				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
-				
-				if (buff && !buff->sentinel)
-					this->node = buff;
-				else if (buff && buff->sentinel && this->node->isLeftChild 
-						&& !this->node->parent->sentinel)
-					this->node = this->node->parent;
-				else if (buff && buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
-						&& this->node->parent->isLeftChild && !this->node->parent->parent->sentinel)
-					this->node = this->node->parent->parent;
-				else if (this->node->sentinel)
-					this->node = buff->right;
-				else
-					this->node = buff;
+			reverse_iterator&		operator--() {
+				++(this->_current);
 				return (*this);
+				
 			}
 
-			iterator		operator--(int) {
-				iterator							tmp(*this);
-				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
-				
-				if (buff && !buff->sentinel)
-					this->node = buff;
-				else if (buff && buff->sentinel && this->node->isLeftChild 
-						&& !this->node->parent->sentinel)
-					this->node = this->node->parent;
-				else if (buff && buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
-						&& this->node->parent->isLeftChild && !this->node->parent->parent->sentinel)
-					this->node = this->node->parent->parent;
-				else if (this->node->sentinel)
-					this->node = buff->right;
-				else
-					this->node = buff;
+			reverse_iterator		operator--(int) {
+				reverse_iterator		tmp(*this);
+				--(*this);
 				return (tmp);
 			}
 
-			iterator&		operator++() {
-				typename Rb_tree_type::node			*buff = Rb_tree_type::returnSuccessor(this->node);
-				
-				if (buff && !buff->sentinel)
-					this->node = buff;
-				else if (buff && buff->sentinel && !this->node->isLeftChild 
-						&& !this->node->parent->sentinel)
-					this->node = this->node->parent;
-				else if (buff && buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
-						&& !this->node->parent->parent->sentinel)
-					this->node = this->node->parent->parent;
-				else if (this->node->sentinel)
-					this->node = buff->right;
-				else
-					this->node = buff;
+			reverse_iterator&		operator++() {
+				--(this->_current);
 				return (*this);
 			}
 
-			iterator		operator++(int) {
-				iterator							tmp(*this);
-				typename Rb_tree_type::node			*buff = Rb_tree_type::returnSuccessor(this->node);
-				
-				if (buff && !buff->sentinel)
-					this->node = buff;
-				else if (buff && buff->sentinel && !this->node->isLeftChild 
-						&& !this->node->parent->sentinel)
-					this->node = this->node->parent;
-				else if (buff && buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
-								&& !this->node->parent->parent->sentinel)
-					this->node = this->node->parent->parent;
-				else if (this->node->sentinel)
-					this->node = buff->right;
-				else
-					this->node = buff;
+			reverse_iterator		operator++(int) {
+				reverse_iterator	tmp(*this);
+				++(*this);
 				return (tmp);
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
 			/* Assignation operator */
 
-			iterator		operator=(const iterator param) {
-				if (this->node == param.getNode())
+			reverse_iterator		operator=(const reverse_iterator param) {
+				if (this->_current == param._current)
 					return (*this);
 				else
-					this->node = param.getNode();
+					this->_current = param._current;
 				return (*this);
 			}
 			
 			template <class U>
-			bool	operator==(const ft::_Rb_tree_rev_iterator<U, N>& src) const
-			{
-				return (this->node == src.getNode());
+			bool	operator==(const ft::_Rb_tree_rev_iterator<U>& src) const {
+				return (this->_current == src.base());
 			}
 
 			template <class U>
-			bool	operator!=(const ft::_Rb_tree_rev_iterator<U, N>& src) const
-			{
-				return (this->node != src.getNode());
+			bool	operator!=(const ft::_Rb_tree_rev_iterator<U>& src) const {
+				return (this->_current != src.base());
 			}
 
-			N*			getNode() const {
-				return (this->node);
-			}
-
+			////////////////////////////////////////////////////////////////////////////////
+			
+			iterator_type		base() const { return (this->_current); }
+			
 		private:
-			N		*node;
+		
+			iterator_type		_current;
 
 	};
 	

@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/07 19:59:06 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/08 15:22:23 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ namespace ft {
 			typedef	ft::_Rb_tree_iterator< value_type, typename ft::_Rb_tree<Key, T>::node >			iterator;
 			typedef	ft::_Rb_tree_iterator< const value_type, typename ft::_Rb_tree<Key, T>::node>		const_iterator;
 			
-			typedef	ft::_Rb_tree_rev_iterator< value_type, typename ft::_Rb_tree<Key, T>::node >		reverse_iterator;
-			typedef	ft::_Rb_tree_rev_iterator<const value_type, typename ft::_Rb_tree<Key, T>::node >	const_reverse_iterator;
+			typedef	ft::_Rb_tree_rev_iterator< iterator >												reverse_iterator;
+			typedef	ft::_Rb_tree_rev_iterator< const_iterator >											const_reverse_iterator;
 	
 			////////////////////////////////////////////////////////////////////////////////
 			class value_compare
@@ -84,6 +84,8 @@ namespace ft {
 
 			~map() {}
 
+			////////////////////////////////////////////////////////////////////////////////
+
 			iterator	begin() {
 				return (iterator(this->_Rb_tree.getFirst()));
 			}
@@ -99,6 +101,28 @@ namespace ft {
 
 			const_iterator	end() const {
 				return (const_iterator(this->_Rb_tree.sentinel));
+			}
+
+			reverse_iterator	rbegin() {
+				iterator	ret = this->end();
+				if (this->size())
+					return (--ret);
+				return (ret);
+			}
+
+			const_reverse_iterator	rbegin() const {
+				const_iterator	ret = this->end();
+				if (this->size())
+					return (--ret);
+				return (ret);
+			}
+
+			reverse_iterator	rend() {
+				return (reverse_iterator(this->end()));
+			}
+			
+			const_reverse_iterator	rend() const {
+				return (const_reverse_iterator(this->end()));
 			}
 
 			////////////////////////////////////////////////////////////////////////////////

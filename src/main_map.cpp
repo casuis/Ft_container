@@ -6,14 +6,13 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:14:31 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/07 17:08:26 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/08 19:38:52 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ftnspace.hpp>
 #include <iostream>
 #include <map>
-#define _pair NAMESPACE::pair
 
 // int main(void) {
 
@@ -45,7 +44,49 @@
 
 // 	return (0);
 // }
+
+////////////////////////////////////////////////////////////////////////////////
+
+
 #include <list>
+#define _pair NAMESPACE::pair
+
+template <typename T>
+class foo {
+	public:
+		typedef T	value_type;
+
+		foo(void) : value(), _verbose(false) { };
+		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
+		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
+		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
+		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
+		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
+		foo &operator=(value_type src) { this->value = src; return *this; };
+		foo &operator=(foo const &src) {
+			if (this->_verbose || src._verbose)
+				std::cout << "foo::operator=(foo) CALLED" << std::endl;
+			this->value = src.value;
+			return *this;
+		};
+		value_type	getValue(void) const { return this->value; };
+		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
+
+		operator value_type(void) const {
+			return value_type(this->value);
+		}
+	private:
+		value_type	value;
+		bool		_verbose;
+};
+
+
+template <typename T>
+std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
+	o << bar.getValue();
+	return o;
+}
+// --
 
 template <typename T>
 std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
@@ -72,9 +113,9 @@ void	printSize(T_MAP const &mp, bool print_content = 1)
 }
 
 template <typename T1, typename T2>
-void	printReverse(ft::map<T1, T2> &mp)
+void	printReverse(NAMESPACE::map<T1, T2> &mp)
 {
-	typename ft::map<T1, T2>::iterator it = mp.end(), ite = mp.begin();
+	typename NAMESPACE::map<T1, T2>::iterator it = mp.end(), ite = mp.begin();
 
 	std::cout << "printReverse:" << std::endl;
 	while (it != ite) {
@@ -83,14 +124,62 @@ void	printReverse(ft::map<T1, T2> &mp)
 	}
 	std::cout << "_______________________________________________" << std::endl;
 }
-#define T1 int
-#define T2 int
+template <typename T>
+T	inc(T it, int n)
+{
+	while (n-- > 0)
+		++it;
+	return (it);
+}
+
+template <typename T>
+T	dec(T it, int n)
+{
+	while (n-- > 0)
+		--it;
+	return (it);
+}
+#define T1 float
+#define T2 foo<int>
+typedef _pair<const T1, T2> T3;
 
 int		main(void)
 {
-	NAMESPACE::map<T1, T2> const mp;
-	NAMESPACE::map<T1, T2>::iterator it = mp.begin(); // <-- error expected
+	std::list<T3> lst;
+	unsigned int lst_size = 5;
+	for (unsigned int i = 0; i < lst_size; ++i)
+		lst.push_back(T3(2.5 - i, (i + 1) * 7));
 
-	(void)it;
+	NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
+	NAMESPACE::map<T1, T2>::reverse_iterator it(mp.rbegin());
+	NAMESPACE::map<T1, T2>::const_reverse_iterator ite(mp.rbegin());
+	printSize(mp);
+
+	printPair(++ite);
+	printPair(ite++);
+	printPair(ite++);
+	printPair(++ite);
+
+	it->second.m();
+	ite->second.m();
+
+	printPair(++it);
+	printPair(it++);
+	printPair(it++);
+	printPair(++it);
+
+	printPair(--ite);
+	printPair(ite--);
+	printPair(--ite);
+	printPair(ite--);
+
+	(*it).second.m();
+	(*ite).second.m();
+
+	printPair(--it);
+	printPair(it--);
+	printPair(it--);
+	printPair(--it);
+
 	return (0);
 }
