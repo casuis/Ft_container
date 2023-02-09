@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/07 16:34:38 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/09 19:06:12 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,6 +323,8 @@ namespace ft{
 				swapLeaf(swap_node, pos);
 				fixNode = pos->parent;
 				deleteLeaf(pos);
+				std::cout << "====> SORTIE delete leaf" << std::endl;
+				this->printAllRb_tree();
 				fixDelete(fixNode, is_left, need_to_fix);
 				updateSentinel();
 				return ;
@@ -351,7 +353,9 @@ namespace ft{
 					else
 						pos->parent->right = pos;
 					swap_node->left = Lchild_tmp;
+					swap_node->left->parent = swap_node;
 					swap_node->right = Rchild_tmp;
+					swap_node->right->parent = swap_node;
 				}
 				else {
 					pos->parent = swap_node;
@@ -375,8 +379,19 @@ namespace ft{
 				pos->isLeftChild = swap_node->isLeftChild;
 				swap_node->black = black_tmp;
 				swap_node->isLeftChild = is_left;
-				
 				return;	
+			}
+				
+			void		deleteLeaf(node *pos) {
+				if (pos == root)
+					this->root = 0x0;
+				if (pos->isLeftChild && pos->right->sentinel)
+					pos->parent->left = sentinel;
+				else if (!pos->isLeftChild && pos->left->sentinel)
+					pos->parent->right = sentinel;
+				this->_alloc.destroy(pos);
+				this->_alloc.deallocate(pos, 1);
+				this->size -= 1;
 			}
 
 			void		fixDelete(node* pos, bool lft, bool need_to_fix = true) {
@@ -493,18 +508,6 @@ namespace ft{
 				}
 				
 			////////////////////////////////////////////////////////////////////////////////
-				
-			void		deleteLeaf(node *pos) {
-				if (pos == root)
-					this->root = 0x0;
-				if (pos->isLeftChild && pos->right->sentinel)
-					pos->parent->left = sentinel;
-				else if (!pos->isLeftChild && pos->left->sentinel)
-					pos->parent->right = sentinel;
-				this->_alloc.destroy(pos);
-				this->_alloc.deallocate(pos, 1);
-				this->size -= 1;
-			}
 
 			/* the biggest of the smallest */
 			static node*		returnSuccessor(node *pos) {
@@ -707,6 +710,10 @@ namespace ft{
 			}
 
 			size_t		returnHeight(node *pos) const {
+				if (!pos->sentinel)
+					std::cout << "pos : " << pos->pair.first << std::endl;
+				else
+					std::cout << "==> sentinel" << std::endl;
 				if (pos->sentinel || root == 0x0)
 					return (0);
 				int		leftHeight = returnHeight(pos->left) + 1;
@@ -765,7 +772,7 @@ namespace ft{
 			void		printRb_treeSorted(node* pos) const {
 				if (pos->left != sentinel)
 					printRb_treeSorted(pos->left);
-				std::cout << "value : [" << pos->pair.second  << "]" << std::endl;
+				std::cout << "value : [" << pos->pair.first  << "]" << std::endl;
 				if (pos->right != sentinel)
 					printRb_treeSorted(pos->right);
 				return ;
@@ -779,8 +786,8 @@ namespace ft{
 
 				if (k == level) {
 					std::cout << ((pos->isLeftChild) ? CYAN : YELLOW) << " |" << RESET 
-					<< ((pos->black) ? BLACK : RED) << "value : [" << pos->pair.second  
-					<< "] | p: [" << pos->parent->pair.second << "]" << RESET << ((pos->isLeftChild) ? CYAN : YELLOW) << "| " << RESET;
+					<< ((pos->black) ? BLACK : RED) << "value : [" << pos->pair.first  
+					<< "] | p: [" << pos->parent->pair.first << "]" << RESET << ((pos->isLeftChild) ? CYAN : YELLOW) << "| " << RESET;
 				}
 				return ;
 			}
@@ -788,6 +795,7 @@ namespace ft{
 
 			void		printAllRb_tree() const {
 				size_t		size = this->returnHeight();
+				std::cout << "size : " << size << std::endl;
 				
 				std::cout << 
 				CYAN << "left child" << RESET << " | " <<

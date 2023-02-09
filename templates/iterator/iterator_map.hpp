@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/07 19:01:53 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/09 17:42:25 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ namespace ft {
 			typedef value_type*																pointer;
 			typedef value_type&																reference;
 			typedef std::random_access_iterator_tag											iterator_category;
+			typedef typename Rb_tree_type::node												node_type;
 
 			_Rb_tree_iterator(): node(0x0) {}
 			_Rb_tree_iterator(N* param): node(param) {}
@@ -56,16 +57,16 @@ namespace ft {
 			/* incrementation/decr ope */
 		
 			iterator&		operator++() {
-				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
+				node_type		*buff = Rb_tree_type::returnPredecessor(this->node);
 				
 				if (buff && !buff->sentinel)
 					this->node = buff;
 				else if (buff && buff->sentinel && this->node->isLeftChild 
 						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (buff && buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
-						&& this->node->parent->isLeftChild && !this->node->parent->parent->sentinel)
-					this->node = this->node->parent->parent;
+				else if (!this->node->sentinel) {
+					this->node = getNext(this->node);
+				}
 				else if (this->node->sentinel)
 					this->node = buff->right;
 				else
@@ -74,17 +75,17 @@ namespace ft {
 			}
 
 			iterator		operator++(int) {
-				iterator							tmp(*this);
-				typename Rb_tree_type::node			*buff = Rb_tree_type::returnPredecessor(this->node);
+				iterator		tmp(*this);
+				node_type		*buff = Rb_tree_type::returnPredecessor(this->node);
 				
 				if (buff && !buff->sentinel)
 					this->node = buff;
 				else if (buff && buff->sentinel && this->node->isLeftChild 
 						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (buff && buff->sentinel && !this->node->isLeftChild && !this->node->parent->sentinel 
-						&& this->node->parent->isLeftChild && !this->node->parent->parent->sentinel)
-					this->node = this->node->parent->parent;
+				else if (!this->node->sentinel) {
+					this->node = getNext(this->node);
+				}
 				else if (this->node->sentinel)
 					this->node = buff->right;
 				else
@@ -93,16 +94,16 @@ namespace ft {
 			}
 
 			iterator&		operator--() {
-				typename Rb_tree_type::node			*buff = Rb_tree_type::returnSuccessor(this->node);
+				node_type		*buff = Rb_tree_type::returnSuccessor(this->node);
 				
 				if (buff && !buff->sentinel)
 					this->node = buff;
 				else if (buff && buff->sentinel && !this->node->isLeftChild 
 						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (buff && buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
-						&& !this->node->parent->parent->sentinel)
-					this->node = this->node->parent->parent;
+				else if (!this->node->sentinel) {
+					this->node = getPrev(this->node);
+				}
 				else if (this->node->sentinel)
 					this->node = buff->right;
 				else
@@ -111,17 +112,17 @@ namespace ft {
 			}
 
 			iterator		operator--(int) {
-				iterator							tmp(*this);
-				typename Rb_tree_type::node			*buff = Rb_tree_type::returnSuccessor(this->node);
+				iterator		tmp(*this);
+				node_type		*buff = Rb_tree_type::returnSuccessor(this->node);
 				
 				if (buff && !buff->sentinel)
 					this->node = buff;
 				else if (buff && buff->sentinel && !this->node->isLeftChild 
 						&& !this->node->parent->sentinel)
 					this->node = this->node->parent;
-				else if (buff && buff->sentinel && this->node->isLeftChild && !this->node->parent->sentinel 
-								&& !this->node->parent->parent->sentinel)
-					this->node = this->node->parent->parent;
+				else if (!this->node->sentinel) {
+					this->node = getPrev(this->node);
+				}
 				else if (this->node->sentinel)
 					this->node = buff->right;
 				else
@@ -158,6 +159,26 @@ namespace ft {
 
 		private:
 			N		*node;
+
+			node_type*			getNext(node_type *current) {
+				while (!current->parent->isLeftChild && !current->parent->sentinel)
+					current = current->parent;
+				if (current->parent->sentinel)
+					return (current->parent);
+				if (current->parent->isLeftChild)
+					return (current->parent->parent);
+				return (0x0);
+			}
+
+			node_type*			getPrev(node_type *current) {
+				while (current->parent->isLefttChild && !current->parent->sentinel)
+					current = current->parent;
+				if (current->parent->sentinel)
+					return (current->parent);
+				if (!current->parent->isLeftChild)
+					return (current->parent->parent);
+				return (0x0);
+			}
 
 	};
 }

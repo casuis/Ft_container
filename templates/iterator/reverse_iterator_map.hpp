@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 19:49:47 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/08 19:42:52 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/09 16:49:28 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ namespace ft {
 			}
 
 			reverse_iterator&		operator++() {
-				--(this->_current);
+				--this->_current;
 				return (*this);
 			}
 
@@ -108,6 +108,9 @@ namespace ft {
 			iterator_type		_current;
 
 	};
+
+
+	////////////////////////////////////////////////////////////////////////////////
 	
 }
 

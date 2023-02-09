@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/08 15:22:23 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/09 17:06:16 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,24 +105,20 @@ namespace ft {
 
 			reverse_iterator	rbegin() {
 				iterator	ret = this->end();
-				if (this->size())
-					return (--ret);
 				return (ret);
 			}
 
 			const_reverse_iterator	rbegin() const {
 				const_iterator	ret = this->end();
-				if (this->size())
-					return (--ret);
 				return (ret);
 			}
 
 			reverse_iterator	rend() {
-				return (reverse_iterator(this->end()));
+				return (reverse_iterator(this->begin()));
 			}
 			
 			const_reverse_iterator	rend() const {
-				return (const_reverse_iterator(this->end()));
+				return (const_reverse_iterator(this->begin()));
 			}
 
 			////////////////////////////////////////////////////////////////////////////////
@@ -231,6 +227,7 @@ namespace ft {
 				typename ft::_Rb_tree<Key, T, Compare>::node				*tmp_sentinel = _Rb_tree.sentinel;
 				typename ft::_Rb_tree<Key, T, Compare>::key_compare			tmp_comp = _Rb_tree._comp;
 				typename ft::_Rb_tree<Key, T, Compare>::allocator_type		tmp_alloc = _Rb_tree._alloc;
+				size_t														tmp_size = _Rb_tree.size;
 				
 				
 				if (&(x._Rb_tree) == &(_Rb_tree))
@@ -240,11 +237,13 @@ namespace ft {
 				_Rb_tree.sentinel = x._Rb_tree.sentinel;
 				_Rb_tree._comp = x._Rb_tree._comp;
 				_Rb_tree._alloc = x._Rb_tree._alloc;
+				_Rb_tree.size = x._Rb_tree.size;
 
 				x._Rb_tree.root = tmp_root;
 				x._Rb_tree.sentinel = tmp_sentinel;
 				x._Rb_tree._alloc = tmp_alloc;
 				x._Rb_tree._comp = tmp_comp;
+				x._Rb_tree.size = tmp_size;
 				return ;
 			}
 
@@ -339,6 +338,14 @@ namespace ft {
 			
 			allocator_type get_allocator() const {
 				return (this->_alloc);
+			}
+
+			////////////////////////////////////////////////////////////////////////////////
+			/* + DELETE FOR CORRECTION */
+
+			void		print() {
+				this->_Rb_tree.printAllRb_tree();
+				return ;
 			}
 			
 		private:
