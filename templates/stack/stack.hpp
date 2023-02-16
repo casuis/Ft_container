@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:35:29 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 15:40:36 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/16 17:13:54 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,27 +63,27 @@ namespace ft{
 			
 			////////////////////////////////////////////////////////////////////////////////
 
-			friend bool operator== (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs){
+			friend bool operator== (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs) {
 				return (lhs.c == rhs.c);
 			}
 
-			friend bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
+			friend bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
 				return (lhs.c != rhs.c);
 			}
 
-			friend bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
+			friend bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
 				return (lhs.c < rhs.c);
 			}
 
-			friend bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
+			friend bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
 				return (lhs.c <= rhs.c);
 			}
 
-			friend bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
+			friend bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
 				return (lhs.c > rhs.c);
 			}
 
-			friend bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
+			friend bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
 				return (lhs.c >= rhs.c);
 			}
 

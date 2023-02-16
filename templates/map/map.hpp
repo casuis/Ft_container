@@ -6,16 +6,13 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/09 17:06:16 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/16 17:30:54 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MAP_CONTAINER__
 # define __MAP_CONTAINER__
-/* Comment her for tester */
-// # include <ftnspace.hpp>
 
-/* Decomment her for tester */
 # include "../../private/ftnspace.hpp"
 
 namespace ft {

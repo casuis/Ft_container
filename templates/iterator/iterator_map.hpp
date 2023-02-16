@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/09 17:42:25 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/16 16:26:44 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ namespace ft {
 			}
 
 			node_type*			getPrev(node_type *current) {
-				while (current->parent->isLefttChild && !current->parent->sentinel)
+				while (current->parent->isLeftChild && !current->parent->sentinel)
 					current = current->parent;
 				if (current->parent->sentinel)
 					return (current->parent);

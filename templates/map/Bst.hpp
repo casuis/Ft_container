@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/09 19:06:12 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/16 16:59:38 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,8 +323,6 @@ namespace ft{
 				swapLeaf(swap_node, pos);
 				fixNode = pos->parent;
 				deleteLeaf(pos);
-				std::cout << "====> SORTIE delete leaf" << std::endl;
-				this->printAllRb_tree();
 				fixDelete(fixNode, is_left, need_to_fix);
 				updateSentinel();
 				return ;
@@ -385,10 +383,34 @@ namespace ft{
 			void		deleteLeaf(node *pos) {
 				if (pos == root)
 					this->root = 0x0;
-				if (pos->isLeftChild && pos->right->sentinel)
-					pos->parent->left = sentinel;
-				else if (!pos->isLeftChild && pos->left->sentinel)
-					pos->parent->right = sentinel;
+				if (pos->isLeftChild) {
+					if (!pos->left->sentinel) {
+						pos->parent->left = pos->left;
+						pos->left->parent = pos->parent;
+						pos->left->isLeftChild = true;
+					}
+					else if (!pos->right->sentinel) {
+						pos->parent->left = pos->right;
+						pos->right->parent = pos->parent;
+						pos->right->isLeftChild = true;
+					}
+					else
+						pos->parent->left = sentinel;
+				}
+				else if (!pos->isLeftChild) {
+					if (!pos->left->sentinel) {
+						pos->parent->right = pos->left;
+						pos->left->parent = pos->parent;
+						pos->left->isLeftChild = false;
+					}
+					else if (!pos->right->sentinel) {
+						pos->parent->right = pos->right;
+						pos->right->parent = pos->parent;
+						pos->right->isLeftChild = false;
+					}
+					else
+						pos->parent->right = sentinel;
+				}
 				this->_alloc.destroy(pos);
 				this->_alloc.deallocate(pos, 1);
 				this->size -= 1;
@@ -710,10 +732,6 @@ namespace ft{
 			}
 
 			size_t		returnHeight(node *pos) const {
-				if (!pos->sentinel)
-					std::cout << "pos : " << pos->pair.first << std::endl;
-				else
-					std::cout << "==> sentinel" << std::endl;
 				if (pos->sentinel || root == 0x0)
 					return (0);
 				int		leftHeight = returnHeight(pos->left) + 1;

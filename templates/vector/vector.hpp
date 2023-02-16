@@ -6,26 +6,14 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/30 15:12:02 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/16 19:03:57 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MY_VECTOR_HPP__
 # define __MY_VECTOR_HPP__
 
-/* Comment this area for tester */
-// # include <header.hpp>
-// # include <iterator.hpp>
-// # include <reverse_iterator.hpp>
-// # include <enable_if.hpp>
-// # include <is_integral.hpp>
-
-/* decomment her for tester */
-# include "../../private/header.hpp"
-# include "../iterator/iterator.hpp"
-# include "../iterator/reverse_iterator.hpp"
-# include "../functions/enable_if.hpp"
-# include "../functions/is_integral.hpp"
+# include "../../private/ftnspace.hpp"
 
 namespace ft
 {
@@ -323,8 +311,8 @@ namespace ft
 				allocator_type	tmp_alloc = this->_alloc;
 				
 				this->_data = x._data;
-				this->_size = x._size;
-				this->_capacity = x._capacity;
+				this->_size = x.size();
+				this->_capacity = x.capacity();
 				this->_alloc = x._alloc;
 				
 				x._data = tmp_data;
@@ -402,7 +390,7 @@ namespace ft
 				position = this->begin() + pos;
 				if (position == this->end()){
 					this->push_back(val);
-					return (position);
+					return (this->begin() + pos);
 				}
 				
 				this->clear();
@@ -412,7 +400,7 @@ namespace ft
 					this->push_back(*start);
 					cmp++;
 				}
-				return (position);
+				return (this->begin() + pos);
 			}
 			
 			/* insert n elem by pos */
@@ -548,13 +536,7 @@ namespace ft
 
 	template <typename T1, typename T2>
 	bool			operator!=(const vector<T1> lft, const vector<T2>& old){
-		if (lft.size() != old.size())
-			return (true);
-		for (size_t i = 0; i < lft.size() && i < old.size(); i++){
-			if (lft[i] == old[i])
-				return (false);
-		}
-		return (true);
+		return (!(lft == old));
 	}
 	////////////////////////////////////////////////////////////////////////////////
 	
