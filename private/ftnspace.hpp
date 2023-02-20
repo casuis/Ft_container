@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/16 17:29:05 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/20 20:24:43 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,26 @@ namespace ft{
 
 	// void		print(NAMESPACE::vector<int>& tab, std::string msg){
 	// 	for (size_t i = 0; i < tab.size(); i++){
-	// 		std:: cout <<  GREEN << "| " << RESET;
-	// 		std::cout << msg << "[" << GREEN << tab[i] << RESET << "]" << std::endl;
+	// 		std:: cout <<  M_GREEN << "| " << M_M_RESET;
+	// 		std::cout << msg << "[" << M_GREEN << tab[i] << M_M_RESET << "]" << std::endl;
 	// 	}
-	// 	std::cout << std::endl << "capacity: [" << GREEN << tab.capacity() << RESET << "]"<< std::endl;
-	// 	std::cout << std::endl << "size: [" << GREEN << tab.size() << RESET << "]" << std::endl;
-	// 	std::cout << std::endl << "max size: [" << GREEN << tab.max_size() << RESET << "]" << std::endl;
-	// 	std::cout << GREEN << std::string(42, '-') << RESET << std::endl;
+	// 	std::cout << std::endl << "capacity: [" << M_GREEN << tab.capacity() << M_M_RESET << "]"<< std::endl;
+	// 	std::cout << std::endl << "size: [" << M_GREEN << tab.size() << M_M_RESET << "]" << std::endl;
+	// 	std::cout << std::endl << "max size: [" << M_GREEN << tab.max_size() << M_M_RESET << "]" << std::endl;
+	// 	std::cout << M_GREEN << std::string(42, '-') << M_M_RESET << std::endl;
 	// }
 	
 	// void		print( NAMESPACE::vector< NAMESPACE::vector<int> >& tab, std::string msg){
 	// 	for (size_t i = 0; i < tab.size(); i++){
 	// 		for (size_t j = 0; j < tab.at(i).size(); j++){
-	// 			std:: cout <<  GREEN << "| " << RESET;
-	// 			std::cout << msg << "[" << GREEN << tab.at(i).at(j) << RESET << "]" << std::endl;
+	// 			std:: cout <<  M_GREEN << "| " << M_M_RESET;
+	// 			std::cout << msg << "[" << M_GREEN << tab.at(i).at(j) << M_M_RESET << "]" << std::endl;
 	// 		}
 	// 	}
-	// 	std::cout << std::endl << "capacity: [" <<  GREEN << tab.capacity() << RESET << "]"<< std::endl;
-	// 	std::cout << std::endl << "size: [" << GREEN << tab.size() << RESET << "]" << std::endl;
-	// 	std::cout << std::endl << "max size: [" << GREEN << tab.max_size() << RESET << "]" << std::endl;
-	// 	std::cout << GREEN << std::string(42, '-') << RESET << std::endl;
+	// 	std::cout << std::endl << "capacity: [" <<  M_GREEN << tab.capacity() << M_M_RESET << "]"<< std::endl;
+	// 	std::cout << std::endl << "size: [" << M_GREEN << tab.size() << M_M_RESET << "]" << std::endl;
+	// 	std::cout << std::endl << "max size: [" << M_GREEN << tab.max_size() << M_M_RESET << "]" << std::endl;
+	// 	std::cout << M_GREEN << std::string(42, '-') << M_M_RESET << std::endl;
 	// }
 
 }

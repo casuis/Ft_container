@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:43:46 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/16 19:03:57 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/20 20:15:46 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,11 @@ namespace ft
 
 			/* Destructor */
 			~vector(){
-				for (size_t del = 0; del != this->_size; del++)
-					this->_alloc.destroy(this->_data + del);
-				if (this->_data) {
-					this->_alloc.deallocate(this->_data, this->_capacity);
-				}
+				this->clear();
+				this->_alloc.deallocate(this->_data, this->_capacity);
+				this->_size = 0;
+				this->_capacity = 0;
+				this->_data = 0x0;
 				return ;
 			};
 
@@ -190,6 +190,8 @@ namespace ft
 					return ;
 				if (new_cap == 0)
 					new_cap = 1;
+				if (new_cap > this->max_size())
+					throw (std::length_error("vector::reserve"));
 				newVec = this->_alloc.allocate(new_cap);
 				for (; i < new_cap && i < this->_size; i++){
 					try{
@@ -198,7 +200,6 @@ namespace ft
 					catch (const std::exception& e){
 						for (size_t del = 0; del != i; del++)
 							this->_alloc.destroy(newVec + del);
-						std::exit(1);
 					}
 				}
 				for (size_t del = 0; del < i; del++)
@@ -286,9 +287,8 @@ namespace ft
 		
 			
 			void push_back (const value_type& val){
-				if (this->_size + 1 > this->_capacity) {
+				if (this->_size + 1 > this->_capacity)
 					this->reserve(this->_size * 2);
-				}
 				this->_alloc.construct(this->_data + this->_size, val);
 				this->_size += 1;
 			}
@@ -304,7 +304,7 @@ namespace ft
 				this->_size -= 1;
 			}
 
-			void			swap(vector<T>& x){
+			void			swap(vector<T>& x) {
 				pointer			tmp_data = this->_data;
 				size_t			tmp_cap = this->_capacity;
 				size_t			tmp_size = this->_size;
@@ -325,23 +325,17 @@ namespace ft
 			/* ERASE */
 
 			/* Erases the specified elements from the container. */
-			iterator erase(iterator position){
-				if (this->_size == 1 || position == this->end() - 1){
-					this->pop_back();
-					return (this->end());
-				}
-				iterator		it = position;
-				iterator		swp = it;
-				swp++;
-				for (iterator ite = this->end(); (it != ite) && (swp != ite); it++){
-					*it = *swp;
-					swp++;
-				}
-				this->_size -= 1;
+			iterator erase(iterator position) {
+				for (size_type i = position - this->begin() ; i < _size - 1 ; i++)
+					this->_data[i] = this->_data[i + 1];
+
+				this->_size--;
+				this->_alloc.destroy(this->_data + this->_size);
+
 				return (position);
 			}
 			
-			iterator erase (iterator first, iterator last){
+			iterator erase (iterator first, iterator last) {
 				if (first == last || last < first || first < this->begin() || last > this->end())
 					return (first);
 				iterator		it = first;
@@ -367,7 +361,7 @@ namespace ft
 			}
 			
 			/* Destroy old content and size and a create a new one of size n of value */
-			void assign (size_type n, const value_type& val){
+			void assign (size_type n, const value_type& val) {
 				this->clear();
 				for (size_t i = 0; i < n; i++)
 					this->push_back(val);
@@ -490,7 +484,11 @@ namespace ft
 			size_type		_capacity;
 
 	};
-	
+	template <class T, class Alloc>/* swap x et y ellement */
+	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
+	{
+		x.swap(y);
+	}
 	////////////////////////////////////////////////////////////////////////////////
 	/* Operator's overload */
 	

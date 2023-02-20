@@ -6,25 +6,17 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:47:25 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/23 13:17:19 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/20 19:10:36 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MY_ITERATOR_HPP__
 # define __MY_ITERATOR_HPP__
 
-/* Comment her for tester */
-// # include <header.hpp>
-// # include <iterator_traits.hpp>
-
-/* Decomment her for tester */
 # include "../../private/header.hpp"
 # include "./iterator_traits.hpp"
 
 namespace ft{
-
-	template <typename T = void>
-	class RandomIterator;
 
 	template <typename T>
 	class RandomIterator

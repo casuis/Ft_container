@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:38:49 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/16 16:59:38 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/20 20:29:42 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -423,10 +423,10 @@ namespace ft{
 					pos->left->black = true;
 				else if (!lft && !pos->right->black)
 					pos->right->black = true;
-				else if (is_red_sib(pos, lft))
-					red_sib(pos, lft);
-				else if (is_black_sibling_red_child(pos, lft))
-					black_sibling_red_child(pos, lft);
+				else if (is_M_RED_sib(pos, lft))
+					M_RED_sib(pos, lft);
+				else if (is_black_sibling_M_RED_child(pos, lft))
+					black_sibling_M_RED_child(pos, lft);
 				else if (is_black_sibling_black_child(pos, lft))
 					black_sibling_black_child(pos, lft);
 					
@@ -444,23 +444,23 @@ namespace ft{
 						&& (pos->left->left->black && pos->left->right->black)));
 				}
 				
-				bool		is_black_sibling_red_child(node *pos, bool lft) {
-					/* check if pos sibling have a red child */
+				bool		is_black_sibling_M_RED_child(node *pos, bool lft) {
+					/* check if pos sibling have a M_RED child */
 					return ((lft && !pos->right->sentinel 
 						&& (!pos->right->left->black || !pos->right->right->black))
 						|| (!lft && !pos->left->sentinel 
 						&& (!pos->left->left->black || !pos->left->right->black))); 
 				}
 
-				bool		is_red_sib(node* pos, bool lft) {
-					/* Check if sibling is red */
+				bool		is_M_RED_sib(node* pos, bool lft) {
+					/* Check if sibling is M_RED */
 					return ((lft && !pos->right->black) || (!lft && !pos->left->black));
 				}
 			
 				/////////////////////////////////////////////////////////////////////////
 				/* Fix deletion operations */
 			
-				void		black_sibling_red_child(node *pos, bool lft) {
+				void		black_sibling_M_RED_child(node *pos, bool lft) {
 					/* Check what rotation need to be done */
 					bool		color_swap;
 					
@@ -481,14 +481,14 @@ namespace ft{
 						pos->right->left->black = pos->right->black;
 						pos->right->black = color_swap;
 						rightRotation(pos->right);
-						black_sibling_red_child(pos, lft);
+						black_sibling_M_RED_child(pos, lft);
 					}
 					else if (!lft && !pos->left->sentinel && !pos->left->right->black) {
 						color_swap = pos->left->right->black;
 						pos->left->right->black = pos->left->black;
 						pos->left->black = color_swap;
 						leftRotation(pos->left);
-						black_sibling_red_child(pos, lft);
+						black_sibling_M_RED_child(pos, lft);
 					}
 				}
 
@@ -510,7 +510,7 @@ namespace ft{
 					return ;
 				}
 			
-				void	red_sib(node* pos, bool lft) {
+				void	M_RED_sib(node* pos, bool lft) {
 					bool	color_swap;
 					if (lft) {
 						color_swap = pos->right->black;
@@ -803,9 +803,9 @@ namespace ft{
 				printRb_treeFormat(level + 1, k, pos->right);
 
 				if (k == level) {
-					std::cout << ((pos->isLeftChild) ? CYAN : YELLOW) << " |" << RESET 
-					<< ((pos->black) ? BLACK : RED) << "value : [" << pos->pair.first  
-					<< "] | p: [" << pos->parent->pair.first << "]" << RESET << ((pos->isLeftChild) ? CYAN : YELLOW) << "| " << RESET;
+					std::cout << ((pos->isLeftChild) ? M_CYAN : M_YELLOW) << " |" << M_RESET 
+					<< ((pos->black) ? M_BLACK : M_RED) << "value : [" << pos->pair.first  
+					<< "] | p: [" << pos->parent->pair.first << "]" << M_RESET << ((pos->isLeftChild) ? M_CYAN : M_YELLOW) << "| " << M_RESET;
 				}
 				return ;
 			}
@@ -816,13 +816,13 @@ namespace ft{
 				std::cout << "size : " << size << std::endl;
 				
 				std::cout << 
-				CYAN << "left child" << RESET << " | " <<
-				YELLOW << "right child" << RESET << std::endl  << std::endl;
+				M_CYAN << "left child" << M_RESET << " | " <<
+				M_YELLOW << "right child" << M_RESET << std::endl  << std::endl;
 				for (size_t i = 0; i < size; i++) {
 					printRb_treeFormat(0, i, this->root);
-					std::cout << std::endl << GREEN << "\t++++++++++++++++" << RESET << std::endl;
+					std::cout << std::endl << M_GREEN << "\t++++++++++++++++" << M_RESET << std::endl;
 				}
-				std::cout  << std::endl << YELLOW << "-------------END OF Rb_tree PRINT-------------" << RESET << std::endl << std::endl;
+				std::cout  << std::endl << M_YELLOW << "-------------END OF Rb_tree PRINT-------------" << M_RESET << std::endl << std::endl;
 			}
 
 			void		print(int choice = 0) const {

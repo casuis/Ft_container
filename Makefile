@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2023/02/07 16:54:20 by asimon           ###   ########.fr        #
+#    Updated: 2023/02/20 20:25:37 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,12 +68,12 @@ STD			:=	std_
 #                              COLORS                             #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-YELLOW 		= \033[1;33m
-GREEN		= \033[1;32m
-RED			= \033[1;31m
-BLACK		= \033[1;30m
-CYAN		= \033[1;36m
-RESET		= \033[0m
+M_YELLOW 		= \033[1;33m
+M_GREEN		= \033[1;32m
+M_M_RED			= \033[1;31m
+M_BLACK		= \033[1;30m
+M_M_CYAN		= \033[1;36m
+M_M_RESET		= \033[0m
 VALIDATE	= ✅
 UNVALIDATE	= ❌
 
@@ -85,115 +85,115 @@ all: test
 
 $(NAME):
 	@clear;
-	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+	@echo "$(M_YELLOW)Creation of FT's executables ..$(M_M_RESET)"
 
 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
 		$(CXX) $(CXXFLAGS) -o $(FT)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
 	else \
-		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+		echo "$(M_M_RED) No main for vector test check $(M_M_CYAN)src$(M_M_RED) dir$(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(FT)$(EXEC_V) ]; then \
-		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)vector test created $(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for vector$(M_M_RESET)"; \
 	fi
 	
 	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
 		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
 	else \
-		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
+		echo "$(M_M_RED) No main for stack test check $(M_M_CYAN)src$(M_M_RED) dir$(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(FT)$(EXEC_S) ]; then \
-		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)stack test created $(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for stack$(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
 		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
 	else \
-		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+		echo "$(M_M_RED)No main for map test check $(M_M_CYAN)src$(M_M_RED) dir $(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(FT)$(EXEC_M) ]; then \
-		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)Map test created$(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for map$(M_M_RESET)"; \
 	fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 $(NAME_STD): 
-	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
+	@echo "$(M_YELLOW)Creation of STD's executable ..$(M_M_RESET)";
 
 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
 		$(CXX) $(CXXFLAGS) -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
 	else \
-		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+		echo "$(M_M_RED) No main for vector test check $(M_M_CYAN)src$(M_M_RED) dir$(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(STD)$(EXEC_V) ]; then \
-		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)vector test created $(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for vector$(M_M_RESET)"; \
 	fi
 	
 	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
 		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
 	else \
-		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
+		echo "$(M_M_RED) No main for stack test check $(M_M_CYAN)src$(M_M_RED) dir$(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(STD)$(EXEC_S) ]; then \
-		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)stack test created $(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for stack$(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
 		$(CXX) $(CXXFLAGS) $(INC) -o $(STD)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
 	else \
-		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+		echo "$(M_M_RED)No main for map test check $(M_M_CYAN)src$(M_M_RED) dir $(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(STD)$(EXEC_M) ]; then \
-		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)Map test created$(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for map$(M_M_RESET)"; \
 	fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 vector: fclean
 	@clear;
-	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+	@echo "$(M_YELLOW)Creation of FT's executables ..$(M_M_RESET)"
 
 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
 		$(CXX) $(CXXFLAGS) -o $(FT)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
 	else \
-		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+		echo "$(M_M_RED) No main for vector test check $(M_M_CYAN)src$(M_M_RED) dir$(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(FT)$(EXEC_V) ]; then \
-		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)vector test created $(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for vector$(M_M_RESET)"; \
 	fi
 	
-	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
+	@echo "$(M_YELLOW)Creation of STD's executable ..$(M_M_RESET)";
 
 	@if [ -f $(SRC_DIR)$(MAIN_V) ]; then \
 		$(CXX) $(CXXFLAGS) -D STD=1 -o $(STD)$(EXEC_V) $(INC) $(SRC_DIR)$(MAIN_V); \
 	else \
-		echo "$(RED) No main for vector test check $(CYAN)src$(RED) dir$(RESET)"; \
+		echo "$(M_M_RED) No main for vector test check $(M_M_CYAN)src$(M_M_RED) dir$(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(STD)$(EXEC_V) ]; then \
-		echo "$(GREEN)vector test created $(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)vector test created $(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for vector$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for vector$(M_M_RESET)"; \
 	fi
 
 	@mkdir -p res
@@ -204,32 +204,32 @@ vector: fclean
 
 map: fclean
 	@clear;
-	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+	@echo "$(M_YELLOW)Creation of FT's executables ..$(M_M_RESET)"
 
 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
 		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
 	else \
-		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+		echo "$(M_M_RED)No main for map test check $(M_M_CYAN)src$(M_M_RED) dir $(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(FT)$(EXEC_M) ]; then \
-		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)Map test created$(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for map$(M_M_RESET)"; \
 	fi
 	
-	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
+	@echo "$(M_YELLOW)Creation of STD's executable ..$(M_M_RESET)";
 
 	@if [ -f $(SRC_DIR)$(MAIN_M) ]; then \
 		$(CXX) $(CXXFLAGS) $(INC) -D STD=1 -o $(STD)$(EXEC_M) $(SRC_DIR)$(MAIN_M); \
 	else \
-		echo "$(RED)No main for map test check $(CYAN)src$(RED) dir $(RESET)"; \
+		echo "$(M_M_RED)No main for map test check $(M_M_CYAN)src$(M_M_RED) dir $(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(STD)$(EXEC_M) ]; then \
-		echo "$(GREEN)Map test created$(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)Map test created$(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for map$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for map$(M_M_RESET)"; \
 	fi
 	@mkdir -p res
 	@mv *_output res/
@@ -237,29 +237,29 @@ map: fclean
 
 stack: fclean
 	@clear
-	@echo "$(YELLOW)Creation of FT's executables ..$(RESET)"
+	@echo "$(M_YELLOW)Creation of FT's executables ..$(M_M_RESET)"
 	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
 		$(CXX) $(CXXFLAGS) $(INC) -o $(FT)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
 	else \
-		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
+		echo "$(M_M_RED) No main for stack test check $(M_M_CYAN)src$(M_M_RED) dir$(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(FT)$(EXEC_S) ]; then \
-		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)stack test created $(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for stack$(M_M_RESET)"; \
 	fi
-	@echo "$(YELLOW)Creation of STD's executable ..$(RESET)";
+	@echo "$(M_YELLOW)Creation of STD's executable ..$(M_M_RESET)";
 	@if [ -f $(SRC_DIR)$(MAIN_S) ]; then \
 		$(CXX) $(CXXFLAGS) $(INC) -D STD=1 -o $(STD)$(EXEC_S) $(SRC_DIR)$(MAIN_S); \
 	else \
-		echo "$(RED) No main for stack test check $(CYAN)src$(RED) dir$(RESET)"; \
+		echo "$(M_M_RED) No main for stack test check $(M_M_CYAN)src$(M_M_RED) dir$(M_M_RESET)"; \
 	fi
 
 	@if [ -f $(STD)$(EXEC_S) ]; then \
-		echo "$(GREEN)stack test created $(VALIDATE)$(RESET)"; \
+		echo "$(M_GREEN)stack test created $(VALIDATE)$(M_M_RESET)"; \
 	else \
-		echo "$(RED)Error during creation of tests for stack$(RESET)"; \
+		echo "$(M_M_RED)Error during creation of tests for stack$(M_M_RESET)"; \
 	fi
 
 test:

@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/08 15:21:37 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/20 20:24:47 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,14 @@
 # include <cstdlib>
 
 /* structur ft::pair */
-// # include <pair.hpp>
-
 # include "../templates/map/pair.hpp"
 
-# define YELLOW "\033[1;33m"
-# define GREEN	"\033[1;32m"
-# define RED	"\033[1;31m"
-# define BLACK	"\033[1;30m"
-# define CYAN	"\033[1;36m"
-# define RESET	"\033[0m"
+# define M_YELLOW "\033[1;33m"
+# define M_GREEN	"\033[1;32m"
+# define M_RED	"\033[1;31m"
+# define M_BLACK	"\033[1;30m"
+# define M_CYAN	"\033[1;36m"
+# define M_RESET	"\033[0m"
 
 namespace ft {
 
@@ -68,6 +66,9 @@ namespace ft {
 
 	template <typename Iter>
 	class _Rb_tree_rev_iterator;
+
+	template <typename T = void>
+	class RandomIterator;
 
 }
 

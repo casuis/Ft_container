@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:18:10 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/16 17:30:54 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/20 20:25:37 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace ft {
 	
 			////////////////////////////////////////////////////////////////////////////////
 			class value_compare
-			{   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
+			{   // in C++98, it is requiM_M_RED to inherit binary_function<value_type,value_type,bool>
 				friend class map;
 				
 				protected:
