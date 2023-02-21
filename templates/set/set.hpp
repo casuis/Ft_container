@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 20:38:00 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/21 15:53:36 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/21 17:41:18 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace ft {
 			typedef	typename Allocator::pointer															pointer;
 			typedef	typename Allocator::const_pointer													const_pointer;
 			
-			typedef	ft::_Rb_tree_iterator_set< value_type, typename ft::_Rb_tree_set<T>::node >			iterator;
+			typedef	ft::_Rb_tree_iterator_set< const value_type, typename ft::_Rb_tree_set<T>::node >			iterator;
 			typedef	ft::_Rb_tree_iterator_set< const value_type, typename ft::_Rb_tree_set<T>::node>	const_iterator;
 			
 			typedef	ft::_Rb_tree_rev_iterator< iterator >												reverse_iterator;

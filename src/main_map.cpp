@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 12:14:31 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/09 18:28:58 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/20 20:24:43 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 // int main(void) {
 
-// 	std::cout << std::endl << YELLOW << "##########MAP##########" << RESET << std::endl << std::endl;
+// 	std::cout << std::endl << M_YELLOW << "##########MAP##########" << M_M_RESET << std::endl << std::endl;
 // 	{
 // 		NAMESPACE::map<int, int>			map_tmp;
 // 		NAMESPACE::map<int, int>			map_tmp2;
@@ -109,7 +109,6 @@ void	printSize(T_MAP const &mp, bool print_content = 1)
 		for (; it != ite; ++it) {
 			std::cout << "- " << printPair(it, false) << std::endl;
 		}
-		std::cout << "==END==" << std::endl;
 	}
 	std::cout << "###############################################" << std::endl;
 }
@@ -144,23 +143,19 @@ T	dec(T it, int n)
 
 #define T1 int
 #define T2 std::string
-static int test_me = 0;
 static int iter = 0;
 
 template <typename MAP>
 void	ft_erase(MAP &mp, const T1 param)
 {
 	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.print();
-	std::cout << "===> ENTRE d'erase" << std::endl;
 	mp.erase(param);
-	std::cout << "===> SORTIE d'erase" << std::endl;
 	printSize(mp);
 }
 
 int		main(void)
 {
-	ft::map<T1, T2> mp;
+	NAMESPACE::map<T1, T2> mp;
 
 	mp[42] = "lol";
 
@@ -200,7 +195,6 @@ int		main(void)
 	mp[90] = "8";
 
 	printSize(mp);
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 	/* A classic btree should give this:
 	 *                                      42
 	 *                     /                                            \
@@ -215,9 +209,7 @@ int		main(void)
 	 * */
 
 	ft_erase(mp, 25); // right != NULL; left != NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 	ft_erase(mp, 55); // right != NULL; left != NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 
 	/* After deleting 25 and 55, I would get:
 	 *                                      42
@@ -233,9 +225,7 @@ int		main(void)
 	 * */
 
 	ft_erase(mp, 24); // right != NULL; left != NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 	ft_erase(mp, 54); // right != NULL; left != NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 
 	/* After deleting 24 and 54, I would get:
 	 *                                      42
@@ -251,14 +241,10 @@ int		main(void)
 	 * */
 
 	ft_erase(mp, 22); // right == NULL; left == NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 	ft_erase(mp, 51); // right == NULL; left == NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 
 	ft_erase(mp, 21); // right == NULL; left != NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 	ft_erase(mp, 53); // right != NULL; left == NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 
 	/* After deleting 22, 51 and then 21, 53, I would get:
 	 *                                      42
@@ -274,7 +260,6 @@ int		main(void)
 	 * */
 
 	ft_erase(mp, 20); // right == NULL; left != NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 
 	/* After deleting 20, I would get:
 	 *                                      42
@@ -290,7 +275,6 @@ int		main(void)
 	 * */
 
 	ft_erase(mp, 23); // right != NULL; left != NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 
 	/* After deleting 23, I would get:
 	 *                                      42
@@ -306,7 +290,6 @@ int		main(void)
 	 * */
 
 	ft_erase(mp, 42); // right != NULL; left != NULL; parent == NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 
 	/* After deleting 42, I would get:
 	 *                                      38
@@ -322,7 +305,6 @@ int		main(void)
 	 * */
 
 	ft_erase(mp, 38); // right != NULL; left != NULL; parent == NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 
 	/* After deleting 38, I would get:
 	 *                                      35
@@ -338,7 +320,6 @@ int		main(void)
 	 * */
 
 	ft_erase(mp, 35); // right != NULL; left != NULL; parent == NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 
 	/* After deleting 35, I would get:
 	 *                                      33
@@ -354,7 +335,6 @@ int		main(void)
 	 * */
 
 	ft_erase(mp, 33); // right != NULL; left != NULL; parent == NULL
-	std::cout << "------ MINE: " << test_me++ << " ------" << std::endl;
 
 	/* After deleting 33, I would get:
 	 *                                      30

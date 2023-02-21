@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 18:30:36 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/30 20:30:07 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/20 20:24:43 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ int		main(void){
 	/*                              STACK                                        */
 	////////////////////////////////////////////////////////////////////////////////
 
-	std::cout << std::endl << YELLOW << "##########STACK##########" << RESET << std::endl << std::endl;
+	std::cout << std::endl << M_YELLOW << "##########STACK##########" << M_M_RESET << std::endl << std::endl;
 	
 	////////////////////////////////////////////////////////////////////////////////
 	{
 		
-		std::cout << std::endl << YELLOW << "*****fin de test*****" << RESET << std::endl << std::endl;
+		std::cout << std::endl << M_YELLOW << "*****fin de test*****" << M_M_RESET << std::endl << std::endl;
 
 		{
 			NAMESPACE::stack<int> a, b, c;
