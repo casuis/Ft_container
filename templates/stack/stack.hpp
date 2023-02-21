@@ -6,20 +6,17 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:35:29 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/16 17:13:54 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/21 23:12:28 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __MY_STACK_HPP__
 # define __MY_STACK_HPP__
 
-/* Comment her for tester */
 # include "../../private/ftnspace.hpp"
 
-/* Decomment her for tester */
-// # include "../../private/ftnspace.hpp"
 
-namespace ft{
+namespace ft {
 	
 	template <class T, class Container>
 	class stack{

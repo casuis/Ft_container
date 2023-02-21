@@ -6,14 +6,14 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:23:17 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/20 20:30:40 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/21 22:58:54 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __ITERATOR_MAP__
 # define __ITERATOR_MAP__
-# include "../../private/header.hpp"
 
+# include "../../private/header.hpp"
 
 namespace ft {
 	

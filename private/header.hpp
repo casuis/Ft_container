@@ -6,12 +6,15 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/21 21:22:59 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/21 23:03:11 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __HEADER_CONTAINER_HPP__
 # define __HEADER_CONTAINER_HPP__
+
+/*for usleep*/
+// # include <unistd.h>
 
 # include <memory>
 # include <cmath>
@@ -33,8 +36,9 @@
 /* lib for system fctn */
 # include <cstdlib>
 
-/* structur ft::pair */
 # include "../templates/map/pair.hpp"
+
+
 
 # define M_YELLOW "\033[1;33m"
 # define M_GREEN	"\033[1;32m"

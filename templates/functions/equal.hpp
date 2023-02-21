@@ -6,12 +6,13 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 18:29:14 by asimon            #+#    #+#             */
-/*   Updated: 2023/01/30 15:23:06 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/21 22:58:42 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __EQUAL_HPP__
 # define __EQUAL_HPP__
+
 // # include <header.hpp>
 # include "../../private/header.hpp"
 
