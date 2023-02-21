@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/20 20:24:47 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/20 21:57:39 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ namespace ft {
 	template <typename Key, typename Value>
 	class Node;
 
+
+	template <typename Key>
+	class Node_set;
+
+	template <typename Key, typename Compare = std::less<Key>, typename NodeType = ft::Node_set<Key>, class Allocator = std::allocator<NodeType> >
+	class _Rb_tree_set;
+
 	template <typename Key, typename Value, typename Compare = std::less<Key>,  typename NodeType = ft::Node<Key, Value>, class Allocator = std::allocator<NodeType> >
 	class _Rb_tree;
 
@@ -54,6 +61,9 @@ namespace ft {
 
 	template < class Key,  class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
 	class map;
+
+	template < class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
+	class set;
 	
 	template <class T, class Allocator = std::allocator<T> >
 	class vector;

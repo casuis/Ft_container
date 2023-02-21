@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 00:33:50 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/20 20:24:43 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/21 14:51:48 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,41 @@
 
 # include "./header.hpp"
 
-# if STD == 1 
-#	define NAMESPACE std
-# else
-#	define NAMESPACE ft
-# endif 
+// # if STD == 1 
+// #	define NAMESPACE std
+// # else
+// #	define NAMESPACE ft
+// # endif 
 
+/* FUNCTIONS */
 # include "../templates/functions/is_integral.hpp"
 # include "../templates/functions/enable_if.hpp"
 # include "../templates/functions/equal.hpp"
+
+/* ITERATORS */
 # include "../templates/iterator/iterator_traits.hpp"
-# include "../templates/iterator/iterator.hpp"
 # include "../templates/iterator/reverse_iterator.hpp" 
-# include "../templates/map/Bst.hpp"
-# include "../templates/map/pair.hpp"
-# include "../templates/vector/vector.hpp"
-# include "../templates/map/Bst.hpp"
-# include "../templates/stack/stack.hpp"
-# include "../templates/map/map.hpp"
+# include "../templates/iterator/iterator.hpp"
 # include "../templates/iterator/iterator_map.hpp"
 # include "../templates/iterator/reverse_iterator_map.hpp"
+# include "../templates/iterator/iterator_set.hpp"
 
-namespace ft{
+/* VECTOR */
+# include "../templates/vector/vector.hpp"
+
+/* STACK */
+# include "../templates/stack/stack.hpp"
+
+/* MAP */
+# include "../templates/map/Bst.hpp"
+# include "../templates/map/pair.hpp"
+# include "../templates/map/map.hpp"
+
+/* SET */
+# include "../templates/set/Bst_set.hpp"
+# include "../templates/set/set.hpp"
+
+namespace ft {
 
 	// void		print(NAMESPACE::vector<int>& tab, std::string msg){
 	// 	for (size_t i = 0; i < tab.size(); i++){
