@@ -6,7 +6,7 @@
 /*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 13:46:45 by asimon            #+#    #+#             */
-/*   Updated: 2023/02/20 21:57:39 by asimon           ###   ########.fr       */
+/*   Updated: 2023/02/21 21:22:59 by asimon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@
 # include <iostream>
 
 # include <stack>
+
 /* vector for std */
 # include <vector>
+
+# include <set>
 
 /* lib for system fctn */
 # include <cstdlib>
