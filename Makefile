@@ -6,7 +6,7 @@
 #    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/24 13:12:01 by asimon            #+#    #+#              #
-#    Updated: 2023/02/21 22:03:52 by asimon           ###   ########.fr        #
+#    Updated: 2023/02/22 16:22:57 by asimon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -341,7 +341,7 @@ test:
 
 clean:
 	@clear
-	$(RM) ./res/$(NAME) ./res/$(NAME_STD)
+	$(RM) ./res/$(NAME) ./res/$(NAME_STD) $(FT)* $(STD)*
 
 fclean: clean
 	$(RM) ./res/
